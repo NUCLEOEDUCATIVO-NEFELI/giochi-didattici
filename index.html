@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esercizi di Grammatica Italiana</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .exercises-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .exercise-card {
+            background: #fafafa;
+            border-left: 4px solid #3498db;
+            padding: 25px 30px;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .exercise-card:hover {
+            background: #f0f4f8;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .exercise-card:nth-child(2) {
+            border-left-color: #e74c3c;
+        }
+
+        .exercise-card:nth-child(3) {
+            border-left-color: #27ae60;
+        }
+
+        .exercise-title {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .exercise-desc {
+            color: #5d6d7e;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .exercise-meta {
+            margin-top: 12px;
+            font-size: 0.85em;
+            color: #95a5a6;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #ecf0f1;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-right: 8px;
+            font-size: 0.8em;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #ecf0f1;
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Esercizi di Grammatica Italiana</h1>
+        <p class="subtitle">Attività interattive per la pratica della lingua</p>
+
+        <div class="exercises-grid">
+            <a href="art%20deter.html" class="exercise-card">
+                <div class="exercise-title">1. Articoli Determinativi</div>
+                <div class="exercise-desc">
+                    Esercizio sulla scelta corretta degli articoli determinativi italiani: 
+                    il, lo, la, l', i, gli, le.
+                </div>
+                <div class="exercise-meta">
+                    <span class="tag">Grammatica</span>
+                    <span class="tag">Articoli</span>
+                    <span class="tag">1 minuto</span>
+                </div>
+            </a>
+
+            <a href="are-ere-ire.html" class="exercise-card">
+                <div class="exercise-title">2. Coniugazione Verbi</div>
+                <div class="exercise-desc">
+                    Verifica la correttezza delle coniugazioni dei verbi regolari 
+                    in -ARE, -ERE e -IRE.
+                </div>
+                <div class="exercise-meta">
+                    <span class="tag">Verbi</span>
+                    <span class="tag">Coniugazione</span>
+                    <span class="tag">Vero/Falso</span>
+                </div>
+            </a>
+
+            <a href="passato_prossimo_challenge.html" class="exercise-card">
+                <div class="exercise-title">3. Passato Prossimo</div>
+                <div class="exercise-desc">
+                    Scegli l'ausiliare corretto (essere o avere) per la formazione 
+                    del passato prossimo.
+                </div>
+                <div class="exercise-meta">
+                    <span class="tag">Passato Prossimo</span>
+                    <span class="tag">Ausiliari</span>
+                    <span class="tag">Essere/Avere</span>
+                </div>
+            </a>
+        </div>
+
+        <footer>
+            <p>Materiali didattici per lo studio della lingua italiana</p>
+        </footer>
+    </div>
+</body>
+</html>
