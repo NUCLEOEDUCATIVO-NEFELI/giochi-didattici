@@ -362,6 +362,7 @@
             color: #721c24;
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div class="quiz-container">
@@ -380,7 +381,7 @@
             </div>
 
             <div class="rules-box">
-                <h3>📖 Regole degli Articoli</h3>
+                <h3>📖 Regole degli Articoli Determinativi</h3>
                 <ul>
                     <li><strong>IL</strong> - maschile singolare (consonante: il libro)</li>
                     <li><strong>LO</strong> - maschile singolare (z, s+cons, gn, ps: lo zio)</li>
@@ -462,7 +463,7 @@
     </div>
 
     <script>
-        // DATABASE 50 DOMANDE - Articoli Determinativi e Indeterminativi
+        // DATABASE 50 DOMANDE - Articoli Determinativi
         const questions = [
             // IL - maschile singolare consonante (1-8)
             {q: "Ho comprato _____ libro interessante.", options: ["il", "lo", "la", "l'"], correct: 0, expl: "LIBRO è maschile singolare che inizia con consonante → IL"},
@@ -470,7 +471,7 @@
             {q: "Ho apparecchiato _____ tavolo per la cena.", options: ["il", "lo", "la", "l'"], correct: 0, expl: "TAVOLO è maschile singolare che inizia con consonante → IL"},
             {q: "_____ sole splende nel cielo azzurro.", options: ["Il", "Lo", "La", "L'"], correct: 0, expl: "SOLE è maschile singolare che inizia con consonante → IL"},
             {q: "Ho attraversato _____ ponte sul fiume.", options: ["il", "lo", "la", "l'"], correct: 0, expl: "PONTE è maschile singolare che inizia con consonante → IL"},
-            {q: "Mio padre lavora in _____ ufficio grande.", options: ["un", "uno", "una", "un'"], correct: 0, expl: "Ufficio inizia con vocale, ma la domanda chiede l'articolo determinativo IL per consonanti"},
+            {q: "Mio padre lavora in _____ ufficio grande.", options: ["il", "lo", "la", "l'"], correct: 3, expl: "UFFICIO è maschile singolare che inizia con vocale U → L'"},
             {q: "Ho visto _____ ragazzo che conosci.", options: ["il", "lo", "la", "l'"], correct: 0, expl: "RAGAZZO è maschile singolare che inizia con consonante → IL"},
             {q: "_____ bambino gioca nel parco.", options: ["Il", "Lo", "La", "L'"], correct: 0, expl: "BAMBINO è maschile singolare che inizia con consonante → IL"},
 
@@ -478,11 +479,11 @@
             {q: "Ho incontrato _____ zio al mercato.", options: ["il", "lo", "la", "l'"], correct: 1, expl: "ZIO inizia con Z → LO"},
             {q: "_____ studente studia molto ogni giorno.", options: ["Il", "Lo", "La", "L'"], correct: 1, expl: "STUDENTE inizia con S+consonante → LO"},
             {q: "Ho rotto _____ specchio per sbaglio.", options: ["il", "lo", "la", "l'"], correct: 1, expl: "SPECCHIO inizia con S+consonante → LO"},
-            {q: "Mangi sempre _____ spaghetti aglio e olio?", options: ["il", "gli", "la", "l'"], correct: 1, expl: "SPAGHETTI inizia con S+consonante → gli"},
             {q: "_____ psicologo aiuta molte persone.", options: ["Il", "Lo", "La", "L'"], correct: 1, expl: "PSICOLOGO inizia con PS → LO"},
-            {q: "Ho visto  _____ gnomo nel giardino.", options: ["il", "lo", "la", "l'"], correct: 1, expl: "GNOMO inizia con GN → LO"},
+            {q: "Ho visto _____ gnomo nel giardino.", options: ["il", "lo", "la", "l'"], correct: 1, expl: "GNOMO inizia con GN → LO"},
             {q: "_____ stadio è molto grande e moderno.", options: ["Il", "Lo", "La", "L'"], correct: 1, expl: "STADIO inizia con S+consonante → LO"},
             {q: "Ho perso _____ scontrino del supermercato.", options: ["il", "lo", "la", "l'"], correct: 1, expl: "SCONTRINO inizia con S+consonante → LO"},
+            {q: "_____ sbaglio non si ripeterà.", options: ["Il", "Lo", "La", "L'"], correct: 1, expl: "SBAGLIO inizia con S+consonante → LO"},
 
             // LA - femminile singolare consonante (17-24)
             {q: "Ho comprato _____ casa nuova in centro.", options: ["il", "lo", "la", "l'"], correct: 2, expl: "CASA è femminile singolare che inizia con consonante → LA"},
@@ -502,30 +503,30 @@
             {q: "Ho visto _____ elefante allo zoo.", options: ["il", "lo", "la", "l'"], correct: 3, expl: "ELEFANTE inizia con vocale E → L'"},
             {q: "_____ isola è molto bella d'estate.", options: ["Il", "Lo", "La", "L'"], correct: 3, expl: "ISOLA inizia con vocale I → L'"},
 
-            // I - maschile plurale consonante (31-35)
+            // I - maschile plurale consonante (31-36)
             {q: "Ho letto _____ libri interessanti.", options: ["i", "gli", "le", "il"], correct: 0, expl: "LIBRI è maschile plurale che inizia con consonante → I"},
             {q: "_____ cani abbaiano nel giardino.", options: ["I", "Gli", "Le", "Il"], correct: 0, expl: "CANI è maschile plurale che inizia con consonante → I"},
             {q: "Ho comprato _____ tavoli per la sala.", options: ["i", "gli", "le", "il"], correct: 0, expl: "TAVOLI è maschile plurale che inizia con consonante → I"},
             {q: "_____ gatti dormono sul divano.", options: ["I", "Gli", "Le", "Il"], correct: 0, expl: "GATTI è maschile plurale che inizia con consonante → I"},
             {q: "Ho conosciuto _____ ragazzi della scuola.", options: ["i", "gli", "le", "il"], correct: 0, expl: "RAGAZZI è maschile plurale che inizia con consonante → I"},
+            {q: "_____ bambini giocano nel parco.", options: ["I", "Gli", "Le", "Il"], correct: 0, expl: "BAMBINI è maschile plurale che inizia con consonante → I"},
 
-            // GLI - maschile plurale (vocale, z, s+cons) (36-42)
+            // GLI - maschile plurale (vocale, z, s+cons) (37-43)
             {q: "Ho invitato _____ amici a cena.", options: ["i", "gli", "le", "il"], correct: 1, expl: "AMICI inizia con vocale A → GLI"},
             {q: "_____ studenti sono molto bravi.", options: ["I", "Gli", "Le", "Il"], correct: 1, expl: "STUDENTI inizia con S+consonante → GLI"},
-            {q: "Ho due _____ zii che vivono a Roma.", options: ["i", "gli", "le", "il"], correct: 1, expl: "ZII inizia con Z → GLI"},
-            {q: "_____ spaghetti sono pronti.", options: ["I", "Gli", "Le", "Il"], correct: 1, expl: "SPAGHETTI inizia con S+consonante → GLI"},
+            {q: "Mangi sempre _____ spaghetti aglio e olio?", options: ["i", "gli", "le", "il"], correct: 1, expl: "SPAGHETTI inizia con S+consonante → GLI"},
             {q: "_____ psicologi studiano la mente.", options: ["I", "Gli", "Le", "Il"], correct: 1, expl: "PSICOLOGI inizia con PS → GLI"},
             {q: "Ho visto _____ gnomi nel film.", options: ["i", "gli", "le", "il"], correct: 1, expl: "GNOMI inizia con GN → GLI"},
             {q: "_____ uomini lavorano in fabbrica.", options: ["I", "Gli", "Le", "Il"], correct: 1, expl: "UOMINI inizia con vocale U → GLI"},
+            {q: "Ho due _____ zii che vivono a Roma.", options: ["i", "gli", "le", "il"], correct: 1, expl: "ZII inizia con Z → GLI"},
 
-            // LE - femminile plurale (43-50)
+            // LE - femminile plurale (44-50)
             {q: "Ho comprato _____ case nuove.", options: ["i", "gli", "le", "la"], correct: 2, expl: "CASE è femminile plurale → LE (sempre!)"},
             {q: "_____ macchine sono parcheggiate.", options: ["I", "Gli", "Le", "La"], correct: 2, expl: "MACCHINE è femminile plurale → LE (sempre!)"},
             {q: "Ho conosciuto _____ ragazze italiane.", options: ["i", "gli", "le", "la"], correct: 2, expl: "RAGAZZE è femminile plurale → LE (sempre!)"},
             {q: "_____ amiche di Maria sono arrivate.", options: ["I", "Gli", "Le", "La"], correct: 2, expl: "AMICHE è femminile plurale → LE (sempre!)"},
             {q: "Ho perso _____ penne nel cassetto.", options: ["i", "gli", "le", "la"], correct: 2, expl: "PENNE è femminile plurale → LE (sempre!)"},
             {q: "_____ matite sono colorate.", options: ["I", "Gli", "Le", "La"], correct: 2, expl: "MATITE è femminile plurale → LE (sempre!)"},
-            {q: "Ho trovato _____ sedie in soffitta.", options: ["i", "gli", "le", "la"], correct: 2, expl: "SEDIE è femminile plurale → LE (sempre!)"},
             {q: "_____ finestre sono aperte.", options: ["I", "Gli", "Le", "La"], correct: 2, expl: "FINESTRE è femminile plurale → LE (sempre!)"}
         ];
 
