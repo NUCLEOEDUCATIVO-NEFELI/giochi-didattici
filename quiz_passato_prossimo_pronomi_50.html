@@ -324,7 +324,64 @@
             background: #f8d7da;
             color: #721c24;
         }
+
+        /* Stili per input nome e cognome */
+        .student-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .student-info h3 {
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .student-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            font-family: 'Nunito', sans-serif;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+
+        .student-input:focus {
+            outline: none;
+            border-color: #fff;
+            background: #fff;
+        }
+
+        .error-message {
+            color: #ffeb3b;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div class="quiz-container">
@@ -335,6 +392,21 @@
                 Quiz di 50 domande a completamento<br>
                 Completa le frasi con la forma corretta
             </p>
+
+            <!-- SEZIONE NOME E COGNOME -->
+            <div class="student-info">
+                <h3>✏️ Inserisci i tuoi dati</h3>
+                <div class="input-group">
+                    <label for="studentName">Nome:</label>
+                    <input type="text" id="studentName" class="student-input" placeholder="Scrivi il tuo nome...">
+                    <div id="nameError" class="error-message">⚠️ Inserisci il tuo nome</div>
+                </div>
+                <div class="input-group">
+                    <label for="studentSurname">Cognome:</label>
+                    <input type="text" id="studentSurname" class="student-input" placeholder="Scrivi il tuo cognome...">
+                    <div id="surnameError" class="error-message">⚠️ Inserisci il tuo cognome</div>
+                </div>
+            </div>
 
             <div class="rules-box">
                 <h3>📖 Argomenti del Quiz</h3>
@@ -380,6 +452,10 @@
         <!-- SCHERMATA RISULTATI -->
         <div id="resultsScreen" class="results-container hidden">
             <h2>🏆 QUIZ COMPLETATO!</h2>
+
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                <div style="font-size: 1.3em; font-weight: bold;" id="studentDisplay">Studente: -</div>
+            </div>
 
             <div class="score-label">IL TUO PUNTEGGIO</div>
             <div class="score-display" id="finalScore">0/50</div>
@@ -478,9 +554,39 @@
         let currentQuestion = 0;
         let userAnswers = new Array(50).fill(null);
         let score = 0;
+        let studentName = '';
+        let studentSurname = '';
 
         function startQuiz() {
-            console.log("Starting quiz...");
+            // Recupera nome e cognome
+            const nameInput = document.getElementById('studentName');
+            const surnameInput = document.getElementById('studentSurname');
+            const nameError = document.getElementById('nameError');
+            const surnameError = document.getElementById('surnameError');
+            
+            let isValid = true;
+            
+            // Validazione nome
+            if (!nameInput.value.trim()) {
+                nameError.classList.add('show');
+                isValid = false;
+            } else {
+                nameError.classList.remove('show');
+                studentName = nameInput.value.trim();
+            }
+            
+            // Validazione cognome
+            if (!surnameInput.value.trim()) {
+                surnameError.classList.add('show');
+                isValid = false;
+            } else {
+                surnameError.classList.remove('show');
+                studentSurname = surnameInput.value.trim();
+            }
+            
+            if (!isValid) return;
+
+            console.log("Starting quiz for: " + studentName + " " + studentSurname);
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('quizScreen').classList.remove('hidden');
             currentQuestion = 0;
@@ -597,6 +703,9 @@
             const wrong = 50 - correct;
             const percentage = Math.round((correct / 50) * 100);
 
+            // Mostra nome e cognome nei risultati
+            document.getElementById('studentDisplay').textContent = 'Studente: ' + studentName + ' ' + studentSurname;
+            
             document.getElementById('finalScore').textContent = correct + '/50';
             document.getElementById('correctCount').textContent = correct;
             document.getElementById('wrongCount').textContent = wrong;
@@ -612,6 +721,10 @@
             const time = new Date().toLocaleTimeString('it-IT');
 
             let text = 'QUIZ PASSATO PROSSIMO E PRONOMI\n';
+            text += '================================\n\n';
+            text += 'DATI STUDENTE:\n';
+            text += 'Nome: ' + studentName + '\n';
+            text += 'Cognome: ' + studentSurname + '\n\n';
             text += 'Data: ' + date + ' ' + time + '\n';
             text += '\nRISULTATI:\n';
             text += 'Risposte corrette: ' + correct + '/50\n';
@@ -635,7 +748,7 @@
             const email = document.getElementById('emailInput').value;
             const resultsText = document.getElementById('resultsText').value;
 
-            const subject = encodeURIComponent('Risultati Quiz Passato Prossimo e Pronomi');
+            const subject = encodeURIComponent('Risultati Quiz Passato Prossimo e Pronomi - ' + studentName + ' ' + studentSurname);
             const body = encodeURIComponent(resultsText);
             const mailtoLink = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
 
