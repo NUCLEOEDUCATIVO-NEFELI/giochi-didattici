@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esercizi di Grammatica Italiana</title>
+    <title>Portale Esercizi di Grammatica Italiana</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,155 +14,348 @@
         }
 
         body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 40px 20px;
         }
 
         .container {
-            max-width: 800px;
-            width: 100%;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            padding: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        h1 {
+        /* Header */
+        .header {
             text-align: center;
-            color: #2c3e50;
-            font-size: 2.2em;
-            margin-bottom: 10px;
-            font-weight: 600;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
         }
 
-        .subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 1.1em;
-            margin-bottom: 40px;
-            font-style: italic;
+        .header h1 {
+            font-size: 3em;
+            font-weight: 800;
+            color: white;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+            letter-spacing: -1px;
         }
 
-        .exercises-grid {
-            display: grid;
-            gap: 20px;
-        }
-
-        .exercise-card {
-            background: #fafafa;
-            border-left: 4px solid #3498db;
-            padding: 25px 30px;
-            border-radius: 0 8px 8px 0;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: block;
-        }
-
-        .exercise-card:hover {
-            background: #f0f4f8;
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        .exercise-card:nth-child(2) {
-            border-left-color: #e74c3c;
-        }
-
-        .exercise-card:nth-child(3) {
-            border-left-color: #27ae60;
-        }
-
-        .exercise-title {
-            color: #2c3e50;
+        .header p {
             font-size: 1.3em;
+            color: rgba(255,255,255,0.9);
+            font-weight: 300;
+        }
+
+        /* Category Sections */
+        .category {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-left: 10px;
+        }
+
+        .category-icon {
+            font-size: 2em;
+        }
+
+        .category h2 {
+            color: white;
+            font-size: 1.5em;
             font-weight: 600;
-            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        .exercise-desc {
-            color: #5d6d7e;
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 200px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light));
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #718096;
             font-size: 0.95em;
-            line-height: 1.5;
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 20px;
         }
 
-        .exercise-meta {
-            margin-top: 12px;
-            font-size: 0.85em;
-            color: #95a5a6;
+        .card-footer {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .tag {
-            display: inline-block;
-            background: #ecf0f1;
-            padding: 3px 10px;
-            border-radius: 12px;
-            margin-right: 8px;
-            font-size: 0.8em;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-color-light));
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        footer {
+        /* Card Color Variants */
+        .card-articoli {
+            --accent-color: #f093fb;
+            --accent-color-light: #f5576c;
+        }
+
+        .card-verbi {
+            --accent-color: #667eea;
+            --accent-color-light: #764ba2;
+        }
+
+        .card-passato {
+            --accent-color: #fa709a;
+            --accent-color-light: #fee140;
+        }
+
+        .card-quiz50 {
+            --accent-color: #00b894;
+            --accent-color-light: #00cec9;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Floating shapes */
+        .shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 20s infinite;
+        }
+
+        .shape-1 {
+            top: 10%;
+            left: 10%;
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            top: 70%;
+            right: 10%;
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation-delay: 5s;
+        }
+
+        .shape-3 {
+            bottom: 10%;
+            left: 30%;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+            }
+        }
+
+        /* Footer */
+        .footer {
             text-align: center;
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid #ecf0f1;
-            color: #95a5a6;
+            margin-top: 60px;
+            padding: 30px;
+            color: rgba(255,255,255,0.7);
             font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
     <div class="container">
-        <h1>Esercizi di Grammatica Italiana</h1>
-        <p class="subtitle">Attività interattive per la pratica della lingua</p>
+        <header class="header">
+            <h1>📚 Portale Grammatica Italiana</h1>
+            <p>Esercizi interattivi per imparare divertendosi</p>
+        </header>
 
-        <div class="exercises-grid">
-            <a href="art%20deter.html" class="exercise-card">
-                <div class="exercise-title">1. Articoli Determinativi</div>
-                <div class="exercise-desc">
-                    Esercizio sulla scelta corretta degli articoli determinativi italiani: 
-                    il, lo, la, l', i, gli, le.
-                </div>
-                <div class="exercise-meta">
-                    <span class="tag">Grammatica</span>
-                    <span class="tag">Articoli</span>
-                    <span class="tag">1 minuto</span>
-                </div>
-            </a>
+        <!-- CHALLENGE 1 MINUTO -->
+        <section class="category">
+            <div class="category-title">
+                <span class="category-icon">⚡</span>
+                <h2>Challenge 1 Minuto - Veloci e Intensi</h2>
+            </div>
+            <div class="cards-grid">
+                <a href="art%20deter.html" class="card card-articoli">
+                    <div class="card-icon">📝</div>
+                    <h3>Articoli Determinativi</h3>
+                    <p>Scegli rapidamente tra il, lo, la, l', i, gli, le. Un minuto per testare le tue conoscenze!</p>
+                    <div class="card-footer">
+                        <span class="tag">1 Minuto</span>
+                        <span class="tag">Articoli</span>
+                        <span class="tag">Veloce</span>
+                    </div>
+                </a>
 
-            <a href="are-ere-ire.html" class="exercise-card">
-                <div class="exercise-title">2. Coniugazione Verbi</div>
-                <div class="exercise-desc">
-                    Verifica la correttezza delle coniugazioni dei verbi regolari 
-                    in -ARE, -ERE e -IRE.
-                </div>
-                <div class="exercise-meta">
-                    <span class="tag">Verbi</span>
-                    <span class="tag">Coniugazione</span>
-                    <span class="tag">Vero/Falso</span>
-                </div>
-            </a>
+                <a href="are-ere-ire.html" class="card card-verbi">
+                    <div class="card-icon">🔥</div>
+                    <h3>Coniugazione Verbi</h3>
+                    <p>Vero o Falso? Verifica la correttezza delle coniugazioni dei verbi in -ARE, -ERE e -IRE.</p>
+                    <div class="card-footer">
+                        <span class="tag">1 Minuto</span>
+                        <span class="tag">Verbi</span>
+                        <span class="tag">Combo</span>
+                    </div>
+                </a>
 
-            <a href="passato_prossimo_challenge.html" class="exercise-card">
-                <div class="exercise-title">3. Passato Prossimo</div>
-                <div class="exercise-desc">
-                    Scegli l'ausiliare corretto (essere o avere) per la formazione 
-                    del passato prossimo.
-                </div>
-                <div class="exercise-meta">
-                    <span class="tag">Passato Prossimo</span>
-                    <span class="tag">Ausiliari</span>
-                    <span class="tag">Essere/Avere</span>
-                </div>
-            </a>
-        </div>
+                <a href="passato_prossimo_challenge.html" class="card card-passato">
+                    <div class="card-icon">⏰</div>
+                    <h3>Passato Prossimo</h3>
+                    <p>Scegli l'ausiliare corretto: Essere o Avere? Con musica che accelera ad ogni combo!</p>
+                    <div class="card-footer">
+                        <span class="tag">1 Minuto</span>
+                        <span class="tag">Passato Prossimo</span>
+                        <span class="tag">Musica</span>
+                    </div>
+                </a>
+            </div>
+        </section>
 
-        <footer>
-            <p>Materiali didattici per lo studio della lingua italiana</p>
+        <!-- QUIZ 50 DOMANDE -->
+        <section class="category">
+            <div class="category-title">
+                <span class="category-icon">📋</span>
+                <h2>Quiz Completi - 50 Domande</h2>
+            </div>
+            <div class="cards-grid">
+                <a href="quiz_articoli_determinativi_50.html" class="card card-quiz50">
+                    <div class="card-icon">🎯</div>
+                    <h3>Quiz Articoli Determinativi</h3>
+                    <p>Quiz completo di 50 domande con spiegazioni dettagliate. Invia i risultati al docente via email.</p>
+                    <div class="card-footer">
+                        <span class="tag">50 Domande</span>
+                        <span class="tag">Spiegazioni</span>
+                        <span class="tag">Email</span>
+                    </div>
+                </a>
+
+                <a href="quiz_passato_prossimo_pronomi_50.html" class="card card-quiz50">
+                    <div class="card-icon">🎓</div>
+                    <h3>Quiz Passato Prossimo e Pronomi</h3>
+                    <p>50 domande su ausiliari, pronomi diretti/indiretti e accordo del participio. Completo e dettagliato.</p>
+                    <div class="card-footer">
+                        <span class="tag">50 Domande</span>
+                        <span class="tag">Pronomi</span>
+                        <span class="tag">Email</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>🎓 Materiali didattici per lo studio della lingua italiana | Scegli l'esercizio che preferisci!</p>
         </footer>
     </div>
 </body>
