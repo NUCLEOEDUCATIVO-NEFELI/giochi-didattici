@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,7 +12,7 @@
 
 body{
 font-family:Arial;
-background:#eef3ff;
+background:#eef2ff;
 display:flex;
 justify-content:center;
 padding:40px;
@@ -19,9 +21,9 @@ padding:40px;
 .container{
 background:white;
 padding:30px;
-width:750px;
+width:800px;
 border-radius:10px;
-box-shadow:0 0 15px rgba(0,0,0,0.2);
+box-shadow:0 0 20px rgba(0,0,0,0.2);
 }
 
 h1{
@@ -41,19 +43,20 @@ width:100%;
 cursor:pointer;
 }
 
-.correct{background:#4CAF50;color:white;}
-.wrong{background:#e53935;color:white;}
-
-.nav{
-margin-top:20px;
-display:flex;
-justify-content:space-between;
+.correct{
+background:#43a047;
+color:white;
 }
 
-.result{
+.wrong{
+background:#e53935;
+color:white;
+}
+
+.nav{
+display:flex;
+justify-content:space-between;
 margin-top:20px;
-background:#f4f6ff;
-padding:20px;
 }
 
 input{
@@ -63,13 +66,20 @@ margin:10px 0;
 font-size:18px;
 }
 
-.start{
-background:#1976d2;
+.startbtn{
+background:#1565c0;
 color:white;
 font-size:20px;
 }
 
+.resultbox{
+background:#f5f7ff;
+padding:20px;
+margin-top:20px;
+}
+
 </style>
+
 </head>
 
 <body>
@@ -85,7 +95,7 @@ font-size:20px;
 <input id="nome" placeholder="Nome">
 <input id="cognome" placeholder="Cognome">
 
-<button class="start" onclick="startQuiz()">Inizia Quiz</button>
+<button class="startbtn" onclick="startQuiz()">Inizia Quiz</button>
 
 </div>
 
@@ -100,9 +110,9 @@ font-size:20px;
 
 <div class="nav">
 
-<button onclick="prev()">Precedente</button>
+<button onclick="prev()">← Precedente</button>
 
-<button onclick="next()">Successiva</button>
+<button onclick="next()">Successiva →</button>
 
 </div>
 
@@ -115,7 +125,7 @@ font-size:20px;
 
 <div id="score"></div>
 
-<div id="errors" class="result"></div>
+<div id="errors" class="resultbox"></div>
 
 <button onclick="sendEmail()">Invia risultati via email</button>
 
@@ -123,108 +133,64 @@ font-size:20px;
 
 </div>
 
+
 <script>
 
 const questions=[
 
 {q:"Il colore ___ cielo è azzurro.",options:["del","al","nel","dal"],correct:0},
-
 {q:"Parlo spesso ___ amico Marco.",options:["dello","dell'","dalla","dai"],correct:1},
-
 {q:"Il sapore ___ fragola è dolce.",options:["dello","dei","della","dalle"],correct:2},
-
 {q:"Mi piace il gusto ___ yogurt.",options:["della","del","dai","dello"],correct:3},
-
 {q:"Aspetto l'arrivo ___ postino.",options:["del","al","nello","dalla"],correct:0},
-
 {q:"Conosci i nomi ___ studenti?",options:["alle","degli","delle","dai"],correct:1},
-
 {q:"Ho bisogno ___ chiavi.",options:["dei","degli","delle","dai"],correct:2},
-
 {q:"La tazza ___ caffè è sul tavolo.",options:["dello","della","del","al"],correct:2},
-
 {q:"Il profumo ___ rose è intenso.",options:["dei","delle","degli","nelle"],correct:1},
-
 {q:"Ho dimenticato il nome ___ dottore.",options:["dello","della","del","al"],correct:2},
 
 {q:"Vado ___ cinema stasera.",options:["alla","ai","agli","al"],correct:3},
-
 {q:"Scrivo ___ amica Maria.",options:["all'","allo","alla","ai"],correct:0},
-
 {q:"Porto i fiori ___ nonna.",options:["al","alla","allo","ai"],correct:1},
-
 {q:"Devo andare ___ stadio.",options:["al","alla","allo","ai"],correct:2},
-
 {q:"Dobbiamo parlare ___ professori.",options:["alle","agli","dai","ai"],correct:3},
-
 {q:"Penso spesso ___ amici.",options:["agli","alle","ai","dalle"],correct:0},
-
 {q:"Consegno i compiti ___ insegnanti.",options:["dalle","agli","alle","ai"],correct:1},
-
 {q:"Mando un messaggio ___ ragazze.",options:["dalle","ai","alle","agli"],correct:2},
-
 {q:"Vado ___ scuola nuova.",options:["ai","agli","alla","al"],correct:2},
-
 {q:"Telefono spesso ___ zio Giovanni.",options:["allo","al","ai","agli"],correct:0},
 
 {q:"Vengo ___ parrucchiere.",options:["dallo","dal","dalla","dai"],correct:1},
-
 {q:"Arrivo ___ aeroporto.",options:["dallo","dalla","dall'","dai"],correct:2},
-
 {q:"Ho comprato il vestito ___ sarta.",options:["dall'","dallo","dai","dalla"],correct:3},
-
 {q:"Torno ___ psicologo.",options:["dallo","dalla","dall'","dal"],correct:0},
-
 {q:"Prendo il treno ___ stazione centrale.",options:["dalla","dal","dallo","dai"],correct:0},
-
 {q:"Vengo ___ medici.",options:["dalle","dagli","dai","dei"],correct:2},
-
 {q:"Ho ricevuto un regalo ___ zii.",options:["dalle","dai","dagli","dei"],correct:2},
-
 {q:"Chiedo aiuto ___ insegnanti.",options:["agli","dagli","dai","alle"],correct:0},
-
 {q:"Vado ___ mare.",options:["allo","al","alla","ai"],correct:1},
-
 {q:"Esco ___ biblioteca.",options:["dallo","dalla","dall'","dai"],correct:1},
 
 {q:"Il libro è ___ cassetto.",options:["nella","nei","nel","nello"],correct:2},
-
 {q:"Metto l'acqua ___ bicchiere.",options:["nel","nello","nella","nell'"],correct:0},
-
 {q:"Abito ___ appartamento.",options:["nell'","nello","nella","nei"],correct:0},
-
 {q:"La penna è ___ borsa.",options:["nello","nella","nell'","nei"],correct:1},
-
 {q:"C'è un topo ___ scantinato.",options:["nel","nella","nello","nei"],correct:2},
-
 {q:"Gli alberi sono ___ giardini.",options:["nei","negli","nelle","dai"],correct:0},
-
 {q:"Ho messo i documenti ___ armadietti.",options:["nei","negli","nelle","dei"],correct:1},
-
 {q:"Le chiavi sono ___ tasche.",options:["nei","nelle","negli","alle"],correct:1},
-
 {q:"Vado ___ ufficio.",options:["nello","nella","nell'","nei"],correct:2},
-
 {q:"Metto il vestito ___ armadio.",options:["nell'","nello","nella","nei"],correct:0},
 
 {q:"Il gatto dorme ___ divano.",options:["sullo","sul","sulla","sui"],correct:1},
-
 {q:"Appendo il quadro ___ muro.",options:["sullo","sulla","sul","sui"],correct:2},
-
 {q:"Metto il vaso ___ tavolo.",options:["sulla","sui","sul","sullo"],correct:2},
-
 {q:"C'è un libro ___ scaffale.",options:["sullo","sul","sulla","sui"],correct:0},
-
 {q:"Il piattino è ___ tavolino.",options:["sul","sullo","sulla","su"],correct:0},
-
 {q:"Siediti ___ sedia.",options:["sullo","sul","sulla","sui"],correct:2},
-
 {q:"Ho messo i piatti ___ tavoli.",options:["sui","sugli","sulle","dai"],correct:0},
-
 {q:"I libri sono ___ mensole.",options:["sulle","sui","sugli","nelle"],correct:0},
-
 {q:"Il gatto sale ___ tetto.",options:["sul","sullo","sulla","sui"],correct:0},
-
 {q:"Metto il cellulare ___ tavolo.",options:["sullo","sul","sulla","nel"],correct:1}
 
 ];
@@ -290,14 +256,10 @@ b.classList.add("wrong");
 function next(){
 
 if(current<questions.length-1){
-
 current++;
 showQuestion();
-
 }else{
-
 showResults();
-
 }
 
 }
@@ -305,10 +267,8 @@ showResults();
 function prev(){
 
 if(current>0){
-
 current--;
 showQuestion();
-
 }
 
 }
@@ -319,7 +279,7 @@ document.getElementById("quiz").style.display="none";
 document.getElementById("results").style.display="block";
 
 let correct=0;
-let errors="";
+let errorText="";
 
 questions.forEach((q,i)=>{
 
@@ -327,8 +287,8 @@ if(answers[i]==q.correct) correct++;
 
 else{
 
-errors+= (i+1)+". "+q.q+"<br>";
-errors+="Risposta corretta: "+q.options[q.correct]+"<br><br>";
+errorText+=(i+1)+". "+q.q+"<br>";
+errorText+="Corretta: "+q.options[q.correct]+"<br><br>";
 
 }
 
@@ -336,25 +296,52 @@ errors+="Risposta corretta: "+q.options[q.correct]+"<br><br>";
 
 let score=Math.round((correct/50)*100);
 
-let status = score>=60 ? "SUPERATO ✅" : "NON SUPERATO ❌";
+let status=score>=60?"SUPERATO":"NON SUPERATO";
 
 document.getElementById("score").innerHTML=
-`Studente: ${nome} ${cognome}<br>
-Punteggio: ${score}/100<br>
-Corrette: ${correct}/50<br>
-Valutazione: ${status}`;
 
-document.getElementById("errors").innerHTML=errors;
+"Studente: "+nome+" "+cognome+"<br>"+
+"Punteggio: "+score+"/100<br>"+
+"Corrette: "+correct+"/50<br>"+
+"Valutazione: "+status;
+
+document.getElementById("errors").innerHTML=errorText;
 
 }
 
 function sendEmail(){
 
-let scoreText=document.getElementById("score").innerText;
+let correct=0;
 
-let body=encodeURIComponent(scoreText);
+let report="RISULTATI QUIZ PREPOSIZIONI ARTICOLATE\n\n";
 
-window.location.href=`mailto:giancarlo.vettori@cpiatv1.edu.it?subject=Risultato Quiz Preposizioni Articolate&body=${body}`;
+report+="Studente: "+nome+" "+cognome+"\n\n";
+
+questions.forEach((q,i)=>{
+
+let user=answers[i];
+let ok=user==q.correct;
+
+if(ok) correct++;
+
+report+=(i+1)+". "+q.q+"\n";
+report+="Risposta studente: "+q.options[user]+"\n";
+report+="Risposta corretta: "+q.options[q.correct]+"\n";
+report+=(ok?"✔ Corretta":"✘ Sbagliata")+"\n\n";
+
+});
+
+let score=Math.round((correct/50)*100);
+
+report+="Punteggio: "+score+"/100\n";
+
+let subject="Risultato Quiz Preposizioni Articolate - "+nome+" "+cognome;
+
+window.location.href=
+"mailto:giancarlo.vettori@cpiatv1.edu.it?subject="
++encodeURIComponent(subject)
++"&body="
++encodeURIComponent(report);
 
 }
 
