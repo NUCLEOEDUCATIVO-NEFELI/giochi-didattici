@@ -3,9 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portale Esercizi di Grammatica Italiana</title>
+    <meta name="description" content="Portale didattico per l'apprendimento della grammatica italiana - Esercizi interattivi e quiz per studenti">
+    <title>Portale Didattico | Grammatica Italiana</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap');
+
+        :root {
+            --primary: #1e3a5f;
+            --primary-light: #2c5282;
+            --secondary: #8b4513;
+            --accent: #c9a227;
+            --bg-light: #f7f9fc;
+            --bg-white: #ffffff;
+            --text-dark: #1a202c;
+            --text-medium: #4a5568;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
 
         * {
             margin: 0;
@@ -14,84 +30,197 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 40px 20px;
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        .container {
+        /* Header Accademico */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-top {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .logo-text p {
+            font-size: 0.85em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.9em;
+            transition: opacity 0.3s;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 5px;
+        }
+
+        .header-nav a:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: rgba(0,0,0,0.1);
+            padding: 10px 40px;
+            font-size: 0.85em;
+        }
+
+        .breadcrumb-content {
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-            animation: fadeInDown 0.8s ease;
+        .breadcrumb a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
         }
 
-        .header h1 {
-            font-size: 3em;
-            font-weight: 800;
+        .breadcrumb a:hover {
             color: white;
-            text-shadow: 4px 4px 0px rgba(0,0,0,0.2);
-            margin-bottom: 15px;
-            letter-spacing: -1px;
         }
 
-        .header p {
-            font-size: 1.3em;
-            color: rgba(255,255,255,0.9);
-            font-weight: 300;
+        .breadcrumb span {
+            color: rgba(255,255,255,0.6);
+            margin: 0 8px;
         }
 
-        /* Category Sections */
-        .category {
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 50px;
             margin-bottom: 40px;
-            animation: fadeInUp 0.8s ease;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--accent);
         }
 
-        .category-title {
+        .hero h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2em;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.1em;
+            color: var(--text-medium);
+            max-width: 800px;
+            line-height: 1.8;
+        }
+
+        /* Section Headers */
+        .section-header {
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: space-between;
             margin-bottom: 25px;
-            padding-left: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
         }
 
-        .category-icon {
-            font-size: 2em;
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .category h2 {
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
             color: white;
-            font-size: 1.5em;
-            font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .section-title h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.4em;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .section-meta {
+            font-size: 0.85em;
+            color: var(--text-light);
         }
 
         /* Cards Grid */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 25px;
+            margin-bottom: 50px;
         }
 
         .card {
-            background: white;
-            border-radius: 20px;
+            background: var(--bg-white);
+            border-radius: 10px;
             padding: 30px;
             text-decoration: none;
             color: inherit;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            min-height: 200px;
+            position: relative;
+            overflow: hidden;
         }
 
         .card::before {
@@ -99,30 +228,55 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light));
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
         }
 
-        .card-icon {
-            font-size: 3em;
+        .card:hover::before {
+            width: 6px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 15px;
         }
 
-        .card h3 {
-            font-size: 1.4em;
+        .card-category {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 10px;
+            color: var(--secondary);
+            background: rgba(139, 69, 19, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .card-icon-main {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .card h4 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.2em;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 700;
         }
 
         .card p {
-            color: #718096;
+            color: var(--text-medium);
             font-size: 0.95em;
             line-height: 1.6;
             flex-grow: 1;
@@ -131,362 +285,534 @@
 
         .card-footer {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 8px;
         }
 
         .tag {
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-color-light));
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
+            background: var(--bg-light);
+            color: var(--text-medium);
+            padding: 4px 10px;
+            border-radius: 4px;
             font-size: 0.75em;
             font-weight: 600;
+        }
+
+        .tag.highlight {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .card-arrow {
+            color: var(--primary);
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-arrow {
+            transform: translateX(5px);
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        /* Card Color Variants */
-        .card-articoli {
-            --accent-color: #f093fb;
-            --accent-color-light: #f5576c;
+        .badge-new {
+            background: #c6f6d5;
+            color: #22543d;
         }
 
-        .card-verbi {
-            --accent-color: #667eea;
-            --accent-color-light: #764ba2;
+        .badge-popular {
+            background: #feebc8;
+            color: #744210;
         }
 
-        .card-passato {
-            --accent-color: #fa709a;
-            --accent-color-light: #fee140;
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+            border-left: 4px solid var(--primary-light);
+            padding: 25px 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
         }
 
-        .card-quiz50 {
-            --accent-color: #00b894;
-            --accent-color-light: #00cec9;
+        .info-box h4 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1em;
         }
 
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Floating shapes */
-        .shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: float 20s infinite;
-        }
-
-        .shape-1 {
-            top: 10%;
-            left: 10%;
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 50%;
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            top: 70%;
-            right: 10%;
-            width: 120px;
-            height: 120px;
-            background: white;
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation-delay: 5s;
-        }
-
-        .shape-3 {
-            bottom: 10%;
-            left: 30%;
-            width: 60px;
-            height: 60px;
-            background: white;
-            border-radius: 50%;
-            animation-delay: 10s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-30px) rotate(180deg);
-            }
+        .info-box p {
+            color: var(--text-medium);
+            font-size: 0.95em;
         }
 
         /* Footer */
         .footer {
-            text-align: center;
+            background: var(--primary);
+            color: white;
+            padding: 40px;
             margin-top: 60px;
-            padding: 30px;
-            color: rgba(255,255,255,0.7);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-section h5 {
+            font-family: 'Merriweather', serif;
+            font-size: 1em;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .footer-section p, .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
             font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.6);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
+            .header-top {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
             }
-            
+
+            .header-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .main-container {
+                padding: 20px;
+            }
+
+            .hero {
+                padding: 30px;
+            }
+
             .cards-grid {
                 grid-template-columns: 1fr;
             }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+
+        :focus {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
         }
     </style>
+<base target="_blank">
 </head>
 <body>
-    <div class="shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-    </div>
+    <header class="header">
+        <div class="header-top">
+            <div class="logo-section">
+                <div class="logo-icon">📚</div>
+                <div class="logo-text">
+                    <h1>Portale Didattico</h1>
+                    <p>Dipartimento di Italiano - CPIA TV1</p>
+                </div>
+            </div>
+            <nav class="header-nav" role="navigation" aria-label="Navigazione principale">
+                <a href="#esercizi">Esercizi</a>
+                <a href="#quiz">Quiz</a>
+                <a href="#risorse">Risorse</a>
+                <a href="#contatti">Contatti</a>
+            </nav>
+        </div>
+        <div class="breadcrumb">
+            <div class="breadcrumb-content">
+                <a href="index.html">Home</a> <span>/</span> <a href="#">Grammatica Italiana</a> <span>/</span> Esercizi Interattivi
+            </div>
+        </div>
+    </header>
 
-    <div class="container">
-        <header class="header">
-            <h1>📚 Portale Grammatica Italiana</h1>
-            <p>Esercizi interattivi per imparare divertendosi</p>
-        </header>
+    <main class="main-container">
+        <section class="hero">
+            <h2>Piattaforma di Apprendimento della Grammatica Italiana</h2>
+            <p>Benvenuti nel portale didattico dedicato allo studio della lingua italiana. Questa piattaforma offre esercizi interattivi, quiz valutativi e risorse didattiche strutturate per supportare l'apprendimento della grammatica italiana a livello A2-B1.</p>
+        </section>
+
+        <div class="info-box">
+            <h4>📋 Istruzioni per l'uso</h4>
+            <p>Gli esercizi sono organizzati per tipologia e livello di difficoltà. I quiz da 50 domande includono spiegazioni dettagliate e la possibilità di inviare i risultati al docente. Si consiglia di completare prima gli esercizi veloci (Challenge 1 Minuto) prima di affrontare i quiz completi.</p>
+        </div>
 
         <!-- CHALLENGE 1 MINUTO -->
-        <section class="category">
-            <div class="category-title">
-                <span class="category-icon">⚡</span>
-                <h2>Challenge 1 Minuto - Veloci e Intensi</h2>
+        <section class="category" id="esercizi">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon">⚡</div>
+                    <h3>Esercizi Veloci - Challenge 1 Minuto</h3>
+                </div>
+                <div class="section-meta">7 esercizi disponibili</div>
             </div>
+
             <div class="cards-grid">
-                <a href="art%20deter.html" class="card card-articoli">
-                    <div class="card-icon">📝</div>
-                    <h3>Articoli Determinativi</h3>
-                    <p>Scegli rapidamente tra il, lo, la, l', i, gli, le. Un minuto per testare le tue conoscenze!</p>
-                    <div class="card-footer">
-                        <span class="tag">1 Minuto</span>
-                        <span class="tag">Articoli</span>
-                        <span class="tag">Veloce</span>
+                <a href="art%20deter.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Articoli</span>
+                        <span class="card-icon-main">📝</span>
                     </div>
-                </a>
-
-                <a href="are-ere-ire.html" class="card card-verbi">
-                    <div class="card-icon">🔥</div>
-                    <h3>Coniugazione Verbi</h3>
-                    <p>Vero o Falso? Verifica la correttezza delle coniugazioni dei verbi in -ARE, -ERE e -IRE.</p>
+                    <h4>Articoli Determinativi</h4>
+                    <p>Esercizio di selezione rapida tra il, lo, la, l', i, gli, le. Test di un minuto per verificare la corretta applicazione delle regole ortografiche.</p>
                     <div class="card-footer">
-                        <span class="tag">1 Minuto</span>
-                        <span class="tag">Verbi</span>
-                        <span class="tag">Combo</span>
-
-                     </div>
-                        </a>
-
-                <a href="imperfetto.html" class="card card-verbi">
-                    <div class="card-icon">🔥</div>
-                    <h3>Coniugazione Verbi-Imperfetto</h3>
-                    <p>Vero o Falso? Verifica la correttezza delle coniugazioni dei verbi modo imperfetto.</p>
-                    <div class="card-footer">
-                        <span class="tag">1 Minuto</span>
-                        <span class="tag">Imperfetto</span>
-                        <span class="tag">Combo</span>
-
-                     </div>  
-                      </a>
-
-                <a href="essere-avere.html" class="card card-verbi">
-                    <div class="card-icon">🔥</div>
-                    <h3>Coniugazione Verbi Essere Avere</h3>
-                    <p>Vero o Falso? Verifica la correttezza delle coniugazioni dei verbi essere e avere.</p>
-                    <div class="card-footer">
-                        <span class="tag">1 Minuto</span>
-                        <span class="tag">Verbi essere e avere</span>
-                        <span class="tag">Combo</span>
-
-                     </div>
-                </a>
-
-                <a href="art_indertgame.html" class="card card-verbi">
-                    <div class="card-icon">🔥</div>
-                    <h3>ARTICOLI INDERTEMINATIVI CHALLENGE</h3>
-                    <p>Vero o Falso? Verifica la correttezza ARTICOLI INDETERMINATIVI.</p>
-                    <div class="card-footer">
-                        <span class="tag">1 Minuto</span>
-                        <span class="tag">Verbi</span>
-                        <span class="tag">Combo</span>
-                    </div>
-                </a>
-
-                <a href="passato_prossimo_challenge.html" class="card card-passato">
-                    <div class="card-icon">⏰</div>
-                    <h3>Passato Prossimo</h3>
-                    <p>Scegli l'ausiliare corretto: Essere o Avere? Con musica che accelera ad ogni combo!</p>
-                    <div class="card-footer">
-                        <span class="tag">1 Minuto</span>
-                        <span class="tag">Passato Prossimo</span>
-                        <span class="tag">Musica</span>
-                    </div>
-                </a>
-                 <a href="giocopreposizioniarticolate.html" class="card card-passato">
-                    <div class="card-icon">⏰</div>
-                    <h3>Preposizioni articolate </h3>
-                    <p>Gioco Preposizione articolate</p>
-                    <div class="card-footer">
-                        <span class="tag">1 Minuto</span>
-                        <span class="tag">Preposizioni articolate</span>
-                        <span class="tag">Musica</span>
+                        <div class="card-tags">
+                            <span class="tag">1 Minuto</span>
+                            <span class="tag">A1-A2</span>
                         </div>
-                     </a>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="are-ere-ire.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Verbi</span>
+                        <span class="card-icon-main">🔥</span>
+                    </div>
+                    <h4>Coniugazione Verbi Regolari</h4>
+                    <p>Verifica la correttezza delle coniugazioni dei verbi in -ARE, -ERE e -IRE al presente indicativo. Esercizio Vero/Falso con tempo limitato.</p>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag">1 Minuto</span>
+                            <span class="tag">A2</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="imperfetto.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Verbi</span>
+                        <span class="card-icon-main">⏳</span>
+                    </div>
+                    <h4>Modo Imperfetto</h4>
+                    <p>Esercizio di verifica sulla corretta formazione del modo imperfetto indicativo. Valutazione rapida delle competenze di coniugazione.</p>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag">1 Minuto</span>
+                            <span class="tag">B1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="essere-avere.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Verbi</span>
+                        <span class="card-icon-main">⚖️</span>
+                    </div>
+                    <h4>Verbi Essere e Avere</h4>
+                    <p>Verifica della corretta coniugazione dei verbi ausiliari essere e avere nei tempi principali del modo indicativo.</p>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag">1 Minuto</span>
+                            <span class="tag">A1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="art_indertgame.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Articoli</span>
+                        <span class="card-icon-main">❓</span>
+                    </div>
+                    <h4>Articoli Indeterminativi</h4>
+                    <p>Esercizio di verifica sull'uso degli articoli indeterminativi un, uno, una. Challenge a tempo con feedback immediato.</p>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag">1 Minuto</span>
+                            <span class="tag">A1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="passato_prossimo_challenge.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Tempi Verbali</span>
+                        <span class="card-icon-main">🎵</span>
+                    </div>
+                    <h4>Passato Prossimo - Ausiliari</h4>
+                    <p>Selezione dell'ausiliare corretto (essere o avere) con accompagnamento musicale che accelera ad ogni combinazione corretta.</p>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag highlight">Interattivo</span>
+                            <span class="tag">B1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="giocopreposizioniarticolate.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Preposizioni</span>
+                        <span class="card-icon-main">🔗</span>
+                    </div>
+                    <h4>Preposizioni Articolate</h4>
+                    <p>Esercizio interattivo sulle preposizioni articolate (al, dal, nel, sul, etc.) con approccio ludico.</p>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag">1 Minuto</span>
+                            <span class="tag">A2</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
             </div>
         </section>
 
         <!-- QUIZ 50 DOMANDE -->
-        <section class="category">
-            <div class="category-title">
-                <span class="category-icon">📋</span>
-                <h2>Quiz Completi - 50 Domande</h2>
+        <section class="category" id="quiz">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon">📋</div>
+                    <h3>Quiz Valutativi - 50 Domande</h3>
+                </div>
+                <div class="section-meta">10 quiz disponibili</div>
             </div>
-            <div class="cards-grid">
-                <a href="quiz_articoli_determinativi_50.html" class="card card-quiz50">
-                    <div class="card-icon">🎯</div>
-                    <h3>Quiz Articoli Determinativi</h3>
-                    <p>Quiz completo di 50 domande con spiegazioni dettagliate. Invia i risultati al docente via email.</p>
-                    <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">Spiegazioni</span>
-                        <span class="tag">Email</span>
-                    </div>
-                </a>
-                
-                  <a href="artind.html" class="card card-quiz50">
-                    <div class="card-icon">🎓</div>
-                    <h3>QUIZ ARTICOLI INDETERMINATIVI</h3>
-                    <p>50 domande.</p>
-                    <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">ARTICOLI INDETERMINATIVI</span>
-                        <span class="tag">Email</span>
-                   </div>
-                </a>
-           
 
-                <a href="quiz_passato_prossimo_pronomi_50.html" class="card card-quiz50">
-                    <div class="card-icon">🎓</div>
-                    <h3>Quiz Passato Prossimo e Pronomi</h3>
-                    <p>50 domande su ausiliari, pronomi diretti/indiretti e accordo del participio. Completo e dettagliato.</p>
+            <div class="cards-grid">
+                <a href="quiz_articoli_determinativi_50.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Valutazione</span>
+                        <span class="card-icon-main">🎯</span>
+                    </div>
+                    <h4>Articoli Determinativi</h4>
+                    <p>Quiz completo di 50 domande con spiegazioni dettagliate per ogni risposta. Possibilità di invio dei risultati al docente via email.</p>
                     <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">Pronomi</span>
-                        <span class="tag">Email</span>
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">A2</span>
+                        </div>
+                        <span class="card-arrow">→</span>
                     </div>
                 </a>
-            
-            <a href="famiglia_parenti.html" class="card card-quiz50">
-                    <div class="card-icon">🎓</div>
-                    <h3>QUIZ FAMIGLIA E PARENTI</h3>
-                    <p>FAMIGLIA E PARENTI.</p>
+
+                <a href="artind.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Valutazione</span>
+                        <span class="card-icon-main">📄</span>
+                    </div>
+                    <h4>Articoli Indeterminativi</h4>
+                    <p>Quiz completo di 50 domande sull'uso degli articoli indeterminativi. Include spiegazioni grammaticali e report dei risultati.</p>
                     <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">FAMIGLIA</span>
-                        <span class="tag">Email</span>
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">A2</span>
+                        </div>
+                        <span class="card-arrow">→</span>
                     </div>
                 </a>
-             <a href="quizpassatoprossimo.html" class="card card-quiz50">
-                    <div class="card-icon">🎓</div>
-                    <h3>Quiz Passato Prossimo ARE ERE IRE</h3>
-                    <p>50 domande.</p>
-                    <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">VERBI</span>
-                        <span class="tag">Email</span>
+
+                <a href="quiz_passato_prossimo_pronomi_50.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Valutazione</span>
+                        <span class="card-icon-main">🎓</span>
                     </div>
-                      </a>
-          
-             <a href="piacere.html" class="card card-quiz50">
-                    <div class="card-icon">🎓</div>
-                    <h3> QUIZ VERBO PIACERE</h3>
-                    <p>50 domande.</p>
+                    <h4>Passato Prossimo e Pronomi</h4>
+                    <p>Quiz avanzato su ausiliari, pronomi diretti/indiretti e accordo del participio passato. Per livello B1-B2.</p>
                     <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">VERBO PIACERE</span>
-                        <span class="tag">Email</span>
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">B1-B2</span>
+                        </div>
+                        <span class="card-arrow">→</span>
                     </div>
-                      </a>
-                        
-             <a href="preposizioni-articolate.html" class="card card-quiz50">
-                    <div class="card-icon">🎓</div>
-                    <h3>Quiz PREPOSIZIONI ARTICOLATE</h3>
-                    <p>50 domande.</p>
+                </a>
+
+                <a href="famiglia_parenti.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Lessico</span>
+                        <span class="card-icon-main">👨‍👩‍👧‍👦</span>
+                    </div>
+                    <h4>Famiglia e Parenti</h4>
+                    <p>Quiz di 50 domande sul lessico della famiglia e dei gradi di parentela. Esercizio di ampliamento del vocabolario.</p>
                     <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">PREPOSIZIONI ARTICOLATE</span>
-                        <span class="tag">Email</span>
-                        
-                         </div>
-                      </a>
-                        
-                        
-                         <a href="quizimperfetto.html" class="card card-quiz50">
-                    <div class="card-icon">🎓</div>
-                    <h3>Quiz IMPERFETTO</h3>
-                    <p>50 domande.</p>
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">A1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="quizpassatoprossimo.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Valutazione</span>
+                        <span class="card-icon-main">⏰</span>
+                    </div>
+                    <h4>Passato Prossimo - Coniugazione</h4>
+                    <p>Quiz di 50 domande sulla coniugazione completa del passato prossimo con verbi in -ARE, -ERE, -IRE.</p>
                     <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">IMPERFETTO</span>
-                        <span class="tag">Email</span>
-                        
-                         </div>
-                      </a>        
-                        
-                         <a href="quizcomparativi.html" class="card card-quiz50">
-                    <div class="card-icon">🎓</div>
-                    <h3>Quiz COMPARATIVI UGUAGLIANZA MINORANZA MAGGIORANZA</h3>
-                    <p>50 domande.</p>
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">B1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="piacere.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Valutazione</span>
+                        <span class="card-icon-main">❤️</span>
+                    </div>
+                    <h4>Verbo Piacere</h4>
+                    <p>Quiz di 50 domande dedicato al verbo piacere e alla sua costruzione sintattica. Include uso con pronomi.</p>
                     <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">COMPARATIVI UGUAGLIANZA MINORANZA MAGGIORANZA</span>
-                        <span class="tag">Email</span>
-                        
-                         </div>
-                      </a>
-                        
-                         <a href="quizimperativo.html" class="card card-quiz50">
-                    <div class="card-icon">🎓</div>
-                    <h3>Quiz IMPERATIVO </h3>
-                    <p>50 domande.</p>
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">A2-B1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="preposizioni-articolate.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Valutazione</span>
+                        <span class="card-icon-main">🔗</span>
+                    </div>
+                    <h4>Preposizioni Articolate</h4>
+                    <p>Quiz di 50 domande sulle preposizioni articolate italiane. Verifica della corretta formazione e uso.</p>
                     <div class="card-footer">
-                        <span class="tag">50 Domande</span>
-                        <span class="tag">IMPERATIVO</span>
-                        <span class="tag">Email</span>
-                  
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">A2</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="quizimperfetto.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Valutazione</span>
+                        <span class="card-icon-main">📚</span>
+                    </div>
+                    <h4>Imperfetto Indicativo</h4>
+                    <p>Quiz di 50 domande sul modo imperfetto indicativo. Include verbi regolari e irregolari con spiegazioni.</p>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">B1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="quizcomparativi.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Valutazione</span>
+                        <span class="card-icon-main">⚖️</span>
+                    </div>
+                    <h4>Comparativi</h4>
+                    <p>Quiz di 50 domande sui gradi di comparazione: maggioranza, minoranza e uguaglianza. Include aggettivi regolari e irregolari.</p>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">B1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+
+                <a href="quizimperativo.html" class="card">
+                    <div class="card-header">
+                        <span class="card-category">Valutazione</span>
+                        <span class="card-icon-main">📢</span>
+                    </div>
+                    <h4>Modo Imperativo</h4>
+                    <p>Quiz di 50 domande sul modo imperativo. Include forme affermative, negative, formali e informali con pronomi.</p>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            <span class="tag highlight">50 Domande</span>
+                            <span class="tag">B1</span>
+                        </div>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" id="contatti">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h5>Portale Didattico - Grammatica Italiana</h5>
+                <p>Piattaforma di supporto all'apprendimento della lingua italiana per studenti di livello A2-B1. Esercizi interattivi, quiz valutativi e risorse didattiche strutturate.</p>
+            </div>
+            <div class="footer-section">
+                <h5>Collegamenti Utili</h5>
+                <p><a href="#esercizi">Esercizi Veloci</a></p>
+                <p><a href="#quiz">Quiz Completi</a></p>
+                <p><a href="#risorse">Risorse Didattiche</a></p>
+            </div>
+            <div class="footer-section">
+                <h5>Contatti</h5>
+                <p>Docente: Giancarlo Vettori</p>
+                <p>Email: infonefelieducation@gmail.com</p>
+                <p>Nefeli Education-NUCLEO EDUCATIVO PER LA FORMAZIONE EUROPEA AL LAVORO INTERNAZIONALE - </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Portale Didattico CPIA TV1. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
 </body>
 </html>
