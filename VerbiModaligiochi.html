@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbi Modali Presente - 1 Minuto Challenge!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .game-container {
+            width: 95%;
+            max-width: 900px;
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2em;
+            color: #667eea;
+            text-shadow: 3px 3px 0px #764ba2;
+            margin-bottom: 5px;
+        }
+
+        .header .subtitle {
+            color: #e17055;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .main-timer {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5em;
+            box-shadow: 0 10px 30px rgba(238, 90, 36, 0.4);
+            border: 5px solid white;
+            display: inline-block;
+            margin: 15px 0;
+        }
+
+        .main-timer.warning {
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .timer-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .score-item {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.5em;
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
+            text-align: center;
+        }
+
+        .score-item .label {
+            font-size: 0.6em;
+            opacity: 0.9;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .score-item .value {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8em;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            padding: 35px;
+            border-radius: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(250, 112, 154, 0.4);
+            animation: cardAppear 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .question-text {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.8em;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 30px 70px;
+            font-size: 2em;
+            font-family: 'Fredoka One', cursive;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-vero {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+        }
+
+        .btn-vero::after {
+            content: '←';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
+        .btn-falso {
+            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+            color: white;
+        }
+
+        .btn-falso::after {
+            content: '→';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10em;
+            font-family: 'Fredoka One', cursive;
+            animation: feedbackPop 0.5s ease;
+            pointer-events: none;
+            z-index: 1000;
+            text-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+        }
+
+        @keyframes feedbackPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .feedback.correct {
+            color: #00b894;
+        }
+
+        .feedback.wrong {
+            color: #ff7675;
+        }
+
+        .start-screen, .end-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .modal h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .modal .timer-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .modal p {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .start-btn, .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 1.8em;
+            font-family: 'Fredoka One', cursive;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .start-btn:hover, .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .combo-display {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            padding: 12px 20px;
+            border-radius: 15px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.2em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            display: none;
+            box-shadow: 0 5px 15px rgba(254, 202, 87, 0.4);
+        }
+
+        .combo-display.active {
+            display: block;
+            animation: comboPulse 0.4s ease infinite alternate;
+        }
+
+        @keyframes comboPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.15); }
+        }
+
+        .speed-indicator {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 1em;
+            font-weight: 900;
+            padding: 8px 15px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .particle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: particleFall 1s ease-out forwards;
+        }
+
+        @keyframes particleFall {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(400px) rotate(720deg) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .streak-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .streak-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #feca57, #ff6b6b);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+
+        .final-score {
+            font-size: 5em;
+            font-family: 'Fredoka One', cursive;
+            color: #00b894;
+            margin: 20px 0;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .final-score-label {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="start-screen" id="startScreen">
+        <div class="modal">
+            <div class="timer-icon">⏱️</div>
+            <h2>VERBI MODALI PRESENTE</h2>
+            <p><strong>1 MINUTO</strong> per rispondere a più domande possibili!<br><br>
+            🎯 Vero o Falso?<br>
+            ⚡ Solo tempo PRESENTE: dovere, potere, volere<br>
+            🔥 Combo = musica più veloce!<br>
+            ✅ Contano solo le risposte GIUSTE!</p>
+            <button class="start-btn" onclick="startGame()">VIA! 🚀</button>
+        </div>
+    </div>
+
+    <div class="end-screen hidden" id="endScreen">
+        <div class="modal">
+            <h2>⏰ TEMPO SCADUTO!</h2>
+            <div class="final-score-label">RISPOSTE CORRETTE</div>
+            <div class="final-score" id="finalCorrect">0</div>
+            <p id="finalStats"></p>
+            <button class="restart-btn" onclick="restartGame()">GIOCA ANCORA ↺</button>
+        </div>
+    </div>
+
+    <div class="game-container hidden" id="gameContainer">
+        <div class="combo-display" id="comboDisplay">🔥 COMBO x<span id="comboCount">1</span></div>
+        <div class="speed-indicator" id="speedIndicator">⚡ Normale</div>
+
+        <div class="header">
+            <h1>VERBI MODALI</h1>
+            <div class="subtitle">Solo tempo presente - Quante riesci a fare in 1 minuto?</div>
+        </div>
+
+        <div class="score-board">
+            <div class="score-item">
+                <span class="label">RISPOSTE CORRETTE</span>
+                <span class="value" id="correctCount">0</span>
+            </div>
+        </div>
+
+        <div class="timer-container">
+            <div class="main-timer" id="mainTimer">60</div>
+        </div>
+
+        <div class="question-card" id="questionCard">
+            <div class="question-text" id="questionText">Pronti...</div>
+        </div>
+
+        <div class="buttons-container">
+            <button class="btn btn-vero" id="btnVero" onclick="answer(true)">✓ VERO</button>
+            <button class="btn btn-falso" id="btnFalso" onclick="answer(false)">✗ FALSO</button>
+        </div>
+
+        <div class="streak-bar">
+            <div class="streak-fill" id="streakFill"></div>
+        </div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+    <script>
+        // Database domande - Verbi Modali Presente (Dovere, Potere, Volere)
+        const allQuestions = [
+            // CORRETTE - Verbo DOVERE (Presente Indicativo)
+            { text: "Devo studiare per l'esame", correct: true },
+            { text: "Devi finire i compiti", correct: true },
+            { text: "Deve andare dal medico", correct: true },
+            { text: "Dobbiamo partire presto", correct: true },
+            { text: "Dovete ascoltare il professore", correct: true },
+            { text: "Devono mangiare la frutta", correct: true },
+            { text: "Non devo fumare", correct: true },
+            { text: "Non devi fare tardi", correct: true },
+            { text: "Non deve mentire", correct: true },
+            { text: "Non dobbiamo perdere tempo", correct: true },
+            { text: "Non dovete urlare", correct: true },
+            { text: "Non devono preoccuparsi", correct: true },
+
+            // CORRETTE - Verbo POTERE (Presente Indicativo)
+            { text: "Posso entrare?", correct: true },
+            { text: "Puoi chiamarmi stasera", correct: true },
+            { text: "Può venire domani", correct: true },
+            { text: "Possiamo aiutarvi", correct: true },
+            { text: "Potete sedervi qui", correct: true },
+            { text: "Possono partire ora", correct: true },
+            { text: "Non posso nuotare", correct: true },
+            { text: "Non puoi mangiare con le mani sporche", correct: true },
+            { text: "Non può uscire dopo cena", correct: true },
+            { text: "Non possiamo fare rumore", correct: true },
+            { text: "Non potete entrare qui", correct: true },
+            { text: "Non possono venire oggi", correct: true },
+
+            // CORRETTE - Verbo VOLERE (Presente Indicativo)
+            { text: "Voglio imparare l'italiano", correct: true },
+            { text: "Vuoi venire con noi?", correct: true },
+            { text: "Vuole un caffè", correct: true },
+            { text: "Vogliamo mangiare pizza", correct: true },
+            { text: "Volete prenotare un tavolo?", correct: true },
+            { text: "Vogliono partire subito", correct: true },
+            { text: "Non voglio andare via", correct: true },
+            { text: "Non vuoi provare?", correct: true },
+            { text: "Non vuole aspettare", correct: true },
+            { text: "Non vogliamo disturbare", correct: true },
+            { text: "Non volete rispondere", correct: true },
+            { text: "Non vogliono mangiare", correct: true },
+
+            // ERRATE - DOVERE con preposizione "a" (errore comune)
+            { text: "Devo a studiare per l'esame", correct: false },
+            { text: "Devi a finire i compiti", correct: false },
+            { text: "Deve a andare dal medico", correct: false },
+            { text: "Dobbiamo a partire presto", correct: false },
+            { text: "Dovete a ascoltare il professore", correct: false },
+            { text: "Devono a mangiare la frutta", correct: false },
+            { text: "Non devo a fumare", correct: false },
+            { text: "Non devi a fare tardi", correct: false },
+            { text: "Non deve a mentire", correct: false },
+            { text: "Non dobbiamo a perdere tempo", correct: false },
+
+            // ERRATE - POTERE con preposizione "a" (errore comune)
+            { text: "Posso a entrare?", correct: false },
+            { text: "Puoi a chiamarmi stasera", correct: false },
+            { text: "Può a venire domani", correct: false },
+            { text: "Possiamo a aiutarvi", correct: false },
+            { text: "Potete a sedervi qui", correct: false },
+            { text: "Possono a partire ora", correct: false },
+            { text: "Non posso a nuotare", correct: false },
+            { text: "Non puoi a mangiare con le mani sporche", correct: false },
+            { text: "Non può a uscire dopo cena", correct: false },
+            { text: "Non possiamo a fare rumore", correct: false },
+
+            // ERRATE - VOLERE con preposizione "a" (errore comune)
+            { text: "Voglio a imparare l'italiano", correct: false },
+            { text: "Vuoi a venire con noi?", correct: false },
+            { text: "Vuole a un caffè", correct: false },
+            { text: "Vogliamo a mangiare pizza", correct: false },
+            { text: "Volete a prenotare un tavolo?", correct: false },
+            { text: "Vogliono a partire subito", correct: false },
+            { text: "Non voglio a andare via", correct: false },
+            { text: "Non vuoi a provare?", correct: false },
+            { text: "Non vuole a aspettare", correct: false },
+            { text: "Non vogliamo a disturbare", correct: false },
+
+            // ERRATE - Coniugazioni errate DOVERE
+            { text: "Dovei studiare molto", correct: false },
+            { text: "Dovesti finire i compiti", correct: false },
+            { text: "Deva andare dal medico", correct: false },
+            { text: "Doviamo partire presto", correct: false },
+            { text: "Devate ascoltare", correct: false },
+            { text: "Devono a mangiare", correct: false },
+            { text: "Devi studiare il italiano", correct: false },
+            { text: "Dobbiamo a finire", correct: false },
+            { text: "Devesti fare attenzione", correct: false },
+            { text: "Dovono partire", correct: false },
+
+            // ERRATE - Coniugazioni errate POTERE
+            { text: "Potei entrare?", correct: false },
+            { text: "Potesti chiamarmi?", correct: false },
+            { text: "Possa venire domani", correct: false },
+            { text: "Potiamo aiutarvi", correct: false },
+            { text: "Possate sedervi", correct: false },
+            { text: "Potono partire", correct: false },
+            { text: "Posso a nuotare bene", correct: false },
+            { text: "Puoi a fare questo", correct: false },
+            { text: "Potesti venire", correct: false },
+            { text: "Puona aiutarti", correct: false },
+
+            // ERRATE - Coniugazioni errate VOLERE
+            { text: "Volei imparare", correct: false },
+            { text: "Volesti venire?", correct: false },
+            { text: "Voglia un caffè", correct: false },
+            { text: "Vogliamo a partire", correct: false },
+            { text: "Volite prenotare?", correct: false },
+            { text: "Volono partire", correct: false },
+            { text: "Voglio a dormire", correct: false },
+            { text: "Vuoi a mangiare", correct: false },
+            { text: "Volesti provare", correct: false },
+            { text: "Vuglio andare", correct: false },
+
+            // ERRATE - Errori vari comuni
+            { text: "Devo studia", correct: false },
+            { text: "Puoi aiutarmi il compito", correct: false },
+            { text: "Voglio mangiare la pizza", correct: false },
+            { text: "Devi a fare", correct: false },
+            { text: "Posso nuotare bene", correct: false },
+            { text: "Vuole venire con noi", correct: false },
+            { text: "Dobbiamo studia", correct: false },
+            { text: "Potete a vedere", correct: false },
+            { text: "Vogliono a dormire", correct: false },
+            { text: "Devono a partire", correct: false }
+        ];
+
+        let questions = [];
+        let currentQuestion = 0;
+        let correctCount = 0;
+        let combo = 0;
+        let gameTimer;
+        let timeRemaining = 60;
+        let audioContext;
+        let musicInterval;
+        let isMusicPlaying = false;
+        let musicTempo = 1;
+
+        // Shuffle
+        function shuffle(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Audio System
+        function initAudio() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playTone(freq, duration, type = 'sine', vol = 0.15) {
+            if (!audioContext) return;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            osc.frequency.value = freq;
+            osc.type = type;
+            gain.gain.setValueAtTime(vol, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            osc.start();
+            osc.stop(audioContext.currentTime + duration);
+        }
+
+        function playDrum(time, intensity = 1) {
+            if (!audioContext) return;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            osc.frequency.setValueAtTime(150, time);
+            osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.1);
+            gain.gain.setValueAtTime(0.3 * intensity, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+            osc.start(time);
+            osc.stop(time + 0.1);
+        }
+
+        function playHiHat(time) {
+            if (!audioContext) return;
+            const bufferSize = audioContext.sampleRate * 0.05;
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            const noise = audioContext.createBufferSource();
+            noise.buffer = buffer;
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'highpass';
+            filter.frequency.value = 5000;
+            const gain = audioContext.createGain();
+            gain.gain.setValueAtTime(0.1, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioContext.destination);
+            noise.start(time);
+        }
+
+        function playBackgroundMusic() {
+            if (!audioContext || isMusicPlaying) return;
+            isMusicPlaying = true;
+
+            const beatTime = 0.5 / musicTempo;
+            let noteIndex = 0;
+
+            const scales = {
+                normal: [261.63, 329.63, 392.00, 523.25],
+                fast: [293.66, 440.00, 523.25, 587.33],
+                ultra: [329.63, 493.88, 587.33, 659.25]
+            };
+
+            let currentScale = scales.normal;
+            if (musicTempo > 1.8) currentScale = scales.ultra;
+            else if (musicTempo > 1.3) currentScale = scales.fast;
+
+            function playBeat() {
+                if (!isMusicPlaying) return;
+                const now = audioContext.currentTime;
+
+                playDrum(now, 1);
+
+                setTimeout(() => {
+                    if (isMusicPlaying) playHiHat(audioContext.currentTime);
+                }, (beatTime * 500) / 2);
+
+                playTone(currentScale[noteIndex % 4], beatTime * 0.8, 'triangle', 0.12);
+
+                if (musicTempo > 1.2) {
+                    playTone(currentScale[(noteIndex + 2) % 4], beatTime * 0.6, 'sine', 0.08);
+                }
+
+                noteIndex++;
+                musicInterval = setTimeout(playBeat, beatTime * 1000);
+            }
+
+            playBeat();
+        }
+
+        function stopMusic() {
+            isMusicPlaying = false;
+            if (musicInterval) clearTimeout(musicInterval);
+        }
+
+        function playCorrectSound() {
+            if (!audioContext) return;
+            const now = audioContext.currentTime;
+            playTone(880, 0.1, 'sine', 0.2);
+            setTimeout(() => playTone(1108.73, 0.15, 'sine', 0.2), 100);
+            setTimeout(() => playTone(1318.51, 0.3, 'sine', 0.2), 200);
+        }
+
+        function playWrongSound() {
+            if (!audioContext) return;
+            const now = audioContext.currentTime;
+            playTone(200, 0.3, 'sawtooth', 0.2);
+            setTimeout(() => playTone(150, 0.4, 'sawtooth', 0.2), 200);
+        }
+
+        function playComboSound() {
+            if (!audioContext) return;
+            [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+                setTimeout(() => playTone(freq, 0.15, 'square', 0.15), i * 80);
+            });
+        }
+
+        function playTickSound() {
+            if (!audioContext) return;
+            playTone(800, 0.05, 'sine', 0.1);
+        }
+
+        // Game Functions
+        function startGame() {
+            initAudio();
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('gameContainer').classList.remove('hidden');
+
+            questions = shuffle(allQuestions).slice(0, 50);
+            currentQuestion = 0;
+            correctCount = 0;
+            combo = 0;
+            timeRemaining = 60;
+            musicTempo = 1;
+
+            updateDisplay();
+            startTimer();
+            playBackgroundMusic();
+            showQuestion();
+        }
+
+        function startTimer() {
+            const timerEl = document.getElementById('mainTimer');
+
+            gameTimer = setInterval(() => {
+                timeRemaining--;
+                timerEl.textContent = timeRemaining;
+
+                if (timeRemaining <= 10) {
+                    timerEl.classList.add('warning');
+                    playTickSound();
+                }
+
+                if (timeRemaining <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= questions.length) {
+                questions = shuffle(allQuestions).slice(0, 50);
+                currentQuestion = 0;
+            }
+
+            const q = questions[currentQuestion];
+            document.getElementById('questionText').textContent = q.text;
+
+            const card = document.getElementById('questionCard');
+            card.style.animation = 'none';
+            setTimeout(() => {
+                card.style.animation = 'cardAppear 0.4s ease';
+            }, 10);
+
+            document.getElementById('btnVero').disabled = false;
+            document.getElementById('btnFalso').disabled = false;
+        }
+
+        function answer(userAnswer) {
+            const q = questions[currentQuestion];
+            const isCorrect = userAnswer === q.correct;
+
+            document.getElementById('btnVero').disabled = true;
+            document.getElementById('btnFalso').disabled = true;
+
+            if (isCorrect) {
+                correctCount++;
+                combo++;
+
+                // Aumenta velocità musica ogni 3 combo
+                if (combo > 0 && combo % 3 === 0) {
+                    musicTempo = Math.min(musicTempo + 0.25, 2.5);
+                    stopMusic();
+                    playBackgroundMusic();
+                    playComboSound();
+                    createParticles();
+                } else {
+                    playCorrectSound();
+                }
+
+                showFeedback(true);
+            } else {
+                combo = 0;
+                musicTempo = 1;
+                stopMusic();
+                playBackgroundMusic();
+                playWrongSound();
+                showFeedback(false);
+            }
+
+            updateDisplay();
+            updateComboDisplay();
+
+            setTimeout(() => {
+                currentQuestion++;
+                showQuestion();
+            }, 400);
+        }
+
+        function showFeedback(isCorrect) {
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+            feedback.textContent = isCorrect ? '✓' : '✗';
+            document.body.appendChild(feedback);
+
+            setTimeout(() => {
+                feedback.remove();
+            }, 500);
+        }
+
+        function updateDisplay() {
+            document.getElementById('correctCount').textContent = correctCount;
+
+            const streakPercent = Math.min((combo / 10) * 100, 100);
+            document.getElementById('streakFill').style.width = streakPercent + '%';
+
+            const speedEl = document.getElementById('speedIndicator');
+            if (musicTempo >= 2) {
+                speedEl.textContent = '🔥🔥🔥 ULTRA!';
+                speedEl.style.color = '#d63031';
+            } else if (musicTempo >= 1.5) {
+                speedEl.textContent = '🔥🔥 RAPIDO!';
+                speedEl.style.color = '#e17055';
+            } else if (musicTempo >= 1.25) {
+                speedEl.textContent = '🔥 VELOCE';
+                speedEl.style.color = '#fdcb6e';
+            } else {
+                speedEl.textContent = '⚡ Normale';
+                speedEl.style.color = '#667eea';
+            }
+        }
+
+        function updateComboDisplay() {
+            const comboDisplay = document.getElementById('comboDisplay');
+            const comboCount = document.getElementById('comboCount');
+
+            if (combo > 1) {
+                comboCount.textContent = combo;
+                comboDisplay.classList.add('active');
+            } else {
+                comboDisplay.classList.remove('active');
+            }
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = '50%';
+                particle.style.animationDelay = Math.random() * 0.3 + 's';
+                particle.style.background = `hsl(${Math.random() * 60 + 20}, 100%, 60%)`;
+                container.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        function endGame() {
+            clearInterval(gameTimer);
+            stopMusic();
+
+            document.getElementById('gameContainer').classList.add('hidden');
+            document.getElementById('endScreen').classList.remove('hidden');
+
+            document.getElementById('finalCorrect').textContent = correctCount;
+            document.getElementById('finalStats').innerHTML = `
+                🔥 Combo massima raggiunta: ${combo}<br>
+                ⚡ Velocità finale: ${musicTempo.toFixed(1)}x
+            `;
+
+            // Musica finale
+            if (audioContext) {
+                [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98].forEach((freq, i) => {
+                    setTimeout(() => playTone(freq, 0.5, 'sine', 0.2), i * 150);
+                });
+            }
+        }
+
+        function restartGame() {
+            document.getElementById('endScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+            document.getElementById('mainTimer').classList.remove('warning');
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('gameContainer').classList.contains('hidden')) return;
+            if (document.getElementById('btnVero').disabled) return;
+
+            if (e.key === 'ArrowLeft' || e.key === 'v' || e.key === 'V') {
+                e.preventDefault();
+                answer(true);
+            } else if (e.key === 'ArrowRight' || e.key === 'f' || e.key === 'F') {
+                e.preventDefault();
+                answer(false);
+            }
+        });
+    </script>
+</body>
+</html>
