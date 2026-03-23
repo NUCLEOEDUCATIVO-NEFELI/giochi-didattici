@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparativi - Quiz 50 Domande (Random)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2em;
+            color: #e17055;
+            text-shadow: 3px 3px 0px #fab1a0;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00b894, #00cec9);
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .question-counter {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(225, 112, 85, 0.4);
+        }
+
+        .question-text {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.6em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.5;
+        }
+
+        .answers-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .answer-btn {
+            padding: 20px 15px;
+            font-size: 1.2em;
+            font-family: 'Fredoka One', cursive;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(253, 203, 110, 0.4);
+            min-height: 60px;
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(253, 203, 110, 0.6);
+        }
+
+        .answer-btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        .answer-btn.correct {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%) !important;
+        }
+
+        .answer-btn.wrong {
+            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%) !important;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-family: 'Fredoka One', cursive;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(225, 112, 85, 0.4);
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .results-container h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3em;
+            color: #e17055;
+            margin-bottom: 20px;
+        }
+
+        .student-name {
+            font-size: 1.5em;
+            color: #fdcb6e;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .score-display {
+            font-size: 5em;
+            font-family: 'Fredoka One', cursive;
+            color: #00b894;
+            margin: 20px 0;
+        }
+
+        .score-label {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2em;
+        }
+
+        .result-box .number {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2em;
+            display: block;
+        }
+
+        .email-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+
+        .email-section h3 {
+            font-family: 'Fredoka One', cursive;
+            color: #e17055;
+            margin-bottom: 15px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 3px solid #e17055;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            font-family: 'Fredoka One', cursive;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .start-screen h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5em;
+            color: #e17055;
+            margin-bottom: 20px;
+        }
+
+        .name-input-section {
+            background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 25px 0;
+        }
+
+        .name-input-section h3 {
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 20px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+        }
+
+        .rules-box {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .rules-box h3 {
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .rules-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rules-box li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .rules-box li::before {
+            content: '•';
+            position: absolute;
+            left: 5px;
+        }
+
+        .comparison-table {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .comparison-table th {
+            background: rgba(255,255,255,0.3);
+            font-weight: bold;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%);
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 1.8em;
+            font-family: 'Fredoka One', cursive;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 10px 30px rgba(225, 112, 85, 0.4);
+            margin-top: 20px;
+        }
+
+        .start-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .feedback-message {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+
+        .feedback-message.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .feedback-message.wrong {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="quiz-container">
+        <!-- SCHERMATA INIZIALE -->
+        <div id="startScreen" class="start-screen">
+            <h2>📚 COMPARATIVI</h2>
+            <p style="font-size: 1.2em; color: #666; margin-bottom: 20px;">
+                Quiz di 50 domande a completamento (ORDINE RANDOM)<br>
+                Inserisci il tuo nome e scegli il comparativo corretto
+            </p>
+
+            <div class="name-input-section">
+                <h3>✏️ Inserisci i tuoi dati</h3>
+                <input type="text" class="name-input" id="nomeInput" placeholder="Nome">
+                <input type="text" class="name-input" id="cognomeInput" placeholder="Cognome">
+            </div>
+
+            <div class="rules-box">
+                <h3>📖 Regole dei Comparativi</h3>
+                <ul>
+                    <li><strong>MAGGIORANZA:</strong> più + aggettivo + di (Marco è più alto di Luca)</li>
+                    <li><strong>MINORANZA:</strong> meno + aggettivo + di (Luca è meno alto di Marco)</li>
+                    <li><strong>UGUAGLIANZA:</strong> così/altrettanto + aggettivo + come/quant (sono così alto come te)</li>
+                </ul>
+                <div class="comparison-table">
+                    <table>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Forma</th>
+                            <th>Esempio</th>
+                        </tr>
+                        <tr>
+                            <td>Maggioranza</td>
+                            <td>più... di</td>
+                            <td>più grande di</td>
+                        </tr>
+                        <tr>
+                            <td>Minoranza</td>
+                            <td>meno... di</td>
+                            <td>meno grande di</td>
+                        </tr>
+                        <tr>
+                            <td>Uguaglianza</td>
+                            <td>così/altrettanto... come</td>
+                            <td>così grande come</td>
+                        </tr>
+                        <tr>
+                            <td>Uguaglianza (neg)</td>
+                            <td>non... come</td>
+                            <td>non è grande come</td>
+                        </tr>
+                    </table>
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9em;"><strong>Attenzione:</strong> Le domande e le risposte appaiono in ordine casuale ad ogni caricamento!</p>
+            </div>
+
+            <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>INIZIA IL QUIZ! 🚀</button>
+        </div>
+
+        <!-- SCHERMATA DOMANDE -->
+        <div id="quizScreen" class="hidden">
+            <div class="header">
+                <h1>COMPLETA CON IL COMPARATIVO</h1>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <div class="question-counter">
+                Domanda <span id="currentQ">1</span> di 50
+            </div>
+
+            <div class="question-card">
+                <div class="question-text" id="questionText">Caricamento...</div>
+            </div>
+
+            <div class="answers-container" id="answersContainer"></div>
+
+            <div id="feedback" class="feedback-message hidden"></div>
+
+            <div class="navigation">
+                <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" disabled>← Precedente</button>
+                <button class="nav-btn" id="nextBtn" onclick="nextQuestion()" disabled>Successiva →</button>
+            </div>
+        </div>
+
+        <!-- SCHERMATA RISULTATI -->
+        <div id="resultsScreen" class="results-container hidden">
+            <h2>🏆 QUIZ COMPLETATO!</h2>
+
+            <div class="student-name" id="studentNameDisplay"></div>
+
+            <div class="score-label">IL TUO PUNTEGGIO</div>
+            <div class="score-display" id="finalScore">0/50</div>
+
+            <div class="results-grid">
+                <div class="result-box">
+                    <span class="number" id="correctCount">0</span>
+                    <span>Corrette</span>
+                </div>
+                <div class="result-box">
+                    <span class="number" id="wrongCount">0</span>
+                    <span>Sbagliate</span>
+                </div>
+                <div class="result-box">
+                    <span class="number" id="percentage">0%</span>
+                    <span>%</span>
+                </div>
+            </div>
+
+            <div class="email-section">
+                <h3>📧 Invia i risultati</h3>
+                <p>A:</p>
+                <input type="email" class="email-input" id="emailInput" value="giancarlo.vettori@cpiatv1.edu.it" readonly>
+                <br><br>
+                <button class="send-btn" onclick="sendResults()">📨 INVIA RISULTATI</button>
+                <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                    Oppure copia il testo qui sotto:
+                </p>
+                <textarea id="resultsText" style="width: 100%; height: 150px; margin-top: 10px; padding: 10px; border-radius: 10px; border: 2px solid #ddd; font-family: monospace; font-size: 0.9em;" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATABASE 50 DOMANDE - Comparativi (ORDINE RANDOM)
+        const questions = [
+    {q: "Non sono _____ (alto) te.", options: ["più alto di", "altrettanto alto di", "così alto come", "meno alto di"], correct: 2, expl: "UGUAGLIANZA NEGATIVA: non + così + aggettivo + come → non così alto come"},
+    {q: "Mia cugina è _____ (alta) di me.", options: ["così alta", "più alta", "meno alta", "altrettanto alta"], correct: 2, expl: "MINORANZA: meno + aggettivo + di → meno alta di"},
+    {q: "Questo libro è _____ (interessante) di quello.", options: ["più interessante", "così interessante", "meno interessante", "altrettanto interessante"], correct: 0, expl: "MAGGIORANZA: più + aggettivo + di → più interessante di"},
+    {q: "Marco è _____ (alto) di Luca.", options: ["meno alto", "più alto", "così alto", "altrettanto alto"], correct: 1, expl: "MAGGIORANZA: più + aggettivo + di → più alto di"},
+    {q: "Studio _____ (tanto) di mio fratello.", options: ["più", "altrettanto", "così", "meno"], correct: 3, expl: "MINORANZA con avverbio: meno + di → meno di"},
+    {q: "Il treno è _____ (comodo) dell'autobus.", options: ["più comodo", "meno comodo", "così comodo", "altrettanto comodo"], correct: 0, expl: "MAGGIORANZA: più + aggettivo + di → più comodo di"},
+    {q: "Maria è _____ (intelligente) di suo fratello.", options: ["così intelligente", "altrettanto intelligente", "meno intelligente", "più intelligente"], correct: 3, expl: "MAGGIORANZA: più + aggettivo + di → più intelligente di"},
+    {q: "La mia macchina è _____ (veloce) della tua.", options: ["altrettanto veloce", "così veloce", "più veloce", "meno veloce"], correct: 2, expl: "MAGGIORANZA: più + aggettivo + di → più veloce di"},
+    {q: "Lui è _____ (bravo) parlare francese me.", options: ["altrettanto bravo a come", "più bravo di", "meno bravo di", "così bravo a"], correct: 3, expl: "UGUAGLIANZA: così + aggettivo + come → così bravo come (con a prima del verbo)"},
+    {q: "Mia sorella è _____ (simpatica) di me.", options: ["meno simpatica", "più simpatica", "altrettanto simpatica", "così simpatica"], correct: 1, expl: "MAGGIORANZA: più + aggettivo + di → più simpatica di"},
+    {q: "Questa pizza è _____ (buona) di quella dell'altro giorno.", options: ["altrettanto buona", "così buona", "più buona", "meno buona"], correct: 2, expl: "MAGGIORANZA: più + aggettivo + di → più buona di"},
+    {q: "Questa macchina è _____ (veloce) la mia.", options: ["più veloce di", "così veloce come", "altrettanto veloce di", "meno veloce di"], correct: 1, expl: "UGUAGLIANZA: così + aggettivo + come → così veloce come"},
+    {q: "Io sono _____ (contento) te della vittoria.", options: ["altrettanto contento di", "meno contento di", "così contento come", "più contento di"], correct: 2, expl: "UGUAGLIANZA: così + aggettivo + come → così contento come"},
+    {q: "Il mio gatto è _____ (pigro) del tuo.", options: ["meno pigro", "altrettanto pigro", "così pigro", "più pigro"], correct: 3, expl: "MAGGIORANZA: più + aggettivo + di → più pigro di"},
+    {q: "Questo film è _____ (interessante) di quello che ci hai consigliato.", options: ["altrettanto interessante", "più interessante", "meno interessante", "così interessante"], correct: 2, expl: "MINORANZA: meno + aggettivo + di → meno interessante di"},
+    {q: "Questo esercizio è _____ (difficile) del precedente.", options: ["altrettanto difficile", "così difficile", "meno difficile", "più difficile"], correct: 3, expl: "MAGGIORANZA: più + aggettivo + di → più difficile di"},
+    {q: "Noi siamo _____ (fortunati) voi ad avere questo professore.", options: ["più fortunati di", "altrettanto fortunati di", "meno fortunati di", "così fortunati come"], correct: 3, expl: "UGUAGLIANZA: così + aggettivo + come → così fortunati come"},
+    {q: "Questa casa è _____ (bella) di come me l'aspettavo.", options: ["meno bella", "più bella", "così bella", "altrettanto bella"], correct: 1, expl: "MAGGIORANZA: più + aggettivo + di → più bella di"},
+    {q: "Questo film è _____ (bello) quello di ieri.", options: ["meno bello di", "più bello di", "altrettanto bello di", "così bello come"], correct: 3, expl: "UGUAGLIANZA: così + aggettivo + come → così bello come"},
+    {q: "Questa pizza è _____ (buona) quella di Napoli.", options: ["così buona come", "meno buona di", "più buona di", "altrettanto buona di"], correct: 0, expl: "UGUAGLIANZA: così + aggettivo + come → così buona come"},
+    {q: "Siamo _____ (stanchi) ieri.", options: ["così stanchi come", "meno stanchi di", "altrettanto stanchi di", "più stanchi di"], correct: 0, expl: "UGUAGLIANZA: così + aggettivo + come → così stanchi come"},
+    {q: "Questo compito è _____ (difficile) di quello di matematica.", options: ["altrettanto difficile", "meno difficile", "così difficile", "più difficile"], correct: 1, expl: "MINORANZA: meno + aggettivo + di → meno difficile di"},
+    {q: "Studio _____ (tanto) di te.", options: ["meno", "altrettanto", "così", "più"], correct: 3, expl: "MAGGIORANZA con avverbio: più + di → più di"},
+    {q: "Roma è _____ (grande) di Milano.", options: ["altrettanto grande", "meno grande", "così grande", "più grande"], correct: 3, expl: "MAGGIORANZA: più + aggettivo + di → più grande di"},
+    {q: "Questo esercizio è _____ (facile) sembra.", options: ["altrettanto facile di", "meno facile di", "così facile come", "più facile di"], correct: 2, expl: "UGUAGLIANZA: così + aggettivo + come → così facile come"},
+    {q: "Mia madre è _____ (brava) a cucinare di me.", options: ["altrettanto brava", "meno brava", "così brava", "più brava"], correct: 3, expl: "MAGGIORANZA: più + aggettivo + di → più brava di"},
+    {q: "Mio padre è _____ (bravo) a ballare di mia madre.", options: ["così bravo", "altrettanto bravo", "più bravo", "meno bravo"], correct: 3, expl: "MINORANZA: meno + aggettivo + di → meno bravo di"},
+    {q: "La mia bicicletta è _____ (veloce) della tua.", options: ["più veloce", "meno veloce", "altrettanto veloce", "così veloce"], correct: 1, expl: "MINORANZA: meno + aggettivo + di → meno veloce di"},
+    {q: "Il tuo cane è _____ (tranquillo) del mio.", options: ["altrettanto tranquillo", "più tranquillo", "così tranquillo", "meno tranquillo"], correct: 3, expl: "MINORANZA: meno + aggettivo + di → meno tranquillo di"},
+    {q: "Mia sorella è _____ (intelligente) me.", options: ["così intelligente come", "meno intelligente di", "altrettanto intelligente di", "più intelligente di"], correct: 0, expl: "UGUAGLIANZA: così + aggettivo + come → così intelligente come"},
+    {q: "Luca è _____ (alto) di Marco.", options: ["più alto", "altrettanto alto", "meno alto", "così alto"], correct: 2, expl: "MINORANZA: meno + aggettivo + di → meno alto di"},
+    {q: "Questo ristorante è _____ (caro) di quello in centro.", options: ["più caro", "così caro", "altrettanto caro", "meno caro"], correct: 3, expl: "MINORANZA: meno + aggettivo + di → meno caro di"},
+    {q: "Questo film è _____ (lungo) di quello che abbiamo visto ieri.", options: ["meno lungo", "più lungo", "così lungo", "altrettanto lungo"], correct: 1, expl: "MAGGIORANZA: più + aggettivo + di → più lungo di"},
+    {q: "Sono _____ (alto) te.", options: ["così alto come", "altrettanto alto di", "meno alto di", "più alto di"], correct: 0, expl: "UGUAGLIANZA: così + aggettivo + come → così alto come"},
+    {q: "Questo vino è _____ (dolce) mi piace.", options: ["altrettanto dolce di", "così dolce come", "più dolce di", "meno dolce di"], correct: 1, expl: "UGUAGLIANZA: così + aggettivo + come → così dolce come"},
+    {q: "Non sono _____ (bravo) disegnare te.", options: ["così bravo come", "altrettanto bravo di", "meno bravo di", "più bravo di"], correct: 0, expl: "UGUAGLIANZA NEGATIVA: non + così + aggettivo + come → non così bravo come"},
+    {q: "Sono _____ (alto) mio padre.", options: ["altrettanto alto come", "più alto di", "altrettanto alto di", "meno alto di"], correct: 0, expl: "UGUAGLIANZA: altrettanto + aggettivo + come → altrettanto alto come"},
+    {q: "Milano è _____ (grande) di Roma.", options: ["più grande", "meno grande", "così grande", "altrettanto grande"], correct: 1, expl: "MINORANZA: meno + aggettivo + di → meno grande di"},
+    {q: "Questa strada è _____ (lunga) sembra.", options: ["altrettanto lunga di", "più lunga di", "meno lunga di", "così lunga come"], correct: 3, expl: "UGUAGLIANZA: così + aggettivo + come → così lunga come"},
+    {q: "Questo libro è _____ (spesso) di quello che sto leggendo.", options: ["più spesso", "così spesso", "altrettanto spesso", "meno spesso"], correct: 3, expl: "MINORANZA: meno + aggettivo + di → meno spesso di"},
+    {q: "Questo film non è _____ (interessante) mi aspettavo.", options: ["così interessante come", "più interessante di", "meno interessante di", "altrettanto interessante di"], correct: 0, expl: "UGUAGLIANZA NEGATIVA: non + così + aggettivo + come → non così interessante come"},
+    {q: "Mio fratello guadagna _____ (tanto) di me.", options: ["altrettanto", "meno", "più", "così"], correct: 2, expl: "MAGGIORANZA con avverbio: più + di → più di"},
+    {q: "Mia madre cucina _____ (bene) mia nonna.", options: ["più bene di", "così bene come", "altrettanto bene di", "meno bene di"], correct: 1, expl: "UGUAGLIANZA con avverbio: così + avverbio + come → così bene come"},
+    {q: "Questo vestito è _____ (elegante) quello che ho comprato l'anno scorso.", options: ["più elegante di", "altrettanto elegante come", "meno elegante di", "altrettanto elegante di"], correct: 1, expl: "UGUAGLIANZA: altrettanto + aggettivo + come → altrettanto elegante come"},
+    {q: "Questa casa non è _____ (grande) sembrava nelle foto.", options: ["meno grande di", "più grande di", "altrettanto grande di", "così grande come"], correct: 3, expl: "UGUAGLIANZA NEGATIVA: non + così + aggettivo + come → non così grande come"},
+    {q: "Non studio _____ (tanto) te.", options: ["così come", "altrettanto di", "meno di", "più di"], correct: 0, expl: "UGUAGLIANZA NEGATIVA: non + così + come → non così come"},
+    {q: "Ieri faceva _____ (freddo) di oggi.", options: ["altrettanto freddo", "così freddo", "più freddo", "meno freddo"], correct: 3, expl: "MINORANZA: meno + aggettivo + di → meno freddo di"},
+    {q: "Questa strada è _____ (pericolosa) di quella principale.", options: ["meno pericolosa", "più pericolosa", "altrettanto pericolosa", "così pericolosa"], correct: 1, expl: "MAGGIORANZA: più + aggettivo + di → più pericolosa di"},
+    {q: "Oggi fa _____ (caldo) di ieri.", options: ["così caldo", "più caldo", "meno caldo", "altrettanto caldo"], correct: 1, expl: "MAGGIORANZA: più + aggettivo + di → più caldo di"},
+    {q: "Il mio nuovo lavoro è _____ (stancante) del precedente.", options: ["altrettanto stancante", "più stancante", "così stancante", "meno stancante"], correct: 1, expl: "MAGGIORANZA: più + aggettivo + di → più stancante di"}
+];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(50).fill(null);
+        let score = 0;
+        let studentName = "";
+        let studentSurname = "";
+
+        // Abilita bottone start quando entrambi i campi sono compilati
+        document.getElementById('nomeInput').addEventListener('input', checkInputs);
+        document.getElementById('cognomeInput').addEventListener('input', checkInputs);
+
+        function checkInputs() {
+            const nome = document.getElementById('nomeInput').value.trim();
+            const cognome = document.getElementById('cognomeInput').value.trim();
+            const btn = document.getElementById('startBtn');
+
+            if (nome.length > 0 && cognome.length > 0) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+
+        function startQuiz() {
+            studentName = document.getElementById('nomeInput').value.trim();
+            studentSurname = document.getElementById('cognomeInput').value.trim();
+
+            if (!studentName || !studentSurname) {
+                alert("Inserisci nome e cognome!");
+                return;
+            }
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+
+            currentQuestion = 0;
+            userAnswers = new Array(50).fill(null);
+            score = 0;
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionText').textContent = q.q;
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+
+            const progress = ((currentQuestion + 1) / 50) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            q.options.forEach(function(opt, index) {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = opt;
+                btn.onclick = function() { selectAnswer(index); };
+
+                if (userAnswers[currentQuestion] !== null) {
+                    btn.disabled = true;
+                    if (index === q.correct) {
+                        btn.classList.add('correct');
+                    } else if (index === userAnswers[currentQuestion]) {
+                        btn.classList.add('wrong');
+                    }
+                }
+
+                container.appendChild(btn);
+            });
+
+            const feedback = document.getElementById('feedback');
+            if (userAnswers[currentQuestion] !== null) {
+                feedback.textContent = q.expl;
+                feedback.className = userAnswers[currentQuestion] === q.correct ? 
+                    'feedback-message correct' : 'feedback-message wrong';
+                feedback.classList.remove('hidden');
+            } else {
+                feedback.classList.add('hidden');
+            }
+
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.disabled = userAnswers[currentQuestion] === null;
+            nextBtn.textContent = currentQuestion === 49 ? 'Vedi Risultati →' : 'Successiva →';
+        }
+
+        function selectAnswer(index) {
+            if (userAnswers[currentQuestion] !== null) return;
+
+            userAnswers[currentQuestion] = index;
+            const q = questions[currentQuestion];
+            const buttons = document.querySelectorAll('.answer-btn');
+
+            buttons.forEach(function(btn, i) {
+                btn.disabled = true;
+                if (i === q.correct) {
+                    btn.classList.add('correct');
+                } else if (i === index) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = q.expl;
+            feedback.className = index === q.correct ? 
+                'feedback-message correct' : 'feedback-message wrong';
+            feedback.classList.remove('hidden');
+
+            if (index === q.correct) score++;
+
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion === 49) {
+                showResults();
+            } else {
+                currentQuestion++;
+                showQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            document.getElementById('studentNameDisplay').textContent = studentName + " " + studentSurname;
+
+            const correct = userAnswers.filter(function(ans, i) { return ans === questions[i].correct; }).length;
+            const wrong = 50 - correct;
+            const percentage = Math.round((correct / 50) * 100);
+
+            document.getElementById('finalScore').textContent = correct + '/50';
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('wrongCount').textContent = wrong;
+            document.getElementById('percentage').textContent = percentage + '%';
+
+            const resultsText = generateResultsText(correct, wrong, percentage);
+            document.getElementById('resultsText').value = resultsText;
+        }
+
+        function generateResultsText(correct, wrong, percentage) {
+            const date = new Date().toLocaleDateString('it-IT');
+            const time = new Date().toLocaleTimeString('it-IT');
+
+            let text = 'QUIZ COMPARATIVI (RANDOM)\n';
+            text += 'Alunno/a: ' + studentName + ' ' + studentSurname + '\n';
+            text += 'Data: ' + date + ' ' + time + '\n';
+            text += '\nRISULTATI:\n';
+            text += 'Risposte corrette: ' + correct + '/50\n';
+            text += 'Risposte sbagliate: ' + wrong + '/50\n';
+            text += 'Percentuale: ' + percentage + '%\n';
+            text += 'Valutazione: ' + (percentage >= 60 ? 'SUPERATO ✅' : 'DA RIPROVARE ❌') + '\n\n';
+
+            text += 'DETTAGLIO RISPOSTE:\n';
+            for (let i = 0; i < 50; i++) {
+                const ans = userAnswers[i];
+                const q = questions[i];
+                const isCorrect = ans === q.correct;
+                text += (i + 1) + '. ' + (isCorrect ? '✓' : '✗') + ' ' + q.q + '\n';
+                text += '   Risposta: ' + q.options[ans] + ' | Corretto: ' + q.options[q.correct] + '\n';
+            }
+
+            return text;
+        }
+
+        function sendResults() {
+            const email = document.getElementById('emailInput').value;
+            const resultsText = document.getElementById('resultsText').value;
+
+            const subject = encodeURIComponent('Risultati Quiz Comparativi (Random) - ' + studentName + ' ' + studentSurname);
+            const body = encodeURIComponent(resultsText);
+            const mailtoLink = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+
+            window.location.href = mailtoLink;
+
+            setTimeout(function() {
+                alert('Se il client email non si è aperto, copia il testo dalla casella e invialo a:\n' + email);
+            }, 500);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imperativo - Quiz 50 Domande (Random)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2em;
+            color: #764ba2;
+            text-shadow: 3px 3px 0px #f093fb;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00b894, #00cec9);
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .question-counter {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .question-text {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.5;
+        }
+
+        .answers-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .answer-btn {
+            padding: 20px 15px;
+            font-size: 1.3em;
+            font-family: 'Fredoka One', cursive;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+            min-height: 60px;
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.6);
+        }
+
+        .answer-btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        .answer-btn.correct {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%) !important;
+        }
+
+        .answer-btn.wrong {
+            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%) !important;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-family: 'Fredoka One', cursive;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .results-container h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3em;
+            color: #764ba2;
+            margin-bottom: 20px;
+        }
+
+        .student-name {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .score-display {
+            font-size: 5em;
+            font-family: 'Fredoka One', cursive;
+            color: #00b894;
+            margin: 20px 0;
+        }
+
+        .score-label {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2em;
+        }
+
+        .result-box .number {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2em;
+            display: block;
+        }
+
+        .email-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+
+        .email-section h3 {
+            font-family: 'Fredoka One', cursive;
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 3px solid #764ba2;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            font-family: 'Fredoka One', cursive;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .start-screen h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5em;
+            color: #764ba2;
+            margin-bottom: 20px;
+        }
+
+        .name-input-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 25px 0;
+        }
+
+        .name-input-section h3 {
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 20px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+        }
+
+        .rules-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .rules-box h3 {
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .rules-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rules-box li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .rules-box li::before {
+            content: '•';
+            position: absolute;
+            left: 5px;
+        }
+
+        .conjugation-table {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .conjugation-table table {
+            width: 100%;
+            border-collapse: collapse;
+            color: white;
+        }
+
+        .conjugation-table th, .conjugation-table td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .conjugation-table th {
+            background: rgba(255,255,255,0.3);
+            font-weight: bold;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 1.8em;
+            font-family: 'Fredoka One', cursive;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            margin-top: 20px;
+        }
+
+        .start-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .feedback-message {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+
+        .feedback-message.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .feedback-message.wrong {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="quiz-container">
+        <!-- SCHERMATA INIZIALE -->
+        <div id="startScreen" class="start-screen">
+            <h2>📚 IMPERATIVO</h2>
+            <p style="font-size: 1.2em; color: #666; margin-bottom: 20px;">
+                Quiz di 50 domande a completamento (ORDINE RANDOM)<br>
+                Inserisci il tuo nome e scegli la forma corretta dell'imperativo
+            </p>
+
+            <div class="name-input-section">
+                <h3>✏️ Inserisci i tuoi dati</h3>
+                <input type="text" class="name-input" id="nomeInput" placeholder="Nome">
+                <input type="text" class="name-input" id="cognomeInput" placeholder="Cognome">
+            </div>
+
+            <div class="rules-box">
+                <h3>📖 Regole dell'Imperativo</h3>
+                <ul>
+                    <li><strong>TU (informale):</strong> 2ª persona singolare del presente indicativo (parla, scrivi, dormi)</li>
+                    <li><strong>LEI (formale):</strong> 3ª persona singolare del presente congiuntivo (parli, scriva, dorma)</li>
+                    <li><strong>VOI (plurale):</strong> 2ª persona plurale del presente indicativo (parlate, scrivete, dormite)</li>
+                    <li><strong>NEGATIVO TU:</strong> non + infinito (non parlare, non scrivere)</li>
+                    <li><strong>NEGATIVO LEI/VOI:</strong> non + imperativo affermativo/congiuntivo</li>
+                </ul>
+                <div class="conjugation-table">
+                    <table>
+                        <tr>
+                            <th>Verbo</th>
+                            <th>TU</th>
+                            <th>LEI</th>
+                            <th>VOI</th>
+                        </tr>
+                        <tr>
+                            <td>parlare</td>
+                            <td>parla</td>
+                            <td>parli</td>
+                            <td>parlate</td>
+                        </tr>
+                        <tr>
+                            <td>prendere</td>
+                            <td>prendi</td>
+                            <td>prenda</td>
+                            <td>prendete</td>
+                        </tr>
+                        <tr>
+                            <td>dormire</td>
+                            <td>dormi</td>
+                            <td>dorma</td>
+                            <td>dormite</td>
+                        </tr>
+                        <tr>
+                            <td>essere</td>
+                            <td>sii</td>
+                            <td>sia</td>
+                            <td>siate</td>
+                        </tr>
+                        <tr>
+                            <td>avere</td>
+                            <td>abbi</td>
+                            <td>abbia</td>
+                            <td>abbiate</td>
+                        </tr>
+                        <tr>
+                            <td>andare</td>
+                            <td>vai</td>
+                            <td>vada</td>
+                            <td>andate</td>
+                        </tr>
+                        <tr>
+                            <td>fare</td>
+                            <td>fai</td>
+                            <td>faccia</td>
+                            <td>fate</td>
+                        </tr>
+                    </table>
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9em;"><strong>Attenzione:</strong> Le domande e le risposte appaiono in ordine casuale ad ogni caricamento!</p>
+            </div>
+
+            <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>INIZIA IL QUIZ! 🚀</button>
+        </div>
+
+        <!-- SCHERMATA DOMANDE -->
+        <div id="quizScreen" class="hidden">
+            <div class="header">
+                <h1>COMPLETA CON L'IMPERATIVO</h1>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <div class="question-counter">
+                Domanda <span id="currentQ">1</span> di 50
+            </div>
+
+            <div class="question-card">
+                <div class="question-text" id="questionText">Caricamento...</div>
+            </div>
+
+            <div class="answers-container" id="answersContainer"></div>
+
+            <div id="feedback" class="feedback-message hidden"></div>
+
+            <div class="navigation">
+                <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" disabled>← Precedente</button>
+                <button class="nav-btn" id="nextBtn" onclick="nextQuestion()" disabled>Successiva →</button>
+            </div>
+        </div>
+
+        <!-- SCHERMATA RISULTATI -->
+        <div id="resultsScreen" class="results-container hidden">
+            <h2>🏆 QUIZ COMPLETATO!</h2>
+
+            <div class="student-name" id="studentNameDisplay"></div>
+
+            <div class="score-label">IL TUO PUNTEGGIO</div>
+            <div class="score-display" id="finalScore">0/50</div>
+
+            <div class="results-grid">
+                <div class="result-box">
+                    <span class="number" id="correctCount">0</span>
+                    <span>Corrette</span>
+                </div>
+                <div class="result-box">
+                    <span class="number" id="wrongCount">0</span>
+                    <span>Sbagliate</span>
+                </div>
+                <div class="result-box">
+                    <span class="number" id="percentage">0%</span>
+                    <span>%</span>
+                </div>
+            </div>
+
+            <div class="email-section">
+                <h3>📧 Invia i risultati</h3>
+                <p>A:</p>
+                <input type="email" class="email-input" id="emailInput" value="giancarlo.vettori@cpiatv1.edu.it" readonly>
+                <br><br>
+                <button class="send-btn" onclick="sendResults()">📨 INVIA RISULTATI</button>
+                <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                    Oppure copia il testo qui sotto:
+                </p>
+                <textarea id="resultsText" style="width: 100%; height: 150px; margin-top: 10px; padding: 10px; border-radius: 10px; border: 2px solid #ddd; font-family: monospace; font-size: 0.9em;" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATABASE 50 DOMANDE - Imperativo (ORDINE RANDOM)
+        const questions = [
+    {q: "Bambini, _____ (giocare) nel giardino!", options: ["Giocate", "Gioca", "Giochi", "Giocano"], correct: 0, expl: "Imperativo informale plurale (voi) di giocare → Giocate!"},
+    {q: "_____ (digli) la verità, è meglio!", options: ["Digli", "Dimmi", "Dille", "Dite"], correct: 0, expl: "Imperativo + pronome: Di' + gli = Digli!"},
+    {q: "_____ (aspettare) un momento, per favore.", options: ["Aspetti", "Aspetta", "Aspettate", "Aspettano"], correct: 1, expl: "Imperativo informale singolare (tu) di aspettare → Aspetta!"},
+    {q: "Ragazzi, _____ (sentire) questo brano musicale!", options: ["Senta", "Sentite", "Senti", "Sentono"], correct: 1, expl: "Imperativo informale plurale (voi) di sentire → Sentite!"},
+    {q: "Bambini, _____ (rispondere) alla domanda!", options: ["Rispondete", "Rispondono", "Rispondi", "Risponda"], correct: 0, expl: "Imperativo informale plurale (voi) di rispondere → Rispondete!"},
+    {q: "Bambini, _____ (capire) la lezione?", options: ["Capite", "Capisci", "Capisca", "Capiscono"], correct: 0, expl: "Imperativo informale plurale (voi) di capire → Capite!"},
+    {q: "_____ (scusare), sa che ore sono?", options: ["Scusa", "Scusate", "Scusano", "Scusi"], correct: 3, expl: "Imperativo formale singolare (Lei) di scusare → Scusi!"},
+    {q: "_____ (partire) subito o perderai il treno!", options: ["Parta", "Partite", "Partono", "Parti"], correct: 3, expl: "Imperativo informale singolare (tu) di partire → Parti!"},
+    {q: "_____ (vedere) che bello questo quadro!", options: ["Vedono", "Vedi", "Vedete", "Veda"], correct: 1, expl: "Imperativo informale singolare (tu) di vedere → Vedi!"},
+    {q: "_____ (dormire) bene stanotte!", options: ["Dorma", "Dormi", "Dormono", "Dormite"], correct: 1, expl: "Imperativo informale singolare (tu) di dormire → Dormi!"},
+    {q: "_____ (leggere) questa istruzione attentamente!", options: ["Legga", "Leggete", "Leggono", "Leggi"], correct: 3, expl: "Imperativo informale singolare (tu) di leggere → Leggi!"},
+    {q: "_____ (essere) buono, per favore!", options: ["Siano", "Sia", "Siate", "Sii"], correct: 3, expl: "Imperativo informale singolare (tu) di essere → Sii! (irregolare)"},
+    {q: "_____ (fare) attenzione alla strada!", options: ["Fate", "Fanno", "Fai", "Faccia"], correct: 2, expl: "Imperativo informale singolare (tu) di fare → Fai! (irregolare)"},
+    {q: "_____ (fammelo) vedere subito!", options: ["Faglielo", "Fammelo", "Fammi", "Fallo"], correct: 1, expl: "Imperativo + doppio pronome: Fa' + mi + lo = Fammelo!"},
+    {q: "_____ (scrivere) il tuo nome qui.", options: ["Scrivi", "Scriva", "Scrivono", "Scrivete"], correct: 0, expl: "Imperativo informale singolare (tu) di scrivere → Scrivi!"},
+    {q: "Ragazzi, _____ (tornare) a casa presto!", options: ["Tornano", "Torni", "Tornate", "Torna"], correct: 2, expl: "Imperativo informale plurale (voi) di tornare → Tornate!"},
+    {q: "_____ (aprire) la finestra, fa caldo!", options: ["Aprite", "Aprono", "Apri", "Apra"], correct: 2, expl: "Imperativo informale singolare (tu) di aprire → Apri!"},
+    {q: "Ragazzi, _____ (mettere) i libri nello zaino!", options: ["Metti", "Mettete", "Mettono", "Metta"], correct: 1, expl: "Imperativo informale plurale (voi) di mettere → Mettete!"},
+    {q: "Signore, _____ (essere) cortese con i clienti.", options: ["Sia", "Siano", "Siate", "Sii"], correct: 0, expl: "Imperativo formale singolare (Lei) di essere → Sia! (irregolare)"},
+    {q: "_____ (dille) che la amo!", options: ["Dille", "Dite", "Digli", "Dimmi"], correct: 0, expl: "Imperativo + pronome: Di' + le = Dille!"},
+    {q: "_____ (guardare) che bel panorama!", options: ["Guarda", "Guardate", "Guardano", "Guardi"], correct: 0, expl: "Imperativo informale singolare (tu) di guardare → Guarda!"},
+    {q: "Non _____ (andare) via senza salutare!", options: ["vai", "andate", "vada", "andare"], correct: 3, expl: "Imperativo negativo informale singolare (tu) → infinito: Non andare!"},
+    {q: "Non _____ (avere) paura del buio!", options: ["abbiano", "abbia", "abbiate", "avere"], correct: 3, expl: "Imperativo negativo informale singolare (tu) → infinito: Non avere!"},
+    {q: "Signor Rossi, _____ (entrare), prego.", options: ["Entra", "Entrate", "Entrano", "Entri"], correct: 3, expl: "Imperativo formale singolare (Lei) di entrare → Entri!"},
+    {q: "_____ (fallo) subito, non aspettare!", options: ["Fallo", "Fammelo", "Fammi", "Faglielo"], correct: 0, expl: "Imperativo + pronome: Fa' + lo = Fallo!"},
+    {q: "_____ (prendere) questo libro, è interessante!", options: ["Prendono", "Prendi", "Prenda", "Prendete"], correct: 1, expl: "Imperativo informale singolare (tu) di prendere → Prendi!"},
+    {q: "_____ (dimmi) dove hai messo le chiavi!", options: ["Dite", "Digli", "Dille", "Dimmi"], correct: 3, expl: "Imperativo + pronome: Di' + mi = Dimmi!"},
+    {q: "Signora, _____ (andare) dal dottore domani.", options: ["Vai", "Vanno", "Andate", "Vada"], correct: 3, expl: "Imperativo formale singolare (Lei) di andare → Vada! (irregolare)"},
+    {q: "_____ (ascoltare) attentamente il professore.", options: ["Ascolta", "Ascoltate", "Ascoltano", "Ascolti"], correct: 0, expl: "Imperativo informale singolare (tu) di ascoltare → Ascolta!"},
+    {q: "_____ (digli) che sono occupato!", options: ["Dille", "Digli", "Dimmi", "Dite"], correct: 1, expl: "Imperativo + pronome: Di' + gli = Digli!"},
+    {q: "_____ (seguire) le istruzioni attentamente!", options: ["Seguite", "Segua", "Seguono", "Segui"], correct: 3, expl: "Imperativo informale singolare (tu) di seguire → Segui!"},
+    {q: "Ragazzi, _____ (avere) fiducia in voi stessi!", options: ["Abbiate", "Abbiano", "Abbi", "Abba"], correct: 0, expl: "Imperativo informale plurale (voi) di avere → Abbiate! (irregolare)"},
+    {q: "Non _____ (uscire) dopo le dieci, per favore.", options: ["esca", "escano", "uscire", "uscite"], correct: 0, expl: "Imperativo negativo formale singolare (Lei) → non + congiuntivo: Non esca!"},
+    {q: "_____ (preferire) il tè o il caffè, signora?", options: ["Preferisci", "Preferiscono", "Preferisca", "Preferite"], correct: 2, expl: "Imperativo formale singolare (Lei) di preferire → Preferisca!"},
+    {q: "Non _____ (dire) queste cose a nessuno!", options: ["dire", "dite", "dici", "dica"], correct: 0, expl: "Imperativo negativo informale singolare (tu) → infinito: Non dire!"},
+    {q: "Ragazzi, non _____ (mangiare) con le mani!", options: ["mangiate", "mangino", "mangi", "mangiare"], correct: 0, expl: "Imperativo negativo informale plurale (voi) → non + imperativo affermativo: Non mangiate!"},
+    {q: "_____ (dimmi) la verità, non mentire!", options: ["Dille", "Dite", "Digli", "Dimmi"], correct: 3, expl: "Imperativo + pronome: Di' + mi = Dimmi!"},
+    {q: "Ragazzi, _____ (essere) puntuali domani!", options: ["Siano", "Siate", "Sia", "Sii"], correct: 1, expl: "Imperativo informale plurale (voi) di essere → Siate! (irregolare)"},
+    {q: "Signora, _____ (chiudere) la porta, per favore.", options: ["Chiudono", "Chiudi", "Chiuda", "Chiudete"], correct: 2, expl: "Imperativo formale singolare (Lei) di chiudere → Chiuda!"},
+    {q: "_____ (avere) pazienza con lui!", options: ["Abbiano", "Abba", "Abbiate", "Abbi"], correct: 3, expl: "Imperativo informale singolare (tu) di avere → Abbi! (irregolare)"},
+    {q: "Signore, _____ (finire) il rapporto entro domani.", options: ["Finiscono", "Finisci", "Finite", "Finisca"], correct: 3, expl: "Imperativo formale singolare (Lei) di finire → Finisca!"},
+    {q: "_____ (parlare) più forte, per favore!", options: ["Parlate", "Parli", "Parlano", "Parla"], correct: 3, expl: "Imperativo informale singolare (tu) di parlare → Parla!"},
+    {q: "Non _____ (fare) rumore, i bambini dormono!", options: ["fate", "fare", "fai", "faccia"], correct: 1, expl: "Imperativo negativo informale singolare (tu) → infinito: Non fare!"},
+    {q: "_____ (andare) via subito!", options: ["Vada", "Andate", "Vai", "Vanno"], correct: 2, expl: "Imperativo informale singolare (tu) di andare → Vai! (irregolare)"},
+    {q: "Non _____ (toccare) quella pianta, è velenosa!", options: ["toccate", "tocchi", "toccare", "toccano"], correct: 2, expl: "Imperativo negativo informale singolare (tu) → infinito: Non toccare!"},
+    {q: "_____ (faglielo) leggere, è importante!", options: ["Fammi", "Fallo", "Faglielo", "Fammelo"], correct: 2, expl: "Imperativo + doppio pronome: Fa' + gli + lo = Faglielo!"},
+    {q: "_____ (aprire) il pacco, signore!", options: ["Aprite", "Apra", "Apri", "Aprono"], correct: 1, expl: "Imperativo formale singolare (Lei) di aprire → Apra!"},
+    {q: "Non _____ (fumare) in questa area, signore.", options: ["fumate", "fumino", "fumare", "fumi"], correct: 3, expl: "Imperativo negativo formale singolare (Lei) → non + congiuntivo: Non fumi!"},
+    {q: "Bambini, non _____ (giocare) con la palla in casa!", options: ["giocate", "giocare", "giochi", "giocano"], correct: 0, expl: "Imperativo negativo informale plurale (voi) → non + imperativo affermativo: Non giocate!"},
+    {q: "Non _____ (prendere) quella strada, è pericolosa!", options: ["prendi", "prendete", "prendere", "prenda"], correct: 2, expl: "Imperativo negativo informale singolare (tu) → infinito: Non prendere!"}
+];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(50).fill(null);
+        let score = 0;
+        let studentName = "";
+        let studentSurname = "";
+
+        // Abilita bottone start quando entrambi i campi sono compilati
+        document.getElementById('nomeInput').addEventListener('input', checkInputs);
+        document.getElementById('cognomeInput').addEventListener('input', checkInputs);
+
+        function checkInputs() {
+            const nome = document.getElementById('nomeInput').value.trim();
+            const cognome = document.getElementById('cognomeInput').value.trim();
+            const btn = document.getElementById('startBtn');
+
+            if (nome.length > 0 && cognome.length > 0) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+
+        function startQuiz() {
+            studentName = document.getElementById('nomeInput').value.trim();
+            studentSurname = document.getElementById('cognomeInput').value.trim();
+
+            if (!studentName || !studentSurname) {
+                alert("Inserisci nome e cognome!");
+                return;
+            }
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+
+            currentQuestion = 0;
+            userAnswers = new Array(50).fill(null);
+            score = 0;
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionText').textContent = q.q;
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+
+            const progress = ((currentQuestion + 1) / 50) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            q.options.forEach(function(opt, index) {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = opt;
+                btn.onclick = function() { selectAnswer(index); };
+
+                if (userAnswers[currentQuestion] !== null) {
+                    btn.disabled = true;
+                    if (index === q.correct) {
+                        btn.classList.add('correct');
+                    } else if (index === userAnswers[currentQuestion]) {
+                        btn.classList.add('wrong');
+                    }
+                }
+
+                container.appendChild(btn);
+            });
+
+            const feedback = document.getElementById('feedback');
+            if (userAnswers[currentQuestion] !== null) {
+                feedback.textContent = q.expl;
+                feedback.className = userAnswers[currentQuestion] === q.correct ? 
+                    'feedback-message correct' : 'feedback-message wrong';
+                feedback.classList.remove('hidden');
+            } else {
+                feedback.classList.add('hidden');
+            }
+
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.disabled = userAnswers[currentQuestion] === null;
+            nextBtn.textContent = currentQuestion === 49 ? 'Vedi Risultati →' : 'Successiva →';
+        }
+
+        function selectAnswer(index) {
+            if (userAnswers[currentQuestion] !== null) return;
+
+            userAnswers[currentQuestion] = index;
+            const q = questions[currentQuestion];
+            const buttons = document.querySelectorAll('.answer-btn');
+
+            buttons.forEach(function(btn, i) {
+                btn.disabled = true;
+                if (i === q.correct) {
+                    btn.classList.add('correct');
+                } else if (i === index) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = q.expl;
+            feedback.className = index === q.correct ? 
+                'feedback-message correct' : 'feedback-message wrong';
+            feedback.classList.remove('hidden');
+
+            if (index === q.correct) score++;
+
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion === 49) {
+                showResults();
+            } else {
+                currentQuestion++;
+                showQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            document.getElementById('studentNameDisplay').textContent = studentName + " " + studentSurname;
+
+            const correct = userAnswers.filter(function(ans, i) { return ans === questions[i].correct; }).length;
+            const wrong = 50 - correct;
+            const percentage = Math.round((correct / 50) * 100);
+
+            document.getElementById('finalScore').textContent = correct + '/50';
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('wrongCount').textContent = wrong;
+            document.getElementById('percentage').textContent = percentage + '%';
+
+            const resultsText = generateResultsText(correct, wrong, percentage);
+            document.getElementById('resultsText').value = resultsText;
+        }
+
+        function generateResultsText(correct, wrong, percentage) {
+            const date = new Date().toLocaleDateString('it-IT');
+            const time = new Date().toLocaleTimeString('it-IT');
+
+            let text = 'QUIZ IMPERATIVO (RANDOM)\n';
+            text += 'Alunno/a: ' + studentName + ' ' + studentSurname + '\n';
+            text += 'Data: ' + date + ' ' + time + '\n';
+            text += '\nRISULTATI:\n';
+            text += 'Risposte corrette: ' + correct + '/50\n';
+            text += 'Risposte sbagliate: ' + wrong + '/50\n';
+            text += 'Percentuale: ' + percentage + '%\n';
+            text += 'Valutazione: ' + (percentage >= 60 ? 'SUPERATO ✅' : 'DA RIPROVARE ❌') + '\n\n';
+
+            text += 'DETTAGLIO RISPOSTE:\n';
+            for (let i = 0; i < 50; i++) {
+                const ans = userAnswers[i];
+                const q = questions[i];
+                const isCorrect = ans === q.correct;
+                text += (i + 1) + '. ' + (isCorrect ? '✓' : '✗') + ' ' + q.q + '\n';
+                text += '   Risposta: ' + q.options[ans] + ' | Corretto: ' + q.options[q.correct] + '\n';
+            }
+
+            return text;
+        }
+
+        function sendResults() {
+            const email = document.getElementById('emailInput').value;
+            const resultsText = document.getElementById('resultsText').value;
+
+            const subject = encodeURIComponent('Risultati Quiz Imperativo (Random) - ' + studentName + ' ' + studentSurname);
+            const body = encodeURIComponent(resultsText);
+            const mailtoLink = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+
+            window.location.href = mailtoLink;
+
+            setTimeout(function() {
+                alert('Se il client email non si è aperto, copia il testo dalla casella e invialo a:\n' + email);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
