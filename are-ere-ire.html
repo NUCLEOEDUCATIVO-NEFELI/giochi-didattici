@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verbi ARE -ERE -IRE - 1 Minuto Challenge!</title>
+    <meta name="description" content="Esercizio interattivo sui verbi regolari in -ARE, -ERE, -IRE - Challenge 1 Minuto">
+    <title>Verbi ARE - ERE - IRE | Challenge 1 Minuto</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap');
+
+        :root {
+            --primary: #1e3a5f;
+            --primary-light: #2c5282;
+            --secondary: #8b4513;
+            --accent: #c9a227;
+            --bg-light: #f7f9fc;
+            --bg-white: #ffffff;
+            --text-dark: #1a202c;
+            --text-medium: #4a5568;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --success: #00b894;
+            --error: #ff7675;
+        }
 
         * {
             margin: 0;
@@ -14,59 +32,160 @@
         }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        .game-container {
-            width: 95%;
-            max-width: 900px;
-            background: white;
-            border-radius: 30px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            position: relative;
-        }
-
+        /* Header Accademico */
         .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-top {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .logo-text p {
+            font-size: 0.85em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.9em;
+            transition: opacity 0.3s;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 5px;
+        }
+
+        .header-nav a:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: rgba(0,0,0,0.1);
+            padding: 10px 40px;
+            font-size: 0.85em;
+        }
+
+        .breadcrumb-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb span {
+            color: rgba(255,255,255,0.6);
+            margin: 0 8px;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* Game Card */
+        .game-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--accent);
+            margin-bottom: 30px;
+        }
+
+        .game-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
-        .header h1 {
-            font-family: 'Fredoka One', cursive;
-            font-size: 2.2em;
-            color: #667eea;
-            text-shadow: 3px 3px 0px #764ba2;
-            margin-bottom: 5px;
+        .game-header h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.8em;
+            color: var(--primary);
+            margin-bottom: 10px;
         }
 
-        .header .subtitle {
-            color: #e17055;
-            font-weight: bold;
+        .game-header .subtitle {
+            color: var(--text-medium);
             font-size: 1.1em;
         }
 
+        /* Timer Section */
+        .timer-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
         .main-timer {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-            color: white;
-            padding: 15px 50px;
-            border-radius: 50px;
-            font-family: 'Fredoka One', cursive;
-            font-size: 2.5em;
-            box-shadow: 0 10px 30px rgba(238, 90, 36, 0.4);
-            border: 5px solid white;
             display: inline-block;
-            margin: 15px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-family: 'Merriweather', serif;
+            font-size: 3em;
+            font-weight: 700;
+            box-shadow: var(--shadow-lg);
+            border: 4px solid var(--accent);
+            min-width: 150px;
         }
 
         .main-timer.warning {
-            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             animation: pulse 0.5s infinite;
         }
 
@@ -75,77 +194,60 @@
             50% { transform: scale(1.05); }
         }
 
-        .timer-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
+        /* Score Board */
         .score-board {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
-            gap: 15px;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .score-item {
-            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            background: linear-gradient(135deg, var(--success) 0%, #00a085 100%);
             color: white;
-            padding: 15px 40px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 1.5em;
-            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
+            padding: 20px 40px;
+            border-radius: 12px;
             text-align: center;
+            box-shadow: var(--shadow);
+            min-width: 150px;
         }
 
         .score-item .label {
-            font-size: 0.6em;
+            font-size: 0.8em;
             opacity: 0.9;
             display: block;
             margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .score-item .value {
-            font-family: 'Fredoka One', cursive;
-            font-size: 1.8em;
+            font-family: 'Merriweather', serif;
+            font-size: 2.5em;
+            font-weight: 700;
         }
 
+        /* Question Card */
         .question-card {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            padding: 35px;
-            border-radius: 25px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            padding: 40px;
+            border-radius: 12px;
             text-align: center;
-            margin-bottom: 25px;
-            min-height: 140px;
+            margin-bottom: 30px;
+            min-height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 15px 35px rgba(250, 112, 154, 0.4);
+            box-shadow: var(--shadow-lg);
             animation: cardAppear 0.4s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .question-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         @keyframes cardAppear {
             from {
                 opacity: 0;
-                transform: translateY(-20px) scale(0.9);
+                transform: translateY(-20px) scale(0.95);
             }
             to {
                 opacity: 1;
@@ -154,70 +256,53 @@
         }
 
         .question-text {
-            font-family: 'Fredoka One', cursive;
-            font-size: 2.8em;
+            font-family: 'Merriweather', serif;
+            font-size: 2.5em;
             color: white;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            font-weight: 700;
             position: relative;
             z-index: 1;
         }
 
+        /* Buttons */
         .buttons-container {
             display: flex;
             gap: 25px;
             justify-content: center;
+            margin-bottom: 20px;
         }
 
         .btn {
-            padding: 30px 70px;
-            font-size: 2em;
-            font-family: 'Fredoka One', cursive;
+            padding: 25px 60px;
+            font-size: 1.5em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
             border: none;
-            border-radius: 25px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.15s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn:active {
-            transform: translateY(0) scale(0.98);
+            transform: translateY(0);
         }
 
         .btn-vero {
-            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            background: linear-gradient(135deg, var(--success) 0%, #00a085 100%);
             color: white;
-        }
-
-        .btn-vero::after {
-            content: '←';
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8em;
-            opacity: 0.8;
         }
 
         .btn-falso {
-            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+            background: linear-gradient(135deg, var(--error) 0%, #d63031 100%);
             color: white;
-        }
-
-        .btn-falso::after {
-            content: '→';
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8em;
-            opacity: 0.8;
         }
 
         .btn:disabled {
@@ -226,17 +311,151 @@
             transform: none !important;
         }
 
+        /* Combo Display */
+        .combo-display {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--accent) 0%, #e6b800 100%);
+            color: var(--primary);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .combo-display.active {
+            display: block;
+            animation: comboPulse 0.4s ease infinite alternate;
+        }
+
+        @keyframes comboPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.02); }
+        }
+
+        /* Streak Bar */
+        .streak-container {
+            margin-top: 20px;
+        }
+
+        .streak-label {
+            font-size: 0.85em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .streak-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .streak-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: var(--bg-white);
+            padding: 50px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+            border-left: 5px solid var(--accent);
+        }
+
+        .modal h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2em;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .modal p {
+            font-size: 1.1em;
+            color: var(--text-medium);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .modal-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .final-score {
+            font-size: 4em;
+            font-family: 'Merriweather', serif;
+            color: var(--success);
+            margin: 20px 0;
+            font-weight: 700;
+        }
+
+        .final-score-label {
+            font-size: 1.1em;
+            color: var(--text-medium);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Feedback */
         .feedback {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 10em;
-            font-family: 'Fredoka One', cursive;
+            font-size: 8em;
+            font-family: 'Merriweather', serif;
             animation: feedbackPop 0.5s ease;
             pointer-events: none;
             z-index: 1000;
-            text-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+            font-weight: 700;
         }
 
         @keyframes feedbackPop {
@@ -254,236 +473,207 @@
         }
 
         .feedback.correct {
-            color: #00b894;
+            color: var(--success);
         }
 
         .feedback.wrong {
-            color: #ff7675;
+            color: var(--error);
         }
 
-        .start-screen, .end-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal {
-            background: white;
-            padding: 50px;
-            border-radius: 30px;
-            text-align: center;
-            max-width: 600px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-
-        .modal h2 {
-            font-family: 'Fredoka One', cursive;
-            font-size: 3em;
-            color: #667eea;
-            margin-bottom: 20px;
-        }
-
-        .modal .timer-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-        }
-
-        .modal p {
-            font-size: 1.3em;
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .start-btn, .restart-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 25px 60px;
-            font-size: 1.8em;
-            font-family: 'Fredoka One', cursive;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        .start-btn:hover, .restart-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
-        }
-
-        .combo-display {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
-            padding: 12px 20px;
-            border-radius: 15px;
-            font-family: 'Fredoka One', cursive;
-            font-size: 1.2em;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            display: none;
-            box-shadow: 0 5px 15px rgba(254, 202, 87, 0.4);
-        }
-
-        .combo-display.active {
-            display: block;
-            animation: comboPulse 0.4s ease infinite alternate;
-        }
-
-        @keyframes comboPulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.15); }
-        }
-
-        .speed-indicator {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            font-size: 1em;
-            font-weight: 900;
-            padding: 8px 15px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.9);
-        }
-
+        /* Hidden */
         .hidden {
             display: none !important;
         }
 
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
+        /* Instructions */
+        .instructions {
+            background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+            border-left: 4px solid var(--primary-light);
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            color: var(--text-medium);
         }
 
-        .particle {
+        .instructions strong {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 30px 40px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .main-container {
+                padding: 20px;
+            }
+
+            .game-card {
+                padding: 25px;
+            }
+
+            .question-text {
+                font-size: 1.8em;
+            }
+
+            .buttons-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .main-timer {
+                font-size: 2.5em;
+                padding: 15px 40px;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
             position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #ffd700;
-            border-radius: 50%;
-            animation: particleFall 1s ease-out forwards;
-        }
-
-        @keyframes particleFall {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(400px) rotate(720deg) scale(0);
-                opacity: 0;
-            }
-        }
-
-        .streak-bar {
-            width: 100%;
-            height: 8px;
-            background: #e0e0e0;
-            border-radius: 4px;
-            margin-top: 10px;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
             overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
         }
 
-        .streak-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #feca57, #ff6b6b);
-            width: 0%;
-            transition: width 0.3s;
-            border-radius: 4px;
-        }
-
-        .final-score {
-            font-size: 5em;
-            font-family: 'Fredoka One', cursive;
-            color: #00b894;
-            margin: 20px 0;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
-        }
-
-        .final-score-label {
-            font-size: 1.3em;
-            color: #666;
-            margin-bottom: 10px;
+        :focus {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
         }
     </style>
-<base target="_blank">
 </head>
 <body>
-    <div class="start-screen" id="startScreen">
-        <div class="modal">
-            <div class="timer-icon">⏱️</div>
-            <h2>VERBI CHALLENGE</h2>
-            <p><strong>1 MINUTO</strong> per rispondere a più domande possibili!<br><br>
-            🎯 Vero o Falso?<br>
-            ⚡ Più veloce sei = più domande!<br>
-            🔥 Combo = musica più veloce!<br>
-            ✅ Contano solo le risposte GIUSTE!</p>
-            <button class="start-btn" onclick="startGame()">VIA! 🚀</button>
+    <header class="header">
+        <div class="header-top">
+            <div class="logo-section">
+                <div class="logo-icon">📚</div>
+                <div class="logo-text">
+                    <h1>Portale Didattico</h1>
+                    <p>Dipartimento di Italiano - CPIA TV1</p>
+                </div>
+            </div>
+            <nav class="header-nav" role="navigation" aria-label="Navigazione principale">
+                <a href="index.html">Home</a>
+                <a href="index.html#esercizi">Esercizi</a>
+                <a href="index.html#quiz">Quiz</a>
+                <a href="index.html#contatti">Contatti</a>
+            </nav>
         </div>
-    </div>
-
-    <div class="end-screen hidden" id="endScreen">
-        <div class="modal">
-            <h2>⏰ TEMPO SCADUTO!</h2>
-            <div class="final-score-label">RISPOSTE CORRETTE</div>
-            <div class="final-score" id="finalCorrect">0</div>
-            <p id="finalStats"></p>
-            <button class="restart-btn" onclick="restartGame()">GIOCA ANCORA ↺</button>
+        <div class="breadcrumb">
+            <div class="breadcrumb-content">
+                <a href="index.html">Home</a> <span>/</span> <a href="index.html#esercizi">Esercizi Veloci</a> <span>/</span> Verbi ARE-ERE-IRE
+            </div>
         </div>
-    </div>
+    </header>
 
-    <div class="game-container hidden" id="gameContainer">
-        <div class="combo-display" id="comboDisplay">🔥 COMBO x<span id="comboCount">1</span></div>
-        <div class="speed-indicator" id="speedIndicator">⚡ Normale</div>
-
-        <div class="header">
-            <h1>VERBI ARE -ERE -IRE</h1>
-            <div class="subtitle">Quante riesci a fare in 1 minuto?</div>
-        </div>
-
-        <div class="score-board">
-            <div class="score-item">
-                <span class="label">RISPOSTE CORRETTE</span>
-                <span class="value" id="correctCount">0</span>
+    <main class="main-container">
+        <!-- Start Screen -->
+        <div id="startScreen" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-icon">⏱️</div>
+                <h2>Challenge 1 Minuto</h2>
+                <p><strong>Obiettivo:</strong> rispondi correttamente a più domande possibili in 60 secondi!<br><br>
+                ✓ Vero o ✗ Falso?<br>
+                ⚡ Più risposte corrette consecutive = più punti!<br>
+                🔥 Accumula combo per aumentare la difficoltà!</p>
+                <button class="btn-primary" onclick="startGame()">Inizia Challenge</button>
             </div>
         </div>
 
-        <!-- Timer spostato qui sotto -->
-        <div class="timer-container">
-            <div class="main-timer" id="mainTimer">60</div>
+        <!-- End Screen -->
+        <div id="endScreen" class="modal-overlay hidden">
+            <div class="modal">
+                <div class="modal-icon">🏆</div>
+                <h2>Tempo Scaduto!</h2>
+                <div class="final-score-label">Risposte Corrette</div>
+                <div class="final-score" id="finalCorrect">0</div>
+                <p id="finalStats"></p>
+                <button class="btn-primary" onclick="restartGame()">Gioca Ancora</button>
+            </div>
         </div>
 
-        <div class="question-card" id="questionCard">
-            <div class="question-text" id="questionText">Pronti...</div>
-        </div>
+        <!-- Game Container -->
+        <div id="gameContainer" class="hidden">
+            <div class="game-card">
+                <div class="game-header">
+                    <h2>Verbi ARE - ERE - IRE</h2>
+                    <p class="subtitle">Quante riesci a fare in 1 minuto?</p>
+                </div>
 
-        <div class="buttons-container">
-            <button class="btn btn-vero" id="btnVero" onclick="answer(true)">✓ VERO</button>
-            <button class="btn btn-falso" id="btnFalso" onclick="answer(false)">✗ FALSO</button>
-        </div>
+                <div class="instructions">
+                    <strong>Istruzioni:</strong> Leggi la coniugazione e indica se è corretta (✓ Vero) o sbagliata (✗ Falso). 
+                    Usa le frecce della tastiera: ← per Vero, → per Falso.
+                </div>
 
-        <div class="streak-bar">
-            <div class="streak-fill" id="streakFill"></div>
-        </div>
-    </div>
+                <div class="timer-section">
+                    <div class="main-timer" id="mainTimer">60</div>
+                </div>
 
-    <div class="particles" id="particles"></div>
+                <div class="score-board">
+                    <div class="score-item">
+                        <span class="label">Corrette</span>
+                        <span class="value" id="correctCount">0</span>
+                    </div>
+                </div>
+
+                <div class="combo-display" id="comboDisplay">
+                    🔥 Combo x<span id="comboCount">1</span>
+                </div>
+
+                <div class="question-card" id="questionCard">
+                    <div class="question-text" id="questionText">Pronti...</div>
+                </div>
+
+                <div class="buttons-container">
+                    <button class="btn btn-vero" id="btnVero" onclick="answer(true)">✓ Vero</button>
+                    <button class="btn btn-falso" id="btnFalso" onclick="answer(false)">✗ Falso</button>
+                </div>
+
+                <div class="streak-container">
+                    <div class="streak-label">Combo Progress</div>
+                    <div class="streak-bar">
+                        <div class="streak-fill" id="streakFill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Portale Didattico CPIA TV1. Verbi regolari - Challenge Interattiva</p>
+        </div>
+    </footer>
 
     <script>
         // Database domande
@@ -627,9 +817,7 @@
         let gameTimer;
         let timeRemaining = 60;
         let audioContext;
-        let musicInterval;
-        let isMusicPlaying = false;
-        let musicTempo = 1;
+        let isAudioEnabled = false;
 
         // Shuffle
         function shuffle(array) {
@@ -641,137 +829,61 @@
             return newArray;
         }
 
-        // Audio System
+        // Audio System (semplificato, senza musica di sottofondo continua)
         function initAudio() {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-
-        function playTone(freq, duration, type = 'sine', vol = 0.15) {
-            if (!audioContext) return;
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.frequency.value = freq;
-            osc.type = type;
-            gain.gain.setValueAtTime(vol, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-            osc.start();
-            osc.stop(audioContext.currentTime + duration);
-        }
-
-        function playDrum(time, intensity = 1) {
-            if (!audioContext) return;
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.frequency.setValueAtTime(150, time);
-            osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.1);
-            gain.gain.setValueAtTime(0.3 * intensity, time);
-            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
-            osc.start(time);
-            osc.stop(time + 0.1);
-        }
-
-        function playHiHat(time) {
-            if (!audioContext) return;
-            const bufferSize = audioContext.sampleRate * 0.05;
-            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-            const data = buffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = Math.random() * 2 - 1;
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                isAudioEnabled = true;
+            } catch (e) {
+                console.log('Audio non supportato');
             }
-            const noise = audioContext.createBufferSource();
-            noise.buffer = buffer;
-            const filter = audioContext.createBiquadFilter();
-            filter.type = 'highpass';
-            filter.frequency.value = 5000;
-            const gain = audioContext.createGain();
-            gain.gain.setValueAtTime(0.1, time);
-            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
-            noise.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioContext.destination);
-            noise.start(time);
         }
 
-        function playBackgroundMusic() {
-            if (!audioContext || isMusicPlaying) return;
-            isMusicPlaying = true;
-
-            const beatTime = 0.5 / musicTempo;
-            let noteIndex = 0;
-
-            const scales = {
-                normal: [261.63, 329.63, 392.00, 523.25],
-                fast: [293.66, 440.00, 523.25, 587.33],
-                ultra: [329.63, 493.88, 587.33, 659.25]
-            };
-
-            let currentScale = scales.normal;
-            if (musicTempo > 1.8) currentScale = scales.ultra;
-            else if (musicTempo > 1.3) currentScale = scales.fast;
-
-            function playBeat() {
-                if (!isMusicPlaying) return;
-                const now = audioContext.currentTime;
-
-                playDrum(now, 1);
-
-                setTimeout(() => {
-                    if (isMusicPlaying) playHiHat(audioContext.currentTime);
-                }, (beatTime * 500) / 2);
-
-                playTone(currentScale[noteIndex % 4], beatTime * 0.8, 'triangle', 0.12);
-
-                if (musicTempo > 1.2) {
-                    playTone(currentScale[(noteIndex + 2) % 4], beatTime * 0.6, 'sine', 0.08);
-                }
-
-                noteIndex++;
-                musicInterval = setTimeout(playBeat, beatTime * 1000);
-            }
-
-            playBeat();
-        }
-
-        function stopMusic() {
-            isMusicPlaying = false;
-            if (musicInterval) clearTimeout(musicInterval);
+        function playTone(freq, duration, type = 'sine', vol = 0.1) {
+            if (!audioContext || !isAudioEnabled) return;
+            try {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                osc.frequency.value = freq;
+                osc.type = type;
+                gain.gain.setValueAtTime(vol, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                osc.start();
+                osc.stop(audioContext.currentTime + duration);
+            } catch (e) {}
         }
 
         function playCorrectSound() {
-            if (!audioContext) return;
-            const now = audioContext.currentTime;
-            playTone(880, 0.1, 'sine', 0.2);
-            setTimeout(() => playTone(1108.73, 0.15, 'sine', 0.2), 100);
-            setTimeout(() => playTone(1318.51, 0.3, 'sine', 0.2), 200);
+            if (!isAudioEnabled) return;
+            playTone(523.25, 0.1, 'sine', 0.15);
+            setTimeout(() => playTone(659.25, 0.15, 'sine', 0.15), 100);
+            setTimeout(() => playTone(783.99, 0.3, 'sine', 0.15), 200);
         }
 
         function playWrongSound() {
-            if (!audioContext) return;
-            const now = audioContext.currentTime;
-            playTone(200, 0.3, 'sawtooth', 0.2);
-            setTimeout(() => playTone(150, 0.4, 'sawtooth', 0.2), 200);
-        }
-
-        function playComboSound() {
-            if (!audioContext) return;
-            [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-                setTimeout(() => playTone(freq, 0.15, 'square', 0.15), i * 80);
-            });
+            if (!isAudioEnabled) return;
+            playTone(200, 0.3, 'sawtooth', 0.15);
+            setTimeout(() => playTone(150, 0.4, 'sawtooth', 0.15), 200);
         }
 
         function playTickSound() {
-            if (!audioContext) return;
-            playTone(800, 0.05, 'sine', 0.1);
+            if (!isAudioEnabled) return;
+            playTone(800, 0.05, 'sine', 0.08);
+        }
+
+        function playEndSound() {
+            if (!isAudioEnabled) return;
+            [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+                setTimeout(() => playTone(freq, 0.4, 'sine', 0.15), i * 150);
+            });
         }
 
         // Game Functions
         function startGame() {
             initAudio();
-            if (audioContext.state === 'suspended') {
+            if (audioContext && audioContext.state === 'suspended') {
                 audioContext.resume();
             }
 
@@ -783,11 +895,9 @@
             correctCount = 0;
             combo = 0;
             timeRemaining = 60;
-            musicTempo = 1;
 
             updateDisplay();
             startTimer();
-            playBackgroundMusic();
             showQuestion();
         }
 
@@ -838,30 +948,15 @@
             if (isCorrect) {
                 correctCount++;
                 combo++;
-
-                // Aumenta velocità musica ogni 3 combo
-                if (combo > 0 && combo % 3 === 0) {
-                    musicTempo = Math.min(musicTempo + 0.25, 2.5);
-                    stopMusic();
-                    playBackgroundMusic();
-                    playComboSound();
-                    createParticles();
-                } else {
-                    playCorrectSound();
-                }
-
+                playCorrectSound();
                 showFeedback(true);
             } else {
                 combo = 0;
-                musicTempo = 1;
-                stopMusic();
-                playBackgroundMusic();
                 playWrongSound();
                 showFeedback(false);
             }
 
             updateDisplay();
-            updateComboDisplay();
 
             setTimeout(() => {
                 currentQuestion++;
@@ -886,23 +981,6 @@
             const streakPercent = Math.min((combo / 10) * 100, 100);
             document.getElementById('streakFill').style.width = streakPercent + '%';
 
-            const speedEl = document.getElementById('speedIndicator');
-            if (musicTempo >= 2) {
-                speedEl.textContent = '🔥🔥🔥 ULTRA!';
-                speedEl.style.color = '#d63031';
-            } else if (musicTempo >= 1.5) {
-                speedEl.textContent = '🔥🔥 RAPIDO!';
-                speedEl.style.color = '#e17055';
-            } else if (musicTempo >= 1.25) {
-                speedEl.textContent = '🔥 VELOCE';
-                speedEl.style.color = '#fdcb6e';
-            } else {
-                speedEl.textContent = '⚡ Normale';
-                speedEl.style.color = '#667eea';
-            }
-        }
-
-        function updateComboDisplay() {
             const comboDisplay = document.getElementById('comboDisplay');
             const comboCount = document.getElementById('comboCount');
 
@@ -914,46 +992,34 @@
             }
         }
 
-        function createParticles() {
-            const container = document.getElementById('particles');
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = '50%';
-                particle.style.animationDelay = Math.random() * 0.3 + 's';
-                particle.style.background = `hsl(${Math.random() * 60 + 20}, 100%, 60%)`;
-                container.appendChild(particle);
-
-                setTimeout(() => particle.remove(), 1000);
-            }
-        }
-
         function endGame() {
             clearInterval(gameTimer);
-            stopMusic();
+            playEndSound();
 
             document.getElementById('gameContainer').classList.add('hidden');
             document.getElementById('endScreen').classList.remove('hidden');
 
             document.getElementById('finalCorrect').textContent = correctCount;
-            document.getElementById('finalStats').innerHTML = `
-                🔥 Combo massima raggiunta: ${combo}<br>
-                ⚡ Velocità finale: ${musicTempo.toFixed(1)}x
-            `;
 
-            // Musica finale
-            if (audioContext) {
-                [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98].forEach((freq, i) => {
-                    setTimeout(() => playTone(freq, 0.5, 'sine', 0.2), i * 150);
-                });
+            let message = '';
+            if (correctCount >= 30) {
+                message = '🏆 Eccellente! Padronanza eccellente dei verbi!';
+            } else if (correctCount >= 20) {
+                message = '👏 Ottimo lavoro! Buona conoscenza dei verbi!';
+            } else if (correctCount >= 10) {
+                message = '💪 Buon inizio! Continua a esercitarti!';
+            } else {
+                message: '📚 Continua a studiare le coniugazioni!';
             }
+
+            document.getElementById('finalStats').innerHTML = message + '<br>🔥 Combo massima: ' + combo;
         }
 
         function restartGame() {
             document.getElementById('endScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
             document.getElementById('mainTimer').classList.remove('warning');
+            document.getElementById('mainTimer').textContent = '60';
         }
 
         // Keyboard support

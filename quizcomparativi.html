@@ -757,5 +757,38 @@
             }, 500);
         }
     </script>
+    <script>
+// Configurazione
+const STORAGE_KEY = 'nefeli_education_results';
+
+// Funzione da chiamare quando lo studente completa il quiz
+function saveQuizResult(studentName, studentEmail, correctCount, totalQuestions, durationMinutes) {
+    const result = {
+        id: Date.now().toString(36) + Math.random().toString(36).substr(2),
+        studentName: studentName || 'Anonimo',
+        studentEmail: studentEmail || '',
+        quizTitle: document.title.replace(' - Quiz', '').replace(' - Portale Didattico', ''),
+        correctAnswers: correctCount,
+        totalQuestions: totalQuestions,
+        percentage: Math.round((correctCount / totalQuestions) * 100),
+        duration: durationMinutes ? durationMinutes + ' min' : '-',
+        date: new Date().toISOString(),
+        userAgent: navigator.userAgent
+    };
+    
+    // Recupera risultati esistenti
+    let results = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    results.push(result);
+    
+    // Salva
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
+    
+    console.log('Risultato salvato:', result);
+    return result;
+}
+
+// Esempio di utilizzo (da adattare alla logica del tuo quiz):
+// saveQuizResult('Mario Rossi', 'mario@email.com', 42, 50, 15);
+</script>
 </body>
 </html>
