@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbi Riflessivi e Reciproci - Quiz A1/A2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #11998e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255,255,255,0.98);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #2d1b69;
+            position: relative;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px; left: 50%;
+            transform: translateX(-50%);
+            width: 100px; height: 3px;
+            background: #11998e;
+        }
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            color: #1a0533;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .header p { font-size: 1.1em; color: #666; font-style: italic; }
+
+        .progress-container { margin-bottom: 30px; }
+        .progress-bar {
+            width: 100%; height: 12px;
+            background: #e8e8e8; border-radius: 10px;
+            overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2d1b69, #11998e);
+            transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+            border-radius: 10px; position: relative;
+        }
+        .progress-fill::after {
+            content: '';
+            position: absolute; top:0; left:0; right:0; bottom:0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+        .question-counter {
+            text-align: center; font-size: 1.2em;
+            color: #2d1b69; margin-top: 15px;
+            font-weight: 700; letter-spacing: 1px;
+        }
+
+        .question-card {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 35px; border-radius: 15px;
+            text-align: left; margin-bottom: 30px;
+            border-left: 6px solid #2d1b69;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .question-card:hover { transform: translateY(-2px); }
+
+        .question-label {
+            font-size: 0.85em; color: #666; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 15px; display: flex; align-items: center; gap: 8px;
+        }
+        .question-label::before { content: '❖'; color: #11998e; }
+
+        .question-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em; color: #1a0533;
+            line-height: 1.6; margin-bottom: 25px; font-weight: 500;
+        }
+
+        .answers-container { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+        .answer-btn {
+            padding: 18px 22px; font-size: 1.1em;
+            font-family: 'Source Sans Pro', sans-serif; font-weight: 600;
+            border: 2px solid #dee2e6; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            background: white; color: #495057; text-align: left;
+            position: relative; overflow: hidden;
+        }
+        .answer-btn::before {
+            content: ''; position: absolute; left: 0; top: 0;
+            height: 100%; width: 4px; background: #2d1b69;
+            transform: scaleY(0); transition: transform 0.3s;
+        }
+        .answer-btn:hover:not(:disabled) {
+            background: #f1f3f5; border-color: #2d1b69;
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(45,27,105,0.15);
+        }
+        .answer-btn:hover:not(:disabled)::before { transform: scaleY(1); }
+        .answer-btn:disabled { cursor: default; opacity: 1; }
+        .answer-btn.correct {
+            background: #d4edda !important; border-color: #28a745 !important;
+            color: #155724 !important; animation: correctPulse 0.5s ease;
+        }
+        .answer-btn.correct::before { background: #28a745; transform: scaleY(1); }
+        .answer-btn.wrong {
+            background: #f8d7da !important; border-color: #dc3545 !important;
+            color: #721c24 !important; animation: shake 0.5s ease;
+        }
+        .answer-btn.wrong::before { background: #dc3545; transform: scaleY(1); }
+
+        @keyframes correctPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+        .feedback-message {
+            padding: 20px 25px; border-radius: 12px; margin-top: 25px;
+            font-size: 1.05em; line-height: 1.6; font-weight: 500;
+            border-left: 5px solid; animation: slideIn 0.4s ease;
+        }
+        @keyframes slideIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+        .feedback-message.correct { background: #d4edda; color: #155724; border-left-color: #28a745; }
+        .feedback-message.wrong { background: #f8d7da; color: #721c24; border-left-color: #dc3545; }
+        .hidden { display: none !important; }
+
+        .navigation {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 35px; padding-top: 25px; border-top: 2px solid #e9ecef;
+        }
+        .nav-btn {
+            padding: 14px 28px; font-size: 1.05em;
+            font-family: 'Source Sans Pro', sans-serif; font-weight: 700;
+            border: none; border-radius: 10px; cursor: pointer;
+            transition: all 0.3s ease; background: #2d1b69; color: white;
+            box-shadow: 0 4px 15px rgba(45,27,105,0.3);
+        }
+        .nav-btn:hover:not(:disabled) {
+            background: #1a0533; transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(45,27,105,0.4);
+        }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .start-screen { text-align: center; padding: 30px; }
+        .start-screen h2 { font-family: 'Playfair Display', serif; font-size: 2.2em; color: #1a0533; margin-bottom: 20px; }
+        .start-screen p { font-size: 1.1em; color: #555; margin-bottom: 30px; line-height: 1.7; }
+
+        .form-group { margin-bottom: 20px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto; }
+        .form-group label { display: block; font-weight: 700; color: #1a0533; margin-bottom: 8px; font-size: 1em; }
+        .form-group input {
+            width: 100%; padding: 14px; font-size: 1.05em;
+            border: 2px solid #dee2e6; border-radius: 10px;
+            font-family: 'Source Sans Pro', sans-serif; transition: all 0.3s;
+        }
+        .form-group input:focus { outline: none; border-color: #2d1b69; box-shadow: 0 0 0 3px rgba(45,27,105,0.1); }
+
+        #startBtn {
+            padding: 16px 45px; font-size: 1.15em;
+            font-family: 'Source Sans Pro', sans-serif; font-weight: 700;
+            border: none; border-radius: 10px; cursor: pointer;
+            background: linear-gradient(135deg, #2d1b69, #11998e);
+            color: white; margin-top: 25px; transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(45,27,105,0.3);
+        }
+        #startBtn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(45,27,105,0.4); }
+        #startBtn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+
+        .grading-scale { background: #f8f9fa; padding: 20px; border-radius: 12px; margin: 20px 0; text-align: left; }
+        .grading-scale h4 { color: #1a0533; margin-bottom: 15px; font-size: 1.1em; }
+        .grade-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #dee2e6; }
+        .grade-item:last-child { border-bottom: none; }
+        .grade-range { font-weight: 700; color: #2d1b69; }
+        .grade-value { color: #666; }
+
+        .results-container { text-align: center; padding: 30px; }
+        .results-container h2 { font-family: 'Playfair Display', serif; font-size: 2.4em; color: #1a0533; margin-bottom: 10px; }
+        .student-name { font-size: 1.5em; color: #2d1b69; margin-bottom: 25px; font-weight: 700; }
+        .score-display {
+            font-size: 5em; font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #1a0533, #11998e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin: 20px 0; font-weight: 700;
+        }
+        .score-label { font-size: 1.2em; color: #666; margin-bottom: 30px; font-weight: 600; }
+
+        .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0; }
+        .result-box {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #1a0533; padding: 25px; border-radius: 15px;
+            font-size: 1em; border: 2px solid #dee2e6;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08); transition: transform 0.3s;
+        }
+        .result-box:hover { transform: translateY(-5px); }
+        .result-box .number {
+            font-family: 'Playfair Display', serif; font-size: 2.8em;
+            display: block; font-weight: 700; margin-bottom: 8px;
+            background: linear-gradient(135deg, #2d1b69, #11998e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .result-box .label { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85em; color: #666; }
+
+        .evaluation-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 25px; border-radius: 15px;
+            margin: 25px 0; box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+        }
+        .evaluation-box h3 { font-family: 'Playfair Display', serif; font-size: 1.5em; margin-bottom: 10px; }
+        .evaluation-box .grade { font-size: 2.5em; font-weight: 700; margin: 10px 0; }
+        .evaluation-box .status { font-size: 1.1em; opacity: 0.9; }
+        .evaluation-box.sufficient { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); box-shadow: 0 10px 30px rgba(17,153,142,0.3); }
+        .evaluation-box.insufficient { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); box-shadow: 0 10px 30px rgba(235,51,73,0.3); }
+
+        .stats-detail { background: white; padding: 20px; border-radius: 12px; margin: 20px 0; text-align: left; border: 2px solid #e9ecef; }
+        .stats-detail h4 { color: #1a0533; margin-bottom: 15px; font-size: 1.2em; text-align: center; }
+        .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-label { color: #666; }
+        .stat-value { font-weight: 700; color: #1a0533; }
+        .stat-value.success { color: #28a745; }
+        .stat-value.error { color: #dc3545; }
+
+        .email-section { background: #f8f9fa; padding: 30px; border-radius: 15px; margin-top: 35px; border: 2px solid #e9ecef; }
+        .email-section h3 { font-family: 'Playfair Display', serif; color: #1a0533; margin-bottom: 15px; font-size: 1.3em; }
+        .email-section p { color: #666; margin-bottom: 15px; font-size: 1em; }
+        .results-text {
+            width: 100%; min-height: 250px; padding: 15px;
+            font-family: 'Courier New', monospace; font-size: 0.9em;
+            border: 2px solid #dee2e6; border-radius: 10px;
+            margin-bottom: 20px; resize: vertical; background: white;
+        }
+        .button-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn-send {
+            padding: 16px 40px; font-size: 1.15em;
+            font-family: 'Source Sans Pro', sans-serif; font-weight: 700;
+            border: none; border-radius: 12px; cursor: pointer;
+            background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);
+            color: white; transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(45,27,105,0.3);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .btn-send:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(45,27,105,0.4); }
+        .btn-send::before { content: '✉'; font-size: 1.3em; }
+        #restartBtn {
+            padding: 14px 30px; font-size: 1.05em;
+            font-family: 'Source Sans Pro', sans-serif; font-weight: 700;
+            border: 2px solid #2d1b69; border-radius: 10px; cursor: pointer;
+            background: white; color: #2d1b69; transition: all 0.3s ease;
+        }
+        #restartBtn:hover { background: #2d1b69; color: white; transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .quiz-container { padding: 25px; }
+            .header h1 { font-size: 2em; }
+            .results-grid { grid-template-columns: 1fr; }
+            .answer-btn { font-size: 1em; padding: 15px; }
+            .question-text { font-size: 1.2em; }
+            .score-display { font-size: 3.5em; }
+            .button-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+
+    <!-- START SCREEN -->
+    <div id="startScreen">
+        <div class="header">
+            <h1>VERBI RIFLESSIVI</h1>
+            <p>Quiz A1/A2 - Riflessivi e Reciproci - 100 Domande</p>
+        </div>
+        <div class="start-screen">
+            <h2>Benvenuto al Quiz sui Verbi Riflessivi</h2>
+            <p>Questo test valuta la conoscenza dei verbi riflessivi propri e reciproci al presente indicativo. Livello A1/A2. Durata stimata: 40-60 minuti.</p>
+            <div class="grading-scale">
+                <h4>📊 Sistema di Valutazione</h4>
+                <div class="grade-item"><span class="grade-range">90-100%</span><span class="grade-value">30/30 - Eccellente</span></div>
+                <div class="grade-item"><span class="grade-range">80-89%</span><span class="grade-value">27-29/30 - Buono</span></div>
+                <div class="grade-item"><span class="grade-range">70-79%</span><span class="grade-value">24-26/30 - Soddisfacente</span></div>
+                <div class="grade-item"><span class="grade-range">60-69%</span><span class="grade-value">18-23/30 - Sufficiente</span></div>
+                <div class="grade-item"><span class="grade-range">&lt;60%</span><span class="grade-value">Insufficiente</span></div>
+            </div>
+            <div class="form-group">
+                <label for="nomeInput">Nome *</label>
+                <input type="text" id="nomeInput" placeholder="Es: Marco">
+            </div>
+            <div class="form-group">
+                <label for="cognomeInput">Cognome *</label>
+                <input type="text" id="cognomeInput" placeholder="Es: Rossi">
+            </div>
+            <div class="form-group">
+                <label for="emailInput">Email *</label>
+                <input type="email" id="emailInput" placeholder="Es: marco.rossi@gmail.com">
+            </div>
+            <button id="startBtn" disabled onclick="startQuiz()">Avvia Test</button>
+        </div>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quizScreen" class="hidden">
+        <div class="header">
+            <h1>VERBI RIFLESSIVI</h1>
+            <p>Quiz A1/A2 - Riflessivi e Reciproci</p>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+            <div class="question-counter">Domanda <span id="currentQ">1</span> di 100</div>
+        </div>
+        <div class="question-card">
+            <div class="question-label">Esercizio</div>
+            <div id="questionText" class="question-text"></div>
+            <div id="answersContainer" class="answers-container"></div>
+            <div id="feedback" class="feedback-message hidden"></div>
+        </div>
+        <div class="navigation">
+            <button id="prevBtn" class="nav-btn" onclick="previousQuestion()">← Precedente</button>
+            <button id="nextBtn" class="nav-btn" onclick="nextQuestion()" disabled>Successiva →</button>
+        </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="resultsScreen" class="hidden">
+        <div class="header">
+            <h1>RISULTATI FINALI</h1>
+            <p>Quiz A1/A2 - Verbi Riflessivi e Reciproci</p>
+        </div>
+        <div class="results-container">
+            <div class="student-name" id="studentNameDisplay"></div>
+            <h2>Punteggio Ottenuto</h2>
+            <div class="score-display" id="finalScore"></div>
+            <div class="score-label">Risposte corrette su 100</div>
+            <div id="evaluationBox" class="evaluation-box">
+                <h3>Valutazione</h3>
+                <div class="grade" id="gradeDisplay"></div>
+                <div class="status" id="statusDisplay"></div>
+            </div>
+            <div class="results-grid">
+                <div class="result-box"><span class="number" id="correctCount"></span><span class="label">Corrette</span></div>
+                <div class="result-box"><span class="number" id="wrongCount"></span><span class="label">Sbagliate</span></div>
+                <div class="result-box"><span class="number" id="percentage"></span><span class="label">Percentuale</span></div>
+            </div>
+            <div class="stats-detail">
+                <h4>📈 Dettaglio Statistiche</h4>
+                <div class="stat-row"><span class="stat-label">Risposte Corrette:</span><span class="stat-value success" id="statCorrect"></span></div>
+                <div class="stat-row"><span class="stat-label">Risposte Sbagliate:</span><span class="stat-value error" id="statWrong"></span></div>
+                <div class="stat-row"><span class="stat-label">Percentuale Successo:</span><span class="stat-value" id="statPercent"></span></div>
+                <div class="stat-row"><span class="stat-label">Voto Finale:</span><span class="stat-value" id="statGrade"></span></div>
+                <div class="stat-row"><span class="stat-label">Esito:</span><span class="stat-value" id="statResult"></span></div>
+            </div>
+            <div class="email-section">
+                <h3>📧 Invia Risultati</h3>
+                <p>Clicca su "Invio" per inviare automaticamente i risultati completi a <strong>giancarlo.vettori@cpiatv1.edu.it</strong></p>
+                <textarea id="resultsText" class="results-text"></textarea>
+                <div class="button-group">
+                    <button class="btn-send" onclick="sendResults()">Invio</button>
+                    <button id="restartBtn" onclick="restartQuiz()">Ricomincia Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    // =====================================================================
+    // 100 DOMANDE - VERBI RIFLESSIVI E RECIPROCI - LIVELLO A1/A2
+    // =====================================================================
+    const originalQuestions = [
+
+        // 1-20: RIFLESSIVI PROPRI - PRESENTE INDICATIVO (io/tu/lui/lei)
+        {q: "Ogni mattina io _____ (lavarsi) le mani prima di colazione.", options: ["mi lavo", "ti lavi", "si lava", "ci laviamo"], correct: 0, expl: "RIFLESSIVO: io + lavarsi → mi lavo. Il pronome 'mi' corrisponde alla 1a persona singolare."},
+        {q: "Tu _____ (svegliarsi) sempre tardi il sabato mattina.", options: ["mi sveglio", "ti svegli", "si sveglia", "vi svegliate"], correct: 1, expl: "RIFLESSIVO: tu + svegliarsi → ti svegli. Il pronome 'ti' corrisponde alla 2a persona singolare."},
+        {q: "Marco _____ (vestirsi) in fretta ogni mattina.", options: ["mi vesto", "ti vesti", "si veste", "si vestono"], correct: 2, expl: "RIFLESSIVO: lui/lei + vestirsi → si veste. Il pronome 'si' corrisponde alla 3a persona singolare."},
+        {q: "Anna _____ (pettinarsi) davanti allo specchio.", options: ["mi pettino", "ti pettini", "si pettina", "ci pettiniamo"], correct: 2, expl: "RIFLESSIVO: lei + pettinarsi → si pettina. Verbo riflessivo regolare della 1a coniugazione."},
+        {q: "Io _____ (alzarsi) alle sette ogni giorno.", options: ["mi alzo", "ti alzi", "si alza", "vi alzate"], correct: 0, expl: "RIFLESSIVO: io + alzarsi → mi alzo. Presente regolare con pronome riflessivo 'mi'."},
+        {q: "Tu _____ (truccarsi) prima di uscire la sera.", options: ["si trucca", "ti trucchi", "mi trucco", "vi truccate"], correct: 1, expl: "RIFLESSIVO: tu + truccarsi → ti trucchi. Verbo in -arsi, 2a persona: pronome 'ti' + forma in -i."},
+        {q: "Il bambino _____ (addormentarsi) subito dopo cena.", options: ["mi addormento", "ti addormenti", "si addormenta", "si addormentano"], correct: 2, expl: "RIFLESSIVO: lui + addormentarsi → si addormenta. Pronome 'si', forma regolare."},
+        {q: "Io _____ (fermarsi) al bar ogni mattina.", options: ["mi fermo", "ti fermi", "si ferma", "ci fermiamo"], correct: 0, expl: "RIFLESSIVO: io + fermarsi → mi fermo. Pronome 'mi', presente regolare."},
+        {q: "Tu _____ (prepararsi) per la festa stasera?", options: ["mi preparo", "ti prepari", "si prepara", "vi preparate"], correct: 1, expl: "RIFLESSIVO: tu + prepararsi → ti prepari. Forma interrogativa, pronome 'ti'."},
+        {q: "La mamma _____ (riposarsi) sul divano dopo pranzo.", options: ["mi riposo", "ti riposi", "si riposa", "ci riposiamo"], correct: 2, expl: "RIFLESSIVO: lei + riposarsi → si riposa. Pronome 'si', verbo regolare in -arsi."},
+        {q: "Io _____ (divertirsi) molto al parco con i miei amici.", options: ["mi diverto", "ti diverti", "si diverte", "vi divertite"], correct: 0, expl: "RIFLESSIVO: io + divertirsi → mi diverto. Verbo in -irsi, pronome 'mi'."},
+        {q: "Tu _____ (sentirsi) bene oggi?", options: ["mi sento", "ti senti", "si sente", "ci sentiamo"], correct: 1, expl: "RIFLESSIVO: tu + sentirsi → ti senti. Pronome 'ti', forma interrogativa comune."},
+        {q: "Il gatto _____ (nascondersi) sotto il letto.", options: ["mi nascondo", "si nasconde", "ti nascondi", "ci nascondiamo"], correct: 1, expl: "RIFLESSIVO: lui + nascondersi → si nasconde. Pronome 'si', verbo in -ersi."},
+        {q: "Io _____ (annoiarsi) quando non c'è niente da fare.", options: ["mi annoio", "ti annoi", "si annoia", "vi annoiate"], correct: 0, expl: "RIFLESSIVO: io + annoiarsi → mi annoio. Attenzione alla forma: mi annoio (non mi annoio)."},
+        {q: "Tu _____ (arrabbiarsi) facilmente?", options: ["mi arrabbio", "ti arrabbi", "si arrabbia", "ci arrabbiamo"], correct: 1, expl: "RIFLESSIVO: tu + arrabbiarsi → ti arrabbi. Pronome 'ti', verbo in -iarsi."},
+        {q: "Il professore _____ (sedersi) alla cattedra.", options: ["mi siedo", "ti siedi", "si siede", "ci sediamo"], correct: 2, expl: "RIFLESSIVO: lui + sedersi → si siede. Verbo irregolare: siedo/siedi/siede."},
+        {q: "Io _____ (avvicinarsi) alla finestra per guardare fuori.", options: ["mi avvicino", "ti avvicini", "si avvicina", "vi avvicinate"], correct: 0, expl: "RIFLESSIVO: io + avvicinarsi → mi avvicino. Pronome 'mi', forma regolare."},
+        {q: "Tu _____ (abituarsi) facilmente ai posti nuovi?", options: ["mi abituo", "ti abitui", "si abitua", "ci abituiamo"], correct: 1, expl: "RIFLESSIVO: tu + abituarsi → ti abitui. Pronome 'ti', verbo in -uarsi."},
+        {q: "Il cane _____ (avvicinarsi) alla porta quando sente i passi.", options: ["mi avvicino", "ti avvicini", "si avvicina", "si avvicinano"], correct: 2, expl: "RIFLESSIVO: lui + avvicinarsi → si avvicina. Pronome 'si', soggetto 3a persona."},
+        {q: "Io _____ (preoccuparsi) molto per gli esami.", options: ["mi preoccupo", "ti preoccupi", "si preoccupa", "ci preoccupiamo"], correct: 0, expl: "RIFLESSIVO: io + preoccuparsi → mi preoccupo. Pronome 'mi', forma regolare."},
+
+        // 21-40: RIFLESSIVI PROPRI - NOI/VOI/LORO
+        {q: "Noi _____ (alzarsi) sempre alle sette durante la settimana.", options: ["mi alzo", "vi alzate", "ci alziamo", "si alzano"], correct: 2, expl: "RIFLESSIVO: noi + alzarsi → ci alziamo. Il pronome 'ci' corrisponde alla 1a persona plurale."},
+        {q: "Voi _____ (divertirsi) alla festa ieri sera?", options: ["ci divertiamo", "vi divertite", "si divertono", "ti diverti"], correct: 1, expl: "RIFLESSIVO: voi + divertirsi → vi divertite. Il pronome 'vi' corrisponde alla 2a persona plurale."},
+        {q: "I bambini _____ (addormentarsi) tardi la domenica.", options: ["ci addormentiamo", "vi addormentate", "si addormentano", "mi addormento"], correct: 2, expl: "RIFLESSIVO: loro + addormentarsi → si addormentano. Pronome 'si', 3a persona plurale."},
+        {q: "Noi _____ (vestirsi) sempre bene per andare al lavoro.", options: ["ci vestiamo", "vi vestite", "si vestono", "mi vesto"], correct: 0, expl: "RIFLESSIVO: noi + vestirsi → ci vestiamo. Pronome 'ci', forma regolare."},
+        {q: "Voi _____ (svegliarsi) presto la mattina?", options: ["ci svegliamo", "vi svegliate", "si svegliano", "ti svegli"], correct: 1, expl: "RIFLESSIVO: voi + svegliarsi → vi svegliate. Pronome 'vi', forma interrogativa."},
+        {q: "Le studentesse _____ (prepararsi) bene per gli esami.", options: ["ci prepariamo", "vi preparate", "si preparano", "mi preparo"], correct: 2, expl: "RIFLESSIVO: loro + prepararsi → si preparano. Pronome 'si', 3a persona plurale."},
+        {q: "Noi _____ (fermarsi) a mangiare una pizza dopo il cinema.", options: ["ci fermiamo", "vi fermate", "si fermano", "mi fermo"], correct: 0, expl: "RIFLESSIVO: noi + fermarsi → ci fermiamo. Pronome 'ci', soggetto 1a persona plurale."},
+        {q: "Voi _____ (lavarsi) le mani prima di mangiare?", options: ["ci laviamo", "vi lavate", "si lavano", "ti lavi"], correct: 1, expl: "RIFLESSIVO: voi + lavarsi → vi lavate. Pronome 'vi', verbo in -arsi."},
+        {q: "I turisti _____ (riposarsi) in hotel durante il pomeriggio.", options: ["ci riposiamo", "vi riposate", "si riposano", "mi riposo"], correct: 2, expl: "RIFLESSIVO: loro + riposarsi → si riposano. Pronome 'si', soggetto plurale."},
+        {q: "Noi _____ (sedersi) sempre allo stesso tavolo al bar.", options: ["ci sediamo", "vi sedete", "si siedono", "mi siedo"], correct: 0, expl: "RIFLESSIVO: noi + sedersi → ci sediamo. Verbo irregolare, pronome 'ci'."},
+        {q: "Voi _____ (sentirsi) stanchi dopo la lunga passeggiata?", options: ["ci sentiamo", "vi sentite", "si sentono", "ti senti"], correct: 1, expl: "RIFLESSIVO: voi + sentirsi → vi sentite. Pronome 'vi', forma interrogativa."},
+        {q: "Gli studenti _____ (annoiarsi) durante le lezioni noiose.", options: ["ci annoiamo", "vi annoiate", "si annoiano", "mi annoio"], correct: 2, expl: "RIFLESSIVO: loro + annoiarsi → si annoiano. Pronome 'si', 3a persona plurale."},
+        {q: "Noi _____ (avvicinarsi) alla fine del corso.", options: ["ci avviciniamo", "vi avvicinate", "si avvicinano", "mi avvicino"], correct: 0, expl: "RIFLESSIVO: noi + avvicinarsi → ci avviciniamo. Pronome 'ci', uso figurato."},
+        {q: "Voi _____ (truccarsi) prima dello spettacolo?", options: ["ci trucchiamo", "vi truccate", "si truccano", "ti trucchi"], correct: 1, expl: "RIFLESSIVO: voi + truccarsi → vi truccate. Pronome 'vi', verbo in -arsi."},
+        {q: "I ragazzi _____ (arrabbiarsi) quando perdono la partita.", options: ["ci arrabbiamo", "vi arrabbiate", "si arrabbiano", "mi arrabbio"], correct: 2, expl: "RIFLESSIVO: loro + arrabbiarsi → si arrabbiano. Pronome 'si', 3a persona plurale."},
+        {q: "Noi _____ (divertirsi) molto in vacanza al mare.", options: ["ci divertiamo", "vi divertite", "si divertono", "mi diverto"], correct: 0, expl: "RIFLESSIVO: noi + divertirsi → ci divertiamo. Pronome 'ci', verbo in -irsi."},
+        {q: "Voi _____ (abituarsi) al nuovo orario di lavoro?", options: ["ci abituiamo", "vi abituate", "si abituano", "ti abitui"], correct: 1, expl: "RIFLESSIVO: voi + abituarsi → vi abituate. Pronome 'vi', forma interrogativa."},
+        {q: "Le ragazze _____ (pettinarsi) insieme prima di uscire.", options: ["ci pettiniamo", "vi pettinate", "si pettinano", "mi pettino"], correct: 2, expl: "RIFLESSIVO: loro + pettinarsi → si pettinano. Pronome 'si', 3a persona plurale."},
+        {q: "Noi _____ (preoccuparsi) per il tempo durante le vacanze.", options: ["ci preoccupiamo", "vi preoccupate", "si preoccupano", "mi preoccupo"], correct: 0, expl: "RIFLESSIVO: noi + preoccuparsi → ci preoccupiamo. Pronome 'ci', forma regolare."},
+        {q: "Voi _____ (nascondersi) durante il gioco?", options: ["ci nascondiamo", "vi nascondete", "si nascondono", "ti nascondi"], correct: 1, expl: "RIFLESSIVO: voi + nascondersi → vi nascondete. Pronome 'vi', verbo in -ersi."},
+
+        // 41-60: SCELTA DEL PRONOME RIFLESSIVO CORRETTO
+        {q: "Io _____ lavo i capelli ogni due giorni.", options: ["mi", "ti", "si", "vi"], correct: 0, expl: "PRONOME RIFLESSIVO: io → mi. Schema: io/mi, tu/ti, lui-lei/si, noi/ci, voi/vi, loro/si."},
+        {q: "Tu _____ alzi tardi la domenica mattina.", options: ["mi", "ti", "si", "ci"], correct: 1, expl: "PRONOME RIFLESSIVO: tu → ti. Il pronome riflessivo 'ti' si usa con la 2a persona singolare."},
+        {q: "Maria _____ veste sempre con eleganza.", options: ["mi", "ti", "si", "ci"], correct: 2, expl: "PRONOME RIFLESSIVO: lei → si. Il pronome 'si' si usa con la 3a persona singolare e plurale."},
+        {q: "Noi _____ divertiamo molto al parco.", options: ["mi", "ti", "ci", "vi"], correct: 2, expl: "PRONOME RIFLESSIVO: noi → ci. Il pronome 'ci' si usa con la 1a persona plurale."},
+        {q: "Voi _____ preparate per il viaggio?", options: ["mi", "ci", "vi", "si"], correct: 2, expl: "PRONOME RIFLESSIVO: voi → vi. Il pronome 'vi' si usa con la 2a persona plurale."},
+        {q: "I miei genitori _____ svegliano presto ogni mattina.", options: ["mi", "ti", "ci", "si"], correct: 3, expl: "PRONOME RIFLESSIVO: loro → si. Con la 3a persona plurale si usa 'si', uguale alla singolare."},
+        {q: "Io _____ siedo vicino alla finestra in classe.", options: ["mi", "ti", "si", "vi"], correct: 0, expl: "PRONOME RIFLESSIVO: io → mi. Mi siedo: verbo irregolare sedersi, 1a persona singolare."},
+        {q: "Tu _____ arrabbi sempre per le piccole cose?", options: ["mi", "ti", "si", "ci"], correct: 1, expl: "PRONOME RIFLESSIVO: tu → ti. Ti arrabbi: pronome 'ti', verbo arrabbiarsi."},
+        {q: "Il gatto _____ nasconde sempre quando arrivano ospiti.", options: ["mi", "ti", "si", "vi"], correct: 2, expl: "PRONOME RIFLESSIVO: lui → si. Si nasconde: pronome 'si', soggetto 3a persona."},
+        {q: "Noi _____ fermiamo al supermercato dopo il lavoro.", options: ["mi", "ti", "ci", "vi"], correct: 2, expl: "PRONOME RIFLESSIVO: noi → ci. Ci fermiamo: pronome 'ci', 1a persona plurale."},
+        {q: "Voi _____ sentite bene dopo la vacanza?", options: ["mi", "vi", "si", "ci"], correct: 1, expl: "PRONOME RIFLESSIVO: voi → vi. Vi sentite: pronome 'vi', 2a persona plurale."},
+        {q: "Le bambine _____ addormentano dopo la storia.", options: ["mi", "ci", "vi", "si"], correct: 3, expl: "PRONOME RIFLESSIVO: loro → si. Si addormentano: pronome 'si', 3a persona plurale."},
+        {q: "Io _____ preoccupo troppo del futuro.", options: ["mi", "ti", "si", "vi"], correct: 0, expl: "PRONOME RIFLESSIVO: io → mi. Mi preoccupo: pronome 'mi', 1a persona singolare."},
+        {q: "Tu _____ riposi abbastanza durante la notte?", options: ["mi", "ti", "si", "ci"], correct: 1, expl: "PRONOME RIFLESSIVO: tu → ti. Ti riposi: pronome 'ti', 2a persona singolare."},
+        {q: "Il professore _____ avvicina alla lavagna per spiegare.", options: ["mi", "ti", "si", "vi"], correct: 2, expl: "PRONOME RIFLESSIVO: lui → si. Si avvicina: pronome 'si', 3a persona singolare."},
+        {q: "Noi _____ annoiamo quando non c'è niente da fare.", options: ["mi", "ci", "vi", "si"], correct: 1, expl: "PRONOME RIFLESSIVO: noi → ci. Ci annoiamo: pronome 'ci', 1a persona plurale."},
+        {q: "Voi _____ abituate presto ai nuovi posti?", options: ["mi", "ti", "vi", "si"], correct: 2, expl: "PRONOME RIFLESSIVO: voi → vi. Vi abituate: pronome 'vi', 2a persona plurale."},
+        {q: "Gli studenti _____ alzano subito quando entra il preside.", options: ["mi", "ci", "si", "vi"], correct: 2, expl: "PRONOME RIFLESSIVO: loro → si. Si alzano: pronome 'si', 3a persona plurale."},
+        {q: "Io _____ trucco solo per le occasioni speciali.", options: ["mi", "ti", "si", "ci"], correct: 0, expl: "PRONOME RIFLESSIVO: io → mi. Mi trucco: pronome 'mi', 1a persona singolare."},
+        {q: "Tu _____ pettini i capelli ogni mattina?", options: ["mi", "ti", "si", "vi"], correct: 1, expl: "PRONOME RIFLESSIVO: tu → ti. Ti pettini: pronome 'ti', 2a persona singolare."},
+
+        // 61-80: VERBI RECIPROCI
+        {q: "Marco e Anna _____ (amarsi) molto. Sono una bella coppia.", options: ["mi amo", "ti ami", "si amano", "ci amiamo"], correct: 2, expl: "RECIPROCO: loro + amarsi → si amano. Il reciproco indica un'azione scambiata tra due o più persone."},
+        {q: "Luca e io _____ (conoscersi) da molti anni.", options: ["si conoscono", "ci conosciamo", "vi conoscete", "ti conosci"], correct: 1, expl: "RECIPROCO: noi + conoscersi → ci conosciamo. L'azione è scambiata tra noi due."},
+        {q: "Voi _____ (vedersi) spesso durante la settimana?", options: ["ci vediamo", "vi vedete", "si vedono", "ti vedi"], correct: 1, expl: "RECIPROCO: voi + vedersi → vi vedete. Azione reciproca tra voi due o più persone."},
+        {q: "Mia sorella e la sua amica _____ (scriversi) ogni giorno.", options: ["ci scriviamo", "vi scrivete", "si scrivono", "mi scrivo"], correct: 2, expl: "RECIPROCO: loro + scriversi → si scrivono. Si scrivono messaggi a vicenda."},
+        {q: "Noi _____ (incontrarsi) tutti i venerdì al bar.", options: ["mi incontro", "ti incontri", "ci incontriamo", "vi incontrate"], correct: 2, expl: "RECIPROCO: noi + incontrarsi → ci incontriamo. Azione scambiata tra più persone."},
+        {q: "Voi _____ (aiutarsi) sempre quando avete problemi?", options: ["ci aiutiamo", "vi aiutate", "si aiutano", "ti aiuti"], correct: 1, expl: "RECIPROCO: voi + aiutarsi → vi aiutate. Vi aiutate a vicenda."},
+        {q: "I due amici _____ (salutarsi) con un abbraccio.", options: ["ci salutiamo", "vi salutate", "si salutano", "mi saluto"], correct: 2, expl: "RECIPROCO: loro + salutarsi → si salutano. Si salutano l'un l'altro."},
+        {q: "Noi _____ (capirsi) sempre bene, siamo grandi amici.", options: ["ci capiamo", "vi capite", "si capiscono", "mi capisco"], correct: 0, expl: "RECIPROCO: noi + capirsi → ci capiamo. L'azione del capire è reciproca tra noi."},
+        {q: "Voi _____ (telefonarsi) spesso?", options: ["ci telefoniamo", "vi telefonate", "si telefonano", "ti telefoni"], correct: 1, expl: "RECIPROCO: voi + telefonarsi → vi telefonate. Vi telefonate l'uno all'altro."},
+        {q: "Paolo e Giulia _____ (abbracciarsi) quando si incontrano.", options: ["ci abbracciamo", "vi abbracciate", "si abbracciano", "mi abbraccio"], correct: 2, expl: "RECIPROCO: loro + abbracciarsi → si abbracciano. Azione scambiata tra i due."},
+        {q: "Noi _____ (rispettarsi) sempre, anche quando non siamo d'accordo.", options: ["ci rispettiamo", "vi rispettate", "si rispettano", "mi rispetto"], correct: 0, expl: "RECIPROCO: noi + rispettarsi → ci rispettiamo. Il rispetto è reciproco tra noi."},
+        {q: "Voi _____ (parlarsi) ogni giorno?", options: ["ci parliamo", "vi parlate", "si parlano", "ti parli"], correct: 1, expl: "RECIPROCO: voi + parlarsi → vi parlate. Vi parlate a vicenda."},
+        {q: "I colleghi _____ (salutarsi) ogni mattina in ufficio.", options: ["ci salutiamo", "vi salutate", "si salutano", "mi saluto"], correct: 2, expl: "RECIPROCO: loro + salutarsi → si salutano. I colleghi si salutano tra loro."},
+        {q: "Noi _____ (baciarsi) sulla guancia quando ci vediamo.", options: ["ci baciamo", "vi baciate", "si baciano", "mi bacio"], correct: 0, expl: "RECIPROCO: noi + baciarsi → ci baciamo. Azione reciproca, tipica del saluto italiano."},
+        {q: "Voi _____ (capirsi) bene nonostante le differenze?", options: ["ci capiamo", "vi capite", "si capiscono", "ti capisci"], correct: 1, expl: "RECIPROCO: voi + capirsi → vi capite. Vi capite a vicenda."},
+        {q: "I genitori e i figli _____ (volersi) bene.", options: ["ci vogliamo bene", "vi volete bene", "si vogliono bene", "mi voglio bene"], correct: 2, expl: "RECIPROCO: loro + volersi bene → si vogliono bene. L'amore è reciproco."},
+        {q: "Noi _____ (scriversi) spesso quando siamo lontani.", options: ["ci scriviamo", "vi scrivete", "si scrivono", "mi scrivo"], correct: 0, expl: "RECIPROCO: noi + scriversi → ci scriviamo. Ci scriviamo messaggi e lettere a vicenda."},
+        {q: "Voi _____ (vedersi) questo fine settimana?", options: ["ci vediamo", "vi vedete", "si vedono", "ti vedi"], correct: 1, expl: "RECIPROCO: voi + vedersi → vi vedete. Azione reciproca: vi vedete l'un l'altro."},
+        {q: "I due bambini _____ (picchiarsi) in giardino.", options: ["ci picchiamo", "vi picchiate", "si picchiano", "mi picchio"], correct: 2, expl: "RECIPROCO: loro + picchiarsi → si picchiano. Azione reciproca (anche se negativa!)."},
+        {q: "Noi _____ (incontrare) ogni settimana per studiare insieme.", options: ["ci incontriamo", "vi incontrate", "si incontrano", "mi incontro"], correct: 0, expl: "RECIPROCO: noi + incontrarsi → ci incontriamo. Ci incontriamo: azione scambiata tra noi."},
+
+        // 81-100: DOMANDE MISTE - RIFLESSIVI E RECIPROCI A CONFRONTO
+        {q: "La mattina io _____ (lavarsi) e poi _____ (vestirsi) in fretta.", options: ["mi lavo, mi vesto", "ti lavi, ti vesti", "si lava, si veste", "ci laviamo, ci vestiamo"], correct: 0, expl: "RIFLESSIVO doppio: io → mi lavo + mi vesto. Due verbi riflessivi con la stessa persona."},
+        {q: "I due amici _____ (salutarsi) e poi _____ (abbracciarsi).", options: ["ci salutiamo, ci abbracciamo", "vi salutate, vi abbracciate", "si salutano, si abbracciano", "mi saluto, mi abbraccio"], correct: 2, expl: "RECIPROCO doppio: loro → si salutano + si abbracciano. Due verbi reciproci alla 3a persona plurale."},
+        {q: "Noi _____ (svegliarsi) presto e _____ (prepararsi) per la scuola.", options: ["mi sveglio, mi preparo", "ci svegliamo, ci prepariamo", "vi svegliate, vi preparate", "si svegliano, si preparano"], correct: 1, expl: "RIFLESSIVO doppio: noi → ci svegliamo + ci prepariamo. Pronome 'ci' per entrambi i verbi."},
+        {q: "Tu _____ (divertirsi) alla festa e _____ (dimenticarsi) di tutti i problemi.", options: ["mi diverto, mi dimentico", "ti diverti, ti dimentichi", "si diverte, si dimentica", "vi divertite, vi dimenticate"], correct: 1, expl: "RIFLESSIVO: tu → ti diverti + ti dimentichi. Due verbi riflessivi alla 2a persona singolare."},
+        {q: "Marco e Luca _____ (conoscersi) bene e _____ (aiutarsi) sempre.", options: ["si conoscono, si aiutano", "ci conosciamo, ci aiutiamo", "vi conoscete, vi aiutate", "mi conosco, mi aiuto"], correct: 0, expl: "RECIPROCO doppio: loro → si conoscono + si aiutano. Azioni reciproche tra Marco e Luca."},
+        {q: "La sera io _____ (lavarsi) i denti e _____ (addormentarsi) subito.", options: ["mi lavo, mi addormento", "ti lavi, ti addormenti", "si lava, si addormenta", "ci laviamo, ci addormentiamo"], correct: 0, expl: "RIFLESSIVO doppio: io → mi lavo + mi addormento. Routine serale alla 1a persona."},
+        {q: "Voi _____ (vedersi) spesso e _____ (aiutarsi) nei compiti?", options: ["si vedono, si aiutano", "ci vediamo, ci aiutiamo", "vi vedete, vi aiutate", "ti vedi, ti aiuti"], correct: 2, expl: "RECIPROCO: voi → vi vedete + vi aiutate. Due verbi reciproci alla 2a persona plurale."},
+        {q: "Anna _____ (truccarsi) e _____ (pettinarsi) prima di uscire.", options: ["mi trucco, mi pettino", "ti trucchi, ti pettini", "si trucca, si pettina", "ci trucchiamo, ci pettiniamo"], correct: 2, expl: "RIFLESSIVO doppio: lei → si trucca + si pettina. Pronome 'si', 3a persona singolare."},
+        {q: "Noi _____ (incontrarsi) al bar e _____ (salutarsi) con un bacio.", options: ["si incontrano, si salutano", "ci incontriamo, ci salutiamo", "vi incontrate, vi salutate", "mi incontro, mi saluto"], correct: 1, expl: "RECIPROCO: noi → ci incontriamo + ci salutiamo. Due azioni reciproche alla 1a persona plurale."},
+        {q: "I ragazzi _____ (divertirsi) al parco e _____ (stancarsi) molto.", options: ["ci divertiamo, ci stanchiamo", "vi divertite, vi stancate", "si divertono, si stancano", "mi diverto, mi stanco"], correct: 2, expl: "RIFLESSIVO: loro → si divertono + si stancano. Pronome 'si', 3a persona plurale."},
+        {q: "Tu _____ (svegliarsi) alle otto e _____ (prepararsi) per l'università.", options: ["mi sveglio, mi preparo", "ti svegli, ti prepari", "si sveglia, si prepara", "vi svegliate, vi preparate"], correct: 1, expl: "RIFLESSIVO: tu → ti svegli + ti prepari. Pronome 'ti', 2a persona singolare."},
+        {q: "Paolo e Maria _____ (amarsi) molto e _____ (rispettarsi) sempre.", options: ["si amano, si rispettano", "ci amiamo, ci rispettiamo", "vi amate, vi rispettate", "mi amo, mi rispetto"], correct: 0, expl: "RECIPROCO: loro → si amano + si rispettano. Due verbi reciproci, coppia alla 3a persona plurale."},
+        {q: "Voi _____ (lavarsi) le mani e _____ (sedersi) a tavola?", options: ["ci laviamo, ci sediamo", "vi lavate, vi sedete", "si lavano, si siedono", "ti lavi, ti siedi"], correct: 1, expl: "RIFLESSIVO: voi → vi lavate + vi sedete. Due verbi riflessivi alla 2a persona plurale."},
+        {q: "Il bambino _____ (addormentarsi) sul divano e _____ (svegliarsi) tardi.", options: ["mi addormento, mi sveglio", "ti addormenti, ti svegli", "si addormenta, si sveglia", "ci addormentiamo, ci svegliamo"], correct: 2, expl: "RIFLESSIVO: lui → si addormenta + si sveglia. Pronome 'si', 3a persona singolare."},
+        {q: "Noi _____ (scriversi) messaggi e _____ (telefonarsi) ogni sera.", options: ["si scrivono, si telefonano", "ci scriviamo, ci telefoniamo", "vi scrivete, vi telefonate", "mi scrivo, mi telefono"], correct: 1, expl: "RECIPROCO: noi → ci scriviamo + ci telefoniamo. Due azioni reciproche alla 1a persona plurale."},
+        {q: "Io _____ (sentirsi) stanco e _____ (riposarsi) un po'.", options: ["mi sento, mi riposo", "ti senti, ti riposi", "si sente, si riposa", "ci sentiamo, ci riposiamo"], correct: 0, expl: "RIFLESSIVO: io → mi sento + mi riposo. Due verbi riflessivi alla 1a persona singolare."},
+        {q: "Gli amici _____ (incontrarsi) in piazza e _____ (parlarsi) per ore.", options: ["ci incontriamo, ci parliamo", "vi incontrate, vi parlate", "si incontrano, si parlano", "mi incontro, mi parlo"], correct: 2, expl: "RECIPROCO: loro → si incontrano + si parlano. Azioni reciproche alla 3a persona plurale."},
+        {q: "Tu _____ (annoiarsi) a casa e _____ (decidere) di uscire.", options: ["mi annoio, decido", "ti annoi, decidi", "si annoia, decide", "vi annoiate, decidete"], correct: 1, expl: "MISTO: tu → ti annoi (riflessivo) + decidi (verbo normale). Non tutti i verbi della frase sono riflessivi!"},
+        {q: "Voi _____ (conoscersi) bene e _____ (rispettarsi) molto?", options: ["ci conosciamo, ci rispettiamo", "vi conoscete, vi rispettate", "si conoscono, si rispettano", "ti conosci, ti rispetti"], correct: 1, expl: "RECIPROCO: voi → vi conoscete + vi rispettate. Due azioni reciproche, forma interrogativa."},
+        {q: "Io _____ (alzarsi), _____ (fare) colazione e _____ (avviarsi) al lavoro.", options: ["mi alzo, faccio, mi avvio", "ti alzi, fai, ti avvii", "si alza, fa, si avvia", "ci alziamo, facciamo, ci avviamo"], correct: 0, expl: "MISTO: io → mi alzo (riflessivo) + faccio (normale) + mi avvio (riflessivo). Routine mattutina completa."}
+    ];
+
+    // Shuffle options
+    function shuffleOptions(questions) {
+        return questions.map(function(q) {
+            var indices = [0, 1, 2, 3];
+            for (var i = indices.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var tmp = indices[i]; indices[i] = indices[j]; indices[j] = tmp;
+            }
+            var newCorrect = indices.indexOf(q.correct);
+            var shuffled = indices.map(function(i) { return q.options[i]; });
+            return { q: q.q, options: shuffled, correct: newCorrect, expl: q.expl };
+        });
+    }
+
+    var questions = [];
+    var currentQuestion = 0;
+    var userAnswers = new Array(100).fill(null);
+    var score = 0;
+    var studentName = "";
+    var studentSurname = "";
+    var studentEmail = "";
+
+    document.getElementById('nomeInput').addEventListener('input', checkInputs);
+    document.getElementById('cognomeInput').addEventListener('input', checkInputs);
+    document.getElementById('emailInput').addEventListener('input', checkInputs);
+
+    function checkInputs() {
+        var nome = document.getElementById('nomeInput').value.trim();
+        var cognome = document.getElementById('cognomeInput').value.trim();
+        var email = document.getElementById('emailInput').value.trim();
+        document.getElementById('startBtn').disabled = !(nome.length > 0 && cognome.length > 0 && email.length > 0 && email.includes('@'));
+    }
+
+    function startQuiz() {
+        studentName = document.getElementById('nomeInput').value.trim();
+        studentSurname = document.getElementById('cognomeInput').value.trim();
+        studentEmail = document.getElementById('emailInput').value.trim();
+        if (!studentName || !studentSurname || !studentEmail) { alert("Compila tutti i campi!"); return; }
+        questions = shuffleOptions(originalQuestions);
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('quizScreen').classList.remove('hidden');
+        currentQuestion = 0;
+        userAnswers = new Array(100).fill(null);
+        score = 0;
+        showQuestion();
+    }
+
+    function showQuestion() {
+        var q = questions[currentQuestion];
+        document.getElementById('questionText').textContent = q.q;
+        document.getElementById('currentQ').textContent = currentQuestion + 1;
+        document.getElementById('progressFill').style.width = ((currentQuestion + 1) / 100 * 100) + '%';
+
+        var container = document.getElementById('answersContainer');
+        container.innerHTML = '';
+        q.options.forEach(function(opt, index) {
+            var btn = document.createElement('button');
+            btn.className = 'answer-btn';
+            btn.textContent = opt;
+            btn.onclick = function() { selectAnswer(index); };
+            if (userAnswers[currentQuestion] !== null) {
+                btn.disabled = true;
+                if (index === q.correct) btn.classList.add('correct');
+                else if (index === userAnswers[currentQuestion]) btn.classList.add('wrong');
+            }
+            container.appendChild(btn);
+        });
+
+        var feedback = document.getElementById('feedback');
+        if (userAnswers[currentQuestion] !== null) {
+            feedback.textContent = q.expl;
+            feedback.className = userAnswers[currentQuestion] === q.correct ? 'feedback-message correct' : 'feedback-message wrong';
+            feedback.classList.remove('hidden');
+        } else {
+            feedback.classList.add('hidden');
+        }
+
+        document.getElementById('prevBtn').disabled = currentQuestion === 0;
+        var nextBtn = document.getElementById('nextBtn');
+        nextBtn.disabled = userAnswers[currentQuestion] === null;
+        nextBtn.textContent = currentQuestion === 99 ? 'Vedi Risultati →' : 'Successiva →';
+    }
+
+    function selectAnswer(index) {
+        if (userAnswers[currentQuestion] !== null) return;
+        userAnswers[currentQuestion] = index;
+        var q = questions[currentQuestion];
+        var buttons = document.querySelectorAll('.answer-btn');
+        buttons.forEach(function(btn, i) {
+            btn.disabled = true;
+            if (i === q.correct) btn.classList.add('correct');
+            else if (i === index) btn.classList.add('wrong');
+        });
+        var feedback = document.getElementById('feedback');
+        feedback.textContent = q.expl;
+        feedback.className = index === q.correct ? 'feedback-message correct' : 'feedback-message wrong';
+        feedback.classList.remove('hidden');
+        if (index === q.correct) score++;
+        document.getElementById('nextBtn').disabled = false;
+    }
+
+    function nextQuestion() {
+        if (currentQuestion === 99) { showResults(); }
+        else { currentQuestion++; showQuestion(); }
+    }
+
+    function previousQuestion() {
+        if (currentQuestion > 0) { currentQuestion--; showQuestion(); }
+    }
+
+    function showResults() {
+        document.getElementById('quizScreen').classList.add('hidden');
+        document.getElementById('resultsScreen').classList.remove('hidden');
+        document.getElementById('studentNameDisplay').textContent = studentName + " " + studentSurname;
+
+        var correct = 0;
+        for (var i = 0; i < 100; i++) {
+            if (userAnswers[i] === questions[i].correct) correct++;
+        }
+        var wrong = 100 - correct;
+        var percentage = Math.round((correct / 100) * 100);
+
+        document.getElementById('finalScore').textContent = correct + '/100';
+        document.getElementById('correctCount').textContent = correct;
+        document.getElementById('wrongCount').textContent = wrong;
+        document.getElementById('percentage').textContent = percentage + '%';
+        document.getElementById('statCorrect').textContent = correct;
+        document.getElementById('statWrong').textContent = wrong;
+        document.getElementById('statPercent').textContent = percentage + '%';
+
+        var evaluation = getEvaluation(percentage);
+        document.getElementById('gradeDisplay').textContent = evaluation.grade;
+        document.getElementById('statusDisplay').textContent = evaluation.status;
+        document.getElementById('statGrade').textContent = evaluation.grade;
+        document.getElementById('statResult').textContent = evaluation.status;
+
+        var evalBox = document.getElementById('evaluationBox');
+        evalBox.className = 'evaluation-box' + (evaluation.sufficient ? ' sufficient' : ' insufficient');
+
+        document.getElementById('resultsText').value = generateResultsText(correct, wrong, percentage, evaluation);
+    }
+
+    function getEvaluation(percentage) {
+        if (percentage >= 90) return { grade: '30/30', status: 'Eccellente - Padronanza completa', sufficient: true };
+        else if (percentage >= 80) return { grade: '27-29/30', status: 'Buono - Comprensione solida', sufficient: true };
+        else if (percentage >= 70) return { grade: '24-26/30', status: 'Soddisfacente - Conoscenza accettabile', sufficient: true };
+        else if (percentage >= 60) return { grade: '18-23/30', status: 'Sufficiente - Necessari approfondimenti', sufficient: true };
+        else return { grade: '<18/30', status: 'Insufficiente - Ristudiare i contenuti', sufficient: false };
+    }
+
+    function generateResultsText(correct, wrong, percentage, evaluation) {
+        var date = new Date().toLocaleDateString('it-IT');
+        var time = new Date().toLocaleTimeString('it-IT');
+        var text = '=============================================================\n';
+        text += '     RISULTATI TEST - VERBI RIFLESSIVI E RECIPROCI A1/A2\n';
+        text += '=============================================================\n\n';
+        text += 'DATI CANDIDATO:\n';
+        text += '-------------------------------------------------------------\n';
+        text += 'Nome: ' + studentName + ' ' + studentSurname + '\n';
+        text += 'Email: ' + studentEmail + '\n';
+        text += 'Data: ' + date + '\n';
+        text += 'Ora: ' + time + '\n\n';
+        text += 'RISULTATI GLOBALI:\n';
+        text += '-------------------------------------------------------------\n';
+        text += 'Risposte corrette: ' + correct + '/100\n';
+        text += 'Risposte sbagliate: ' + wrong + '/100\n';
+        text += 'Percentuale: ' + percentage + '%\n';
+        text += 'Valutazione: ' + evaluation.grade + '\n';
+        text += 'Giudizio: ' + evaluation.status + '\n\n';
+        text += 'DETTAGLIO DOMANDA PER DOMANDA:\n';
+        text += '=============================================================\n';
+        for (var i = 0; i < 100; i++) {
+            var ans = userAnswers[i];
+            var q = questions[i];
+            var isCorrect = ans === q.correct;
+            text += '\nDomanda ' + (i + 1) + ': ' + (isCorrect ? 'CORRETTA' : 'ERRATA') + '\n';
+            text += 'Testo: ' + q.q + '\n';
+            text += 'Risposta data: ' + (ans !== null ? q.options[ans] : 'Non risposto') + '\n';
+            text += 'Risposta corretta: ' + q.options[q.correct] + '\n';
+            text += 'Spiegazione: ' + q.expl + '\n';
+            text += '-------------------------------------------------------------\n';
+        }
+        text += '\n=============================================================\n';
+        text += 'Test: Verbi Riflessivi e Reciproci - Livello A1/A2\n';
+        text += 'Soglia di sufficienza: 60% (60/100 risposte corrette)\n';
+        text += '=============================================================\n';
+        return text;
+    }
+
+    function sendResults() {
+        var resultsText = document.getElementById('resultsText').value;
+        var subject = encodeURIComponent('Risultati Test Verbi Riflessivi - ' + studentName + ' ' + studentSurname);
+        var body = encodeURIComponent(resultsText);
+        var teacherEmail = 'giancarlo.vettori@cpiatv1.edu.it';
+        window.location.href = 'mailto:' + teacherEmail + '?subject=' + subject + '&body=' + body;
+        setTimeout(function() {
+            alert('Email preparata per: ' + teacherEmail + '\n\nSe il client email non si apre, copia il testo dalla casella e invialo manualmente a:\n' + teacherEmail);
+        }, 500);
+    }
+
+    function restartQuiz() {
+        document.getElementById('resultsScreen').classList.add('hidden');
+        document.getElementById('startScreen').classList.remove('hidden');
+        document.getElementById('nomeInput').value = '';
+        document.getElementById('cognomeInput').value = '';
+        document.getElementById('emailInput').value = '';
+        document.getElementById('startBtn').disabled = true;
+        currentQuestion = 0;
+        userAnswers = new Array(100).fill(null);
+        score = 0;
+        studentName = '';
+        studentSurname = '';
+        studentEmail = '';
+    }
+</script>
+</body>
+</html>
