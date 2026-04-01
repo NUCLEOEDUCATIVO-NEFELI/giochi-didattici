@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imperfetto Indicativo - Quiz Avanzato 100 Domande Universitario</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #2c5364;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #ff6b6b;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            color: #0f2027;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e8e8e8;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #feca57);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .question-counter {
+            text-align: center;
+            font-size: 1.2em;
+            color: #2c5364;
+            margin-top: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .question-card {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 35px;
+            border-radius: 15px;
+            text-align: left;
+            margin-bottom: 30px;
+            border-left: 6px solid #2c5364;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .question-label {
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question-label::before {
+            content: '❖';
+            color: #ff6b6b;
+        }
+
+        .question-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            color: #0f2027;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .answers-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .answer-btn {
+            padding: 18px 22px;
+            font-size: 1.1em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 600;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            color: #495057;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #2c5364;
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            background: #f1f3f5;
+            border-color: #2c5364;
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(44, 83, 100, 0.15);
+        }
+
+        .answer-btn:hover:not(:disabled)::before {
+            transform: scaleY(1);
+        }
+
+        .answer-btn:disabled {
+            cursor: default;
+            opacity: 1;
+        }
+
+        .answer-btn.correct {
+            background: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+            animation: correctPulse 0.5s ease;
+        }
+
+        .answer-btn.correct::before {
+            background: #28a745;
+            transform: scaleY(1);
+        }
+
+        .answer-btn.wrong {
+            background: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+            animation: shake 0.5s ease;
+        }
+
+        .answer-btn.wrong::before {
+            background: #dc3545;
+            transform: scaleY(1);
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .feedback-message {
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-size: 1.05em;
+            line-height: 1.6;
+            font-weight: 500;
+            border-left: 5px solid;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback-message.correct {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .feedback-message.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-btn {
+            padding: 14px 28px;
+            font-size: 1.05em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #2c5364;
+            color: white;
+            box-shadow: 0 4px 15px rgba(44, 83, 100, 0.3);
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #203a43;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 83, 100, 0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .start-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            color: #0f2027;
+            margin-bottom: 20px;
+        }
+
+        .start-screen p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: #0f2027;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05em;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-family: 'Source Sans Pro', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2c5364;
+            box-shadow: 0 0 0 3px rgba(44, 83, 100, 0.1);
+        }
+
+        #startBtn {
+            padding: 16px 45px;
+            font-size: 1.15em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(238, 90, 111, 0.3);
+        }
+
+        #startBtn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(238, 90, 111, 0.4);
+        }
+
+        #startBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .results-container {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .results-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4em;
+            color: #0f2027;
+            margin-bottom: 10px;
+        }
+
+        .student-name {
+            font-size: 1.5em;
+            color: #2c5364;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .score-display {
+            font-size: 5em;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+
+        .score-label {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-box {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #0f2027;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 1em;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .result-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .result-box .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #2c5364, #203a43);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-box .label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .evaluation-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .evaluation-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .evaluation-box .grade {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .evaluation-box .status {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .evaluation-box.sufficient {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.3);
+        }
+
+        .evaluation-box.insufficient {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            box-shadow: 0 10px 30px rgba(235, 51, 73, 0.3);
+        }
+
+        .email-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 35px;
+            border: 2px solid #e9ecef;
+        }
+
+        .email-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: #0f2027;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .email-section p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .results-text {
+            width: 100%;
+            min-height: 250px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            resize: vertical;
+            background: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-send {
+            padding: 16px 40px;
+            font-size: 1.15em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-send::before {
+            content: '✉';
+            font-size: 1.3em;
+        }
+
+        #restartBtn {
+            padding: 14px 30px;
+            font-size: 1.05em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: 2px solid #2c5364;
+            border-radius: 10px;
+            cursor: pointer;
+            background: white;
+            color: #2c5364;
+            transition: all 0.3s ease;
+        }
+
+        #restartBtn:hover {
+            background: #2c5364;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .grading-scale {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .grading-scale h4 {
+            color: #0f2027;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .grade-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .grade-item:last-child {
+            border-bottom: none;
+        }
+
+        .grade-range {
+            font-weight: 700;
+            color: #2c5364;
+        }
+
+        .grade-value {
+            color: #666;
+        }
+
+        .stats-detail {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+            border: 2px solid #e9ecef;
+        }
+
+        .stats-detail h4 {
+            color: #0f2027;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #0f2027;
+        }
+
+        .stat-value.success {
+            color: #28a745;
+        }
+
+        .stat-value.error {
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .answer-btn {
+                font-size: 1em;
+                padding: 15px;
+            }
+
+            .question-text {
+                font-size: 1.2em;
+            }
+
+            .score-display {
+                font-size: 3.5em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="startScreen">
+            <div class="header">
+                <h1>IMPERFETTO INDICATIVO</h1>
+                <p>Test Universitario Avanzato - 100 Domande</p>
+            </div>
+
+            <div class="start-screen">
+                <h2>Benvenuto al Test Avanzato Completo</h2>
+                <p>Questo esame valuta la padronanza completa dell'imperfetto indicativo in italiano con 100 esercizi su forme attive, passive e pronominali. Durata stimata: 80-100 minuti.</p>
+
+                <div class="grading-scale">
+                    <h4>📊 Sistema di Valutazione</h4>
+                    <div class="grade-item"><span class="grade-range">90-100%</span><span class="grade-value">30/30 - Eccellente</span></div>
+                    <div class="grade-item"><span class="grade-range">80-89%</span><span class="grade-value">27-29/30 - Buono</span></div>
+                    <div class="grade-item"><span class="grade-range">70-79%</span><span class="grade-value">24-26/30 - Soddisfacente</span></div>
+                    <div class="grade-item"><span class="grade-range">60-69%</span><span class="grade-value">18-23/30 - Sufficiente</span></div>
+                    <div class="grade-item"><span class="grade-range">&lt;60%</span><span class="grade-value">Insufficiente</span></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nomeInput">Nome *</label>
+                    <input type="text" id="nomeInput" placeholder="Es: Marco">
+                </div>
+
+                <div class="form-group">
+                    <label for="cognomeInput">Cognome *</label>
+                    <input type="text" id="cognomeInput" placeholder="Es: Rossi">
+                </div>
+
+                <div class="form-group">
+                    <label for="emailInput">Email *</label>
+                    <input type="email" id="emailInput" placeholder="Es: marco.rossi@gmail.com">
+                </div>
+
+                <button id="startBtn" disabled onclick="startQuiz()">Avvia Test</button>
+            </div>
+        </div>
+
+        <div id="quizScreen" class="hidden">
+            <div class="header">
+                <h1>IMPERFETTO INDICATIVO</h1>
+                <p>Test Universitario Avanzato - 100 Domande</p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <div class="question-counter">
+                    Domanda <span id="currentQ">1</span> di 100
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-label">Esercizio linguistico</div>
+                <div id="questionText" class="question-text"></div>
+
+                <div id="answersContainer" class="answers-container"></div>
+
+                <div id="feedback" class="feedback-message hidden"></div>
+            </div>
+
+            <div class="navigation">
+                <button id="prevBtn" class="nav-btn" onclick="previousQuestion()">← Precedente</button>
+                <button id="nextBtn" class="nav-btn" onclick="nextQuestion()" disabled>Successiva →</button>
+            </div>
+        </div>
+
+        <div id="resultsScreen" class="hidden">
+            <div class="header">
+                <h1>RISULTATI FINALI</h1>
+                <p>Test Universitario Avanzato - Imperfetto Indicativo</p>
+            </div>
+
+            <div class="results-container">
+                <div class="student-name" id="studentNameDisplay"></div>
+
+                <h2>Punteggio Ottenuto</h2>
+                <div class="score-display" id="finalScore"></div>
+                <div class="score-label">Risposte corrette su 100</div>
+
+                <div id="evaluationBox" class="evaluation-box">
+                    <h3>Valutazione</h3>
+                    <div class="grade" id="gradeDisplay"></div>
+                    <div class="status" id="statusDisplay"></div>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-box">
+                        <span class="number" id="correctCount"></span>
+                        <span class="label">Corrette</span>
+                    </div>
+                    <div class="result-box">
+                        <span class="number" id="wrongCount"></span>
+                        <span class="label">Sbagliate</span>
+                    </div>
+                    <div class="result-box">
+                        <span class="number" id="percentage"></span>
+                        <span class="label">Percentuale</span>
+                    </div>
+                </div>
+
+                <div class="stats-detail">
+                    <h4>📈 Dettaglio Statistiche</h4>
+                    <div class="stat-row">
+                        <span class="stat-label">Risposte Corrette:</span>
+                        <span class="stat-value success" id="statCorrect"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Risposte Sbagliate:</span>
+                        <span class="stat-value error" id="statWrong"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Percentuale Successo:</span>
+                        <span class="stat-value" id="statPercent"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Voto Finale:</span>
+                        <span class="stat-value" id="statGrade"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Esito:</span>
+                        <span class="stat-value" id="statResult"></span>
+                    </div>
+                </div>
+
+                <div class="email-section">
+                    <h3>📧 Invia Risultati</h3>
+                    <p>Clicca su "Invio" per inviare automaticamente i risultati completi a <strong>giancarlo.vettori@cpiatv1.edu.it</strong></p>
+                    <textarea id="resultsText" class="results-text"></textarea>
+                    <div class="button-group">
+                        <button class="btn-send" onclick="sendResults()">Invio</button>
+                        <button id="restartBtn" onclick="restartQuiz()">Ricomincia Test</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array domande originali
+        const originalQuestions = [
+
+            // 1-20: ATTIVO imperfetto
+            {q: "Io _____ (studiare) italiano quattro ore al giorno quando _____ (frequentare) l'università.", options: ["studiavo, frequentavo", "studio, frequento", "studia, frequenta", "studiavamo, frequentavamo"], correct: 0, expl: "ATTIVO imperfetto: Io + studiare/frequentare → studiavo/frequentavo"},
+            {q: "Tu _____ (leggere) sempre libri di letteratura quando _____ (avere) tempo libero.", options: ["leggevi, avevi", "leggi, hai", "leggere, avere", "leggevamo, avevamo"], correct: 0, expl: "ATTIVO imperfetto: Tu + leggere/avere → leggevi/avevi"},
+            {q: "Lui _____ (scrivere) articoli scientifici mentre _____ (insegnare) all'accademia.", options: ["scriveva, insegnava", "scrive, insegna", "scrivevamo, insegnavamo", "scrivo, insegno"], correct: 0, expl: "ATTIVO imperfetto: Lui + scrivere/insegnare → scriveva/insegnava"},
+            {q: "Noi _____ (discutere) di filosofia quando _____ (riunirsi) nel seminario.", options: ["discutevamo, ci riunivamo", "discutiamo, ci riuniamo", "discussero, si riunirono", "discuteremo, ci riuniremo"], correct: 0, expl: "ATTIVO imperfetto: Noi + discutere → discutevamo; riunirsi → ci riunivamo"},
+            {q: "Voi _____ (preparare) le relazioni mentre i professori _____ (correggere) gli esami.", options: ["preparavate, correggevano", "preparate, correggono", "preparavano, correggevano", "preparaste, corressero"], correct: 0, expl: "ATTIVO imperfetto: Voi + preparare → preparavate; Loro + correggere → correggevano"},
+            {q: "I ricercatori _____ (analizzare) i dati quando _____ (emergere) anomalie significative.", options: ["analizzavano, emergevano", "analizzano, emergono", "analizzeranno, emergeranno", "analizzerebbe, emergerebbe"], correct: 0, expl: "ATTIVO imperfetto: Loro + analizzare/emergere → analizzavano/emergevano"},
+            {q: "Le università _____ (offrire) corsi di specializzazione che _____ (attirare) studenti da tutto il mondo.", options: ["offrivano, attraevano", "offrono, attirano", "offriranno, attireranno", "offrirebbe, attirerebbe"], correct: 0, expl: "ATTIVO imperfetto: Loro + offrire/attirare → offrivano/attraevano"},
+            {q: "Mentre _____ (assistere) alla conferenza, _____ (prendere) appunti dettagliati.", options: ["assistevo, prendevo", "assisto, prendo", "assisterò, prenderò", "assistessi, prendessi"], correct: 0, expl: "ATTIVO imperfetto: Io + assistere/prendere → assistevo/prendevo"},
+            {q: "Le aziende _____ (investire) in ricerca e sviluppo mentre _____ (competere) nel mercato globale.", options: ["investivano, competevano", "investono, competono", "investiranno, competeranno", "investirebbero, competerebbero"], correct: 0, expl: "ATTIVO imperfetto: Loro + investire/competere → investivano/competevano"},
+            {q: "Tu _____ (tradurre) documenti tecnici mentre _____ (perfezionare) le tue competenze linguistiche.", options: ["traducevi, perfezionavi", "traduci, perfezioni", "tradurrai, perfezzionerai", "tradurresti, perfezioneresti"], correct: 0, expl: "ATTIVO imperfetto: Tu + tradurre/perfezionare → traducevi/perfezionavi"},
+            {q: "Io _____ (camminare) lentamente nei parchi quando _____ (riflettere) sui problemi della vita.", options: ["camminavo, riflettevo", "cammino, rifletto", "camminerò, rifletter", "camminassi, riflettessi"], correct: 0, expl: "ATTIVO imperfetto: Io → camminavo/riflettevo (forma regolare e irregolare)"},
+            {q: "Lei _____ (cantare) bellissimo mentre _____ (accompagnare) se stessa al pianoforte.", options: ["cantava, si accompagnava", "canta, si accompagna", "canterà, si accompagnerà", "cantasse, si accompagnasse"], correct: 0, expl: "ATTIVO imperfetto: Lei + cantava; si accompagnava (verbo riflessivo)"},
+            {q: "Loro _____ (giocare) a calcio ogni pomeriggio quando _____ (finire) la scuola.", options: ["giocavano, finivano", "giocano, finiscono", "giocheranno, finiranno", "giocassero, finissero"], correct: 0, expl: "ATTIVO imperfetto: Loro → giocavano/finivano"},
+            {q: "Noi _____ (lavorare) duramente ma sempre _____ (trovare) tempo per divertirci.", options: ["lavoravamo, trovavamo", "lavoriamo, troviamo", "lavoreremo, troveremo", "lavorassimo, trovassimo"], correct: 0, expl: "ATTIVO imperfetto: Noi → lavoravamo/trovavamo"},
+            {q: "Voi _____ (raccontare) storie interessanti che _____ (affascinare) tutti gli ascoltatori.", options: ["raccontavate, affascinavano", "raccontate, affascinano", "racconterete, affascinano", "raccontaste, affascinassero"], correct: 0, expl: "ATTIVO imperfetto: Voi + raccontavate; loro/le storie → affascinavano"},
+            {q: "Io _____ (mangiare) frequentemente nei ristoranti quando _____ (visitare) città diverse.", options: ["mangiavo, visitavo", "mangio, visito", "mangerò, visiterò", "mangiassi, visitassi"], correct: 0, expl: "ATTIVO imperfetto: Io → mangiavo/visitavo (forma regolare -avo)"},
+            {q: "Tu _____ (dormire) poco perché _____ (preoccupare) troppo dei tuoi esami.", options: ["dormivi, ti preoccupavi", "dormi, ti preoccupi", "dormirai, ti preoccuperai", "dormissi, ti preoccupassi"], correct: 0, expl: "ATTIVO imperfetto: Tu + dormivi; ti preoccupavi (verbo riflessivo)"},
+            {q: "Lui _____ (correre) velocemente mentre _____ (respirare) affannosamente.", options: ["correva, respirava", "corre, respira", "correrà, respirerà", "corresse, respirasse"], correct: 0, expl: "ATTIVO imperfetto: Lui → correva/respirava (verbi irregolari)"},
+            {q: "Lei _____ (suonare) il violino meravigliosamente quando _____ (concentrarsi) totalmente.", options: ["suonava, si concentrava", "suona, si concentra", "suonerà, si concentrerà", "suonasse, si concentrasse"], correct: 0, expl: "ATTIVO imperfetto: Lei → suonava; si concentrava (riflessivo)"},
+            {q: "Noi _____ (costruire) castelli di sabbia che _____ (crollare) quando il mare _____ (avanzare).", options: ["costruivamo, crollavano, avanzava", "costruiamo, crollano, avanza", "costruiremo, crolleranno, avanzerà", "costruissimo, crollassero, avanzasse"], correct: 0, expl: "ATTIVO imperfetto: Noi + costruivamo; loro + crollavano/avanzava"},
+
+            // 21-40: PASSIVO imperfetto
+            {q: "Questo documento _____ (firmare) dal direttore quando _____ (arrivare) l'ordine di sospensione.", options: ["era firmato, era arrivato", "è firmato, è arrivato", "era stato firmato, era stato arrivato", "fosse firmato, fosse arrivato"], correct: 0, expl: "PASSIVO imperfetto: Era + participio. Era firmato (semplice), era arrivato (trapassato)"},
+            {q: "Le leggi _____ (violare) continuamente dalle autorità mentre _____ (ignorare) i richiami europei.", options: ["erano violate, erano ignorati", "sono violate, sono ignorati", "erano state violate, erano stati ignorati", "fossero violate, fossero ignorati"], correct: 0, expl: "PASSIVO imperfetto: Le leggi (femm. plur.) + erano violate; i richiami (masch. plur.) + erano ignorati"},
+            {q: "I contratti _____ (rinnovare) annualmente dal consiglio quando _____ (verificare) le condizioni.", options: ["erano rinnovati, erano verificate", "sono rinnovati, sono verificate", "erano stati rinnovati, erano state verificate", "fossero rinnovati, fossero verificate"], correct: 0, expl: "PASSIVO imperfetto: I contratti (masch. plur.) + erano rinnovati; le condizioni (femm. plur.) + erano verificate"},
+            {q: "Le comunicazioni ufficiali _____ (ricevere) sempre tramite canali certificati mentre _____ (archiviare) nei database centrali.", options: ["erano ricevute, erano archiviate", "sono ricevute, sono archiviate", "erano state ricevute, erano state archiviate", "fossero ricevute, fossero archiviate"], correct: 0, expl: "PASSIVO imperfetto: Erano ricevute e archiviate (femm. plur., forma semplice)"},
+            {q: "I dati confidenziali _____ (conservare) in archivi protetti mentre _____ (monitorare) costantemente dai tecnici.", options: ["erano conservati, erano monitorati", "sono conservati, sono monitorati", "erano stati conservati, erano stati monitorati", "fossero conservati, fossero monitorati"], correct: 0, expl: "PASSIVO imperfetto: Erano conservati e monitorati (masch. plur., accordo necessario)"},
+            {q: "Le ricerche _____ (condurre) presso laboratori avanzati mentre _____ (finanziare) da enti internazionali.", options: ["erano condotte, erano finanziate", "sono condotte, sono finanziate", "erano state condotte, erano state finanziate", "fossero condotte, fossero finanziate"], correct: 0, expl: "PASSIVO imperfetto: Le ricerche (femm. plur.) + erano condotte/finanziate"},
+            {q: "Il sistema scolastico _____ (criticare) da esperti educativi mentre _____ (attuare) riforme importanti.", options: ["era criticato, erano attuate", "è criticato, sono attuate", "era stato criticato, erano state attuate", "fosse criticato, fossero attuate"], correct: 0, expl: "PASSIVO imperfetto: Il sistema (masch. sing.) + era criticato; le riforme (femm. plur.) + erano attuate"},
+            {q: "Le procedure amministrative _____ (semplificare) dalle autorità mentre _____ (rendere) più trasparenti.", options: ["erano semplificate, erano rese", "sono semplificate, sono rese", "erano state semplificate, erano state rese", "fossero semplificate, fossero rese"], correct: 0, expl: "PASSIVO imperfetto: Erano semplificate e rese (femm. plur., forma semplice)"},
+            {q: "I documenti _____ (revisionare) dai controllori mentre _____ (verificare) la conformità alle normative.", options: ["erano revisionati, era verificata", "sono revisionati, è verificata", "erano stati revisionati, era stata verificata", "fossero revisionati, fosse verificata"], correct: 0, expl: "PASSIVO imperfetto: I documenti (masch. plur.) + erano revisionati; la conformità (femm. sing.) + era verificata"},
+            {q: "Le proposte di legge _____ (discutere) in parlamento mentre _____ (valutare) da diversi partiti politici.", options: ["erano discusse, erano valutate", "sono discusse, sono valutate", "erano state discusse, erano state valutate", "fossero discusse, fossero valutate"], correct: 0, expl: "PASSIVO imperfetto: Le proposte (femm. plur.) + erano discusse/valutate"},
+            {q: "Le lettere _____ (scrivere) a mano quando _____ (consegnare) personalmente dal messaggero.", options: ["erano scritte, era consegnata", "sono scritte, è consegnata", "erano state scritte, era stata consegnata", "fossero scritte, fosse consegnata"], correct: 0, expl: "PASSIVO imperfetto: Le lettere (femm. plur.) + erano scritte; la consegna (femm. sing.) + era consegnata"},
+            {q: "Il libro _____ (pubblicare) da una casa editrice prestigiosa quando _____ (distribuire) nei negozi di tutto il paese.", options: ["era pubblicato, era distribuito", "è pubblicato, è distribuito", "era stato pubblicato, era stato distribuito", "fosse pubblicato, fosse distribuito"], correct: 0, expl: "PASSIVO imperfetto: Il libro (masch. sing.) + era pubblicato/distribuito"},
+            {q: "Le opere d'arte _____ (esporre) nei musei mentre _____ (ammirare) da migliaia di visitatori.", options: ["erano esposte, erano ammirate", "sono esposte, sono ammirate", "erano state esposte, erano state ammirate", "fossero esposte, fossero ammirate"], correct: 0, expl: "PASSIVO imperfetto: Le opere (femm. plur.) + erano esposte/ammirate"},
+            {q: "Le strade _____ (costruire) con grande fatica mentre _____ (pavimentare) da operai esperti.", options: ["erano costruite, erano pavimentate", "sono costruite, sono pavimentate", "erano state costruite, erano state pavimentate", "fossero costruite, fossero pavimentate"], correct: 0, expl: "PASSIVO imperfetto: Le strade (femm. plur.) + erano costruite/pavimentate"},
+            {q: "Il castello _____ (difendere) da soldati valorosi mentre _____ (assediare) dai nemici.", options: ["era difeso, era assediato", "è difeso, è assediato", "era stato difeso, era stato assediato", "fosse difeso, fosse assediato"], correct: 0, expl: "PASSIVO imperfetto: Il castello (masch. sing.) + era difeso/assediato"},
+            {q: "Le favole _____ (raccontare) alle bambine quando _____ (insegnare) loro le morali della vita.", options: ["erano raccontate, era insegnata", "sono raccontate, è insegnata", "erano state raccontate, era stata insegnata", "fossero raccontate, fosse insegnata"], correct: 0, expl: "PASSIVO imperfetto: Le favole (femm. plur.) + erano raccontate; la morale (femm. sing.) + era insegnata"},
+            {q: "Le monete antiche _____ (scoprire) dagli archeologi mentre _____ (catalogare) dai musei.", options: ["erano scoperte, erano catalogate", "sono scoperte, sono catalogate", "erano state scoperte, erano state catalogate", "fossero scoperte, fossero catalogate"], correct: 0, expl: "PASSIVO imperfetto: Le monete (femm. plur.) + erano scoperte/catalogate"},
+            {q: "Il testimone _____ (interrogare) dalle autorità giudiziarie mentre _____ (proteggersi) dalle ritorsioni.", options: ["era interrogato, si era protetto", "è interrogato, si è protetto", "era stato interrogato, si era protetto", "fosse interrogato, si proteggesse"], correct: 0, expl: "PASSIVO imperfetto: Il testimone (masch. sing.) + era interrogato; si proteggeva (riflessivo)"},
+            {q: "Le mele _____ (raccogliere) dai contadini quando _____ (riempire) i cesti di vimini.", options: ["erano raccolte, erano riempiti", "sono raccolte, sono riempiti", "erano state raccolte, erano stati riempiti", "fossero raccolte, fossero riempiti"], correct: 0, expl: "PASSIVO imperfetto: Le mele (femm. plur.) + erano raccolte; i cesti (masch. plur.) + erano riempiti"},
+
+            // 41-60: PRONOMINALE/RIFLESSIVO imperfetto
+            {q: "Le riunioni _____ (svolgere) regolarmente mentre i partecipanti _____ (scambiare) opinioni diverse.", options: ["si svolgevano, si scambiavano", "si svolgono, si scambiano", "si svolsero, si scambiarono", "si svolgessero, si scambiassero"], correct: 0, expl: "PRONOMINALE imperfetto: Si svolgevano/si scambiavano (verbi pronominali con 'si')"},
+            {q: "Gli studenti _____ (prepararsi) per gli esami mentre _____ (studiarsi) reciprocamente i contenuti.", options: ["si preparavano, si studiavano", "si preparano, si studiano", "si prepararono, si studiarono", "si preparassero, si studiassero"], correct: 0, expl: "PRONOMINALE imperfetto: Si preparavano e si studiavano (forma riflessiva)"},
+            {q: "Lui _____ (alzarsi) presto la mattina mentre lei _____ (truccarsi) accuratamente prima di uscire.", options: ["si alzava, si truccava", "si alza, si trucca", "si alzò, si trucò", "si alzasse, si truccasse"], correct: 0, expl: "PRONOMINALE imperfetto: Si alzava e si truccava (verbi pronominali -arsi)"},
+            {q: "Le nazioni _____ (accordarsi) su trattati commerciali mentre _____ (scambiarsi) merci preziose.", options: ["si accordavano, si scambiavano", "si accordano, si scambiano", "si accordarono, si scambiarono", "si accordassero, si scambiassero"], correct: 0, expl: "PRONOMINALE imperfetto: Si accordavano e si scambiavano (forma pronominale regolare)"},
+            {q: "Tu _____ (vestirsi) elegantemente mentre tuo fratello _____ (prepararsi) di fretta.", options: ["ti vestivi, si preparava", "ti vesti, si prepara", "ti vestisti, si preparò", "ti vestissi, si preparasse"], correct: 0, expl: "PRONOMINALE imperfetto: Tu + ti vestivi; Lui + si preparava"},
+            {q: "Noi _____ (abituarsi) al nuovo ambiente mentre _____ (adattarsi) gradualmente ai ritmi diversi.", options: ["ci abitavamo, ci adattavamo", "ci abitiamo, ci adattiamo", "ci abituammo, ci adattammo", "ci abituassimo, ci adattassimo"], correct: 0, expl: "PRONOMINALE imperfetto: Ci abitavamo e ci adattavamo (prima persona plurale)"},
+            {q: "Le aziende _____ (associarsi) per formare consorti mentre _____ (unirsi) contro la concorrenza sleale.", options: ["si associavano, si univano", "si associano, si uniscono", "si associarono, si unirono", "si associassero, si unissero"], correct: 0, expl: "PRONOMINALE imperfetto: Si associavano e si univano (verbi pronominali)"},
+            {q: "Io _____ (svegliarsi) sempre presto mentre _____ (sentirsi) energico per la giornata.", options: ["mi svegliavo, mi sentivo", "mi sveglio, mi sento", "mi svegliai, mi sentii", "mi svegliassi, mi sentissi"], correct: 0, expl: "PRONOMINALE imperfetto: Mi svegliavo e mi sentivo"},
+            {q: "Voi _____ (incontrarsi) regolarmente mentre _____ (aiutarsi) nei compiti universitari.", options: ["vi incontravate, vi aiutavate", "vi incontrate, vi aiutate", "vi incontraste, vi aiutaste", "vi incontrassimo, vi aiutassimo"], correct: 0, expl: "PRONOMINALE imperfetto: Vi incontravate e vi aiutavate (seconda persona plurale)"},
+            {q: "Le donne _____ (parlarsi) confidenzialmente mentre _____ (dirsi) segreti importanti.", options: ["si parlavano, si dicevano", "si parlano, si dicono", "si parlarono, si dissero", "si parlassero, si dicessero"], correct: 0, expl: "PRONOMINALE imperfetto: Si parlavano e si dicevano (verbi pronominali)"},
+            {q: "I ragazzi _____ (inseguirsi) nel parco mentre _____ (ridere) allegramente.", options: ["si inseguivano, ridevano", "si inseguono, ridono", "si inseguirono, risero", "si inseguissero, ridessero"], correct: 0, expl: "PRONOMINALE imperfetto: Si inseguivano (reciproco); ridevano (attivo)"},
+            {q: "Lei _____ (pettinarsi) ogni mattina mentre _____ (guardarsi) nello specchio.", options: ["si pettinava, si guardava", "si pettina, si guarda", "si pettinò, si guardò", "si pettinasse, si guardasse"], correct: 0, expl: "PRONOMINALE imperfetto: Si pettinava e si guardava (verbi riflessivi)"},
+            {q: "Loro _____ (salutarsi) cordialmente quando _____ (incontrarsi) al mercato.", options: ["si salutavano, si incontravano", "si salutano, si incontrano", "si salutarono, si incontrarono", "si salutassero, si incontrassero"], correct: 0, expl: "PRONOMINALE imperfetto: Si salutavano e si incontravano (terza persona plurale)"},
+            {q: "Noi _____ (cambiarci) negli spogliatoi mentre _____ (prepararsi) per la gara.", options: ["ci cambievamo, ci preparavamo", "ci cambiamo, ci prepariamo", "ci cambiammo, ci preparammo", "ci cambiassimo, ci preparassimo"], correct: 0, expl: "PRONOMINALE imperfetto: Ci cambievamo e ci preparavamo (forma riflessiva)"},
+            {q: "Tu _____ (lavarti) le mani mentre _____ (asciugarti) con l'asciugamano.", options: ["ti lavavi, ti asciugavi", "ti lavi, ti asciughi", "ti lavasti, ti asciugasti", "ti lavassi, ti asciugassi"], correct: 0, expl: "PRONOMINALE imperfetto: Ti lavavi e ti asciugavi (seconda persona singolare)"},
+            {q: "Io _____ (distrarmi) facilmente mentre _____ (tentare) di concentrarmi sulla lettura.", options: ["mi distraevo, tentavo", "mi distraggo, tendo", "mi distrassi, tentai", "mi distraessi, tentassi"], correct: 0, expl: "PRONOMINALE imperfetto: Mi distraevo (riflessivo); tentavo (attivo)"},
+            {q: "Le due amiche _____ (raccontarsi) tutto quanto _____ (accadere) nelle loro vite.", options: ["si raccontavano, accadeva", "si raccontano, accade", "si raccontarono, accadde", "si raccontassero, accadesse"], correct: 0, expl: "PRONOMINALE imperfetto: Si raccontavano (reciproco); accadeva (attivo)"},
+            {q: "Lui _____ (lavarsi) velocemente mentre _____ (vestirsi) per l'appuntamento.", options: ["si lavava, si vestiva", "si lava, si veste", "si lavò, si vestì", "si lavasse, si vestisse"], correct: 0, expl: "PRONOMINALE imperfetto: Si lavava e si vestiva (verbi riflessivi)"},
+            {q: "Noi _____ (divertirsi) molto quando _____ (fare) giochi insieme.", options: ["ci divertivamo, facevamo", "ci divertiamo, facciamo", "ci divertimmo, facemmo", "ci divertissimo, facessimo"], correct: 0, expl: "PRONOMINALE imperfetto: Ci divertivamo (riflessivo); facevamo (attivo)"},
+            {q: "Le persone _____ (muoversi) cautamente mentre _____ (entrare) nella grotta buia.", options: ["si muovevano, entravano", "si muovono, entrano", "si mossero, entrarono", "si muovessero, entrassero"], correct: 0, expl: "PRONOMINALE imperfetto: Si muovevano (riflessivo); entravano (attivo)"},
+
+            // 61-80: MIX complesso
+            {q: "Mentre gli scienziati _____ (analizzare) i dati, i risultati _____ (pubblicarsi) in riviste prestigiose.", options: ["analizzavano, si pubblicavano", "analizzano, si pubblicano", "analizzarono, si pubblicarono", "analizzassero, si pubblicassero"], correct: 0, expl: "MIX: Attivo (analizzavano) + Pronominale (si pubblicavano) imperfetto"},
+            {q: "Le leggi _____ (emanarsi) dal parlamento mentre _____ (rispettarsi) dai cittadini consapevoli.", options: ["si emanavano, si rispettavano", "si emanano, si rispettano", "si emanarono, si rispettarono", "si emanassero, si rispettassero"], correct: 0, expl: "PRONOMINALE imperfetto: Si emanavano (passivo pronominale) e si rispettavano (pronominale reciproco)"},
+            {q: "Il professore _____ (spiegare) le teorie mentre gli studenti _____ (prendere) appunti e _____ (fare) domande.", options: ["spiegava, prendevano, facevano", "spiega, prendono, fanno", "spiegò, presero, fecero", "spiegasse, prendessero, facessero"], correct: 0, expl: "ATTIVO imperfetto: Spiegava, prendevano, facevano (tre persone, tempi concordati)"},
+            {q: "I documenti _____ (conservarsi) in archivi protetti mentre _____ (monitorarsi) dai tecnici esperti.", options: ["si conservavano, si monitoravano", "si conservano, si monitorano", "si conservarono, si monitorarono", "si conservassero, si monitorassero"], correct: 0, expl: "PRONOMINALE passivo: Si conservavano e si monitoravano (passive forms con 'si')"},
+            {q: "Quando _____ (arrivare) le notizie, _____ (diffondersi) rapidamente mentre _____ (commentarsi) da tutti.", options: ["arrivavano, si diffondevano, si commentavano", "arrivano, si diffondono, si commentano", "arrivarono, si diffusero, si commentarono", "arrivassero, si diffondessero, si commentassero"], correct: 0, expl: "MIX: Attivo (arrivavano) + Pronominale (si diffondevano, si commentavano)"},
+            {q: "Il contratto _____ (essere) firmato quando _____ (presentarsi) le clausole finali da parte dei legali.", options: ["era, si presentavano", "è, si presentano", "era stato, si erano presentate", "fosse, si presentassero"], correct: 0, expl: "MIX: Passivo (era firmato) + Pronominale (si presentavano)"},
+            {q: "Lui _____ (lavorare) tardivamente mentre sua moglie _____ (occuparsi) della casa e _____ (accudire) i bambini.", options: ["lavorava, si occupava, accudiva", "lavora, si occupa, accudisce", "lavorò, si occupò, accudì", "lavorasse, si occupasse, accudisse"], correct: 0, expl: "MIX: Attivo + Pronominale + Attivo imperfetto"},
+            {q: "Le proposte _____ (essere) esaminate dai relatori mentre _____ (discutersi) aspramente in commissione.", options: ["erano, si discutevano", "sono, si discutono", "erano state, si erano discusse", "fossero, si discutessero"], correct: 0, expl: "MIX: Passivo (erano esaminate) + Pronominale (si discutevano)"},
+            {q: "Quando _____ (riunirsi) il consiglio, _____ (verificarsi) sempre conflitti di interesse che _____ (dovere) essere risolti.", options: ["si riuniva, si verificavano, dovevano", "si riunisce, si verificano, devono", "si riunirono, si verificarono, dovettero", "si riunisse, si verificassero, dovessero"], correct: 0, expl: "MIX: Pronominale + Pronominale + Attivo imperfetto"},
+            {q: "I ricercatori _____ (dovere) analizzare i dati mentre _____ (scoprirsi) nuove anomalie che _____ (richiedere) ulteriori indagini.", options: ["dovevano, si scoprivano, richiedevano", "devono, si scoprono, richiedono", "dovettero, si scoprirono, richiesero", "dovessero, si scoprissero, richiedessero"], correct: 0, expl: "MIX: Attivo + Pronominale + Attivo imperfetto"},
+            {q: "Durante il seminario, _____ (ascoltarsi) attentamente mentre _____ (cercarsi) consensi su metodologie innovative.", options: ["ci ascoltavamo, ci cercavamo", "ci ascoltiamo, ci cerchiamo", "ci ascoltammo, ci cercammo", "ci ascoltassimo, ci cercassimo"], correct: 0, expl: "PRONOMINALE imperfetto: Ci ascoltavamo e ci cercavamo (forma reciproca)"},
+            {q: "Le tesi _____ (essere) presentate mentre _____ (discutersi) criticamente e _____ (valutatesi) dai docenti.", options: ["erano, si discutevano, si valutavano", "sono, si discutono, si valutano", "erano state, si erano discusse, si erano valutate", "fossero, si discutessero, si valutassero"], correct: 0, expl: "MIX: Passivo + Pronominale + Passivo imperfetto"},
+            {q: "Mentre _____ (trasformarsi) le politiche economiche, _____ (doversi) adattare le imprese e _____ (proteggersi) i lavoratori.", options: ["si trasformavano, dovevano, si proteggevano", "si trasformano, devono, si proteggono", "si trasformarono, dovettero, si protessero", "si trasformassero, dovessero, si proteggessero"], correct: 0, expl: "MIX: Pronominale + Attivo + Pronominale imperfetto"},
+            {q: "I fenomeni _____ (essere) osservati dai ricercatori mentre _____ (manifestarsi) nuove proprietà chimiche che _____ (sfidare) le teorie precedenti.", options: ["erano, si manifestavano, sfidavano", "sono, si manifestano, sfidano", "erano stati, si erano manifestate, avevano sfidato", "fossero, si manifestassero, sfidassero"], correct: 0, expl: "MIX: Passivo + Pronominale + Attivo imperfetto"},
+            {q: "Quando _____ (riunirsi) i diplomatici, _____ (negoziarsi) intensamente mentre _____ (cercarsi) soluzioni condivise.", options: ["si riunivano, si negoziava, si cercavano", "si riuniscono, si negozia, si cercano", "si riunirono, si negoziò, si cercarono", "si riunissero, si negoziasse, si cercassero"], correct: 0, expl: "MIX: Pronominale + Pronominale passivo + Pronominale imperfetto"},
+            {q: "Le tecnologie _____ (evolvere) rapidamente mentre _____ (crearsi) nuove professioni e _____ (trasformarsi) il mercato del lavoro.", options: ["evolvevano, si creavano, si trasformava", "evolvono, si creano, si trasforma", "evolsero, si crearono, si trasformò", "evolvessero, si creassero, si trasformasse"], correct: 0, expl: "MIX: Attivo + Pronominale + Pronominale imperfetto"},
+            {q: "Mentre gli oratori _____ (pronunciare) discorsi appassionati, _____ (assorbirsi) l'attenzione della folla che _____ (stare) in silenzio religioso.", options: ["pronunciavano, si assorbiva, stava", "pronunciano, si assorbe, sta", "pronunciarono, si assorbì, stette", "pronunciassero, si assorbisse, stesse"], correct: 0, expl: "MIX: Attivo + Pronominale passivo + Attivo imperfetto"},
+            {q: "Le costituzioni _____ (essere) redatte dalle assemblee costituenti mentre _____ (ridefinirsi) i diritti fondamentali e _____ (istituirsi) nuove forme di governo.", options: ["erano, si ridefinivano, si istituivano", "sono, si ridefiniscono, si istituiscono", "erano state, si erano ridefiniti, si erano istituiti", "fossero, si ridefinissero, si istituissero"], correct: 0, expl: "MIX: Passivo + Pronominale + Pronominale imperfetto"},
+            {q: "I conflitti _____ (manifestarsi) aspramente mentre _____ (tentarsi) negoziati delicati e _____ (sollecitarsi) interventi internazionali.", options: ["si manifestavano, si tentavano, si sollecitavano", "si manifestano, si tentano, si sollecitano", "si manifestarono, si tentarono, si sollecitarono", "si manifestassero, si tentassero, si sollecitassero"], correct: 0, expl: "MIX: Pronominale + Pronominale passivo + Pronominale passivo imperfetto"},
+            {q: "Quando _____ (verificarsi) anomalie nei dati, _____ (dovere) controllare i procedimenti mentre _____ (ripetersi) gli esperimenti con metodologie più rigorose.", options: ["si verificavano, dovevano, si ripetevano", "si verificano, devono, si ripetono", "si verificarono, dovettero, si ripeterono", "si verificassero, dovessero, si ripetessero"], correct: 0, expl: "MIX: Pronominale + Attivo + Pronominale imperfetto"},
+
+            // 81-100: DIFFICILI sofisticati
+            {q: "I cittadini _____ (affrettarsi) a presentare i documenti mentre _____ (modificarsi) le normative e _____ (richiedersene) di nuovi.", options: ["si affrettavano, si modificavano, se ne richiedevano", "si affrettano, si modificano, se ne richiedono", "si affrettarono, si modificarono, se ne richiesero", "si affrettassero, si modificassero, se ne richiedessero"], correct: 0, expl: "PRONOMINALE imperfetto: Si affrettavano, si modificavano, se ne richiedevano"},
+            {q: "Le malattie _____ (diffondersi) rapidamente mentre _____ (cercarsi) cure efficaci e _____ (ricercarsi) vaccini nei laboratori mondiali.", options: ["si diffondevano, si cercavano, si ricercavano", "si diffondono, si cercano, si ricercano", "si diffusero, si cercarono, si ricercarono", "si diffondessero, si cercassero, si ricercassero"], correct: 0, expl: "PRONOMINALE imperfetto: Si diffondevano, si cercavano, si ricercavano"},
+            {q: "Mentre _____ (accendersi) le luci, _____ (prepararsi) gli attori e _____ (alzarsi) il sipario su uno spettacolo magnifico.", options: ["si accendevano, si preparavano, si alzava", "si accendono, si preparano, si alza", "si accesero, si prepararono, si alzò", "si accendessero, si preparassero, si alzasse"], correct: 0, expl: "MIX: Pronominale + Pronominale + Pronominale imperfetto"},
+            {q: "Le industrie _____ (localizzarsi) nelle aree periferiche mentre _____ (creavansi) milioni di posti di lavoro e _____ (trasformarsi) il territorio.", options: ["si localizzavano, si creavano, si trasformava", "si localizzano, si creano, si trasforma", "si localizzarono, si crearono, si trasformò", "si localizzassero, si creassero, si trasformasse"], correct: 0, expl: "MIX: Pronominale + Pronominale (creavansi) + Pronominale imperfetto"},
+            {q: "I poeti _____ (ispirare) dalla natura mentre _____ (comporre) versi che _____ (affascinare) i lettori per secoli.", options: ["si ispiravano, componevano, affascinavano", "si ispirano, compongono, affascinano", "si ispirarono, composero, affascinarono", "si ispiras sero, componessero, affascinassero"], correct: 0, expl: "MIX: Pronominale + Attivo + Attivo imperfetto"},
+            {q: "Quando _____ (scoprirsi) i penicillina, _____ (rivoluzionarsi) la medicina mentre _____ (salvarsi) milioni di vite umane.", options: ["si scopriva, si rivoluzionava, si salvavano", "si scopre, si rivoluziona, si salvano", "si scoprì, si rivoluzionò, si salvarono", "si scoprisse, si rivoluzionasse, si salvassero"], correct: 0, expl: "MIX: Pronominale + Pronominale + Pronominale imperfetto"},
+            {q: "Le civiltà antiche _____ (svilupparsi) gradualmente mentre _____ (crearsi) sistemi di governo e _____ (edificarsi) città impressionanti.", options: ["si sviluppavano, si creavano, si edificavano", "si sviluppano, si creano, si edificano", "si svilupparono, si crearono, si edificarono", "si sviluppassero, si creassero, si edificassero"], correct: 0, expl: "PRONOMINALE imperfetto: Si sviluppavano, si creavano, si edificavano"},
+            {q: "I fenomeni naturali _____ (accadere) frequentemente mentre _____ (osservarsi) dagli scienziati che _____ (tentare) di comprenderli.", options: ["accadevano, si osservavano, tentavano", "accadono, si osservano, tentano", "accaddero, si osservarono, tentarono", "accadessero, si osservassero, tentassero"], correct: 0, expl: "MIX: Attivo + Pronominale + Attivo imperfetto"},
+            {q: "Mentre _____ (dilagarsi) la guerra, _____ (abbandonarsi) le case dai civili che _____ (cercare) rifugio nei paesi vicini.", options: ["si dilagava, si abbandonavano, cercavano", "si dilaga, si abbandonano, cercano", "si dilago, si abbandonarono, cercarono", "si dilargasse, si abbandonassero, cercassero"], correct: 0, expl: "MIX: Pronominale + Pronominale + Attivo imperfetto"},
+            {q: "Le idee innovative _____ (diffondersi) lentamente mentre _____ (incontrarsi) resistenze da parte di chi _____ (volere) conservare lo status quo.", options: ["si diffondevano, si incontravano, voleva", "si diffondono, si incontrano, vuole", "si diffusero, si incontrarono, volle", "si diffondessero, si incontrassero, volesse"], correct: 0, expl: "MIX: Pronominale + Pronominale + Attivo imperfetto"},
+            {q: "Le lingue _____ (evolvere) nel corso dei secoli mentre _____ (incorporarsi) nuove parole e _____ (semplificarsi) le strutture grammaticali.", options: ["evolvevano, si incorporavano, si semplificavano", "evolvono, si incorporano, si semplificano", "evolsero, si incorporarono, si semplificarono", "evolvessero, si incorporassero, si semplificassero"], correct: 0, expl: "MIX: Attivo + Pronominale + Pronominale imperfetto"},
+            {q: "I movimenti sociali _____ (organizarsi) mentre _____ (crescersi) il numero di aderenti e _____ (radicalizzarsi) le posizioni ideologiche.", options: ["si organizzavano, crescevano, si radicalizzavano", "si organizzano, crescono, si radicalizzano", "si organizzarono, crebbe, si radicalizzarono", "si organizzassero, crescessero, si radicalizzassero"], correct: 0, expl: "MIX: Pronominale + Attivo + Pronominale imperfetto"},
+            {q: "Mentre _____ (costruirsi) le cattedrali medievali, _____ (impiegarsi) decine di anni e _____ (raccogliersi) fondi dalle comunità locali.", options: ["si costruivano, si impiegavano, si raccoglievano", "si costruiscono, si impiegano, si raccolgono", "si costruirono, si impiegarono, si raccolsero", "si costruissero, si impiegassero, si raccogliessero"], correct: 0, expl: "MIX: Pronominale + Pronominale + Pronominale imperfetto"},
+            {q: "I segreti _____ (custodirsi) gelosamente mentre _____ (circolarsi) voci infondate e _____ (crearsi) tensioni tra i membri del gruppo.", options: ["si custodivano, si circolavano, si creavano", "si custodiscono, si circolano, si creano", "si custodirono, si circolarono, si crearono", "si custodissero, si circolassero, si creassero"], correct: 0, expl: "MIX: Pronominale + Pronominale + Pronominale imperfetto"},
+            {q: "Le scienze _____ (progredire) costantemente mentre _____ (accumularsi) nuove conoscenze e _____ (rivedersi) le teorie precedenti.", options: ["progredivano, si accumulavano, si rivedevano", "progrediscono, si accumulano, si rivedono", "progredirono, si accumularono, si rivider", "progredissero, si accumulassero, si rivedessero"], correct: 0, expl: "MIX: Attivo + Pronominale + Pronominale imperfetto"},
+            {q: "I viaggiatori _____ (ritornare) dai loro percorsi mentre _____ (raccontarsi) avventure straordinarie e _____ (scambiarsi) mappe e resoconti.", options: ["ritornavano, si raccontavano, si scambiavano", "ritornano, si raccontano, si scambiano", "ritornarono, si raccontarono, si scambiarono", "ritornassero, si raccontassero, si scambiassero"], correct: 0, expl: "MIX: Attivo + Pronominale + Pronominale imperfetto"},
+            {q: "Quando _____ (divulgarsi) le scoperte scientifiche, _____ (cambiarsene) la comprensione del mondo e _____ (trasformarsi) il modo di vivere dei popoli.", options: ["si divulgavano, se ne cambiava, si trasformava", "si divulgano, se ne cambia, si trasforma", "si divulgarono, se ne cambiò, si trasformò", "si divulgassero, se ne cambiasse, si trasformasse"], correct: 0, expl: "MIX: Pronominale + Pronominale + Pronominale imperfetto"},
+            {q: "Le civiltà _____ (estinguersi) quando _____ (esaurirsi) le risorse naturali e _____ (trasferirsi) i superstiti in altre terre.", options: ["si estinguevano, si esaurivano, si trasferivano", "si estinguono, si esauriscono, si trasferiscono", "si estinsero, si esaurirono, si trasferirono", "si estinguessero, si esaurissero, si trasferissero"], correct: 0, expl: "PRONOMINALE imperfetto: Si estinguevano, si esaurivano, si trasferivano"},
+            {q: "I filosofi _____ (dedicarsi) allo studio della verità mentre _____ (interrogarsi) sul senso dell'esistenza e _____ (dibattersi) questioni eterne.", options: ["si dedicavano, si interrogavano, dibattevano", "si dedicano, si interrogano, dibattono", "si dedicarono, si interrogarono, dibatterono", "si dedicassero, si interrogassero, dibattessero"], correct: 0, expl: "MIX: Pronominale + Pronominale + Attivo imperfetto"},
+            {q: "Le epidemie _____ (propagarsi) mentre _____ (mobilitarsi) le autorità sanitarie e _____ (organizarsi) campagne di sensibilizzazione nei media.", options: ["si propagavano, si mobilitavano, si organizzavano", "si propagano, si mobilitano, si organizzano", "si propagarono, si mobilitarono, si organizzarono", "si propagassero, si mobilitassero, si organizzassero"], correct: 0, expl: "MIX: Pronominale + Pronominale + Pronominale imperfetto"},
+            {q: "Gli storici _____ (studiare) i documenti antichi mentre _____ (ricostruirsi) le vicende del passato e _____ (scoprirsi) nuovi dettagli sulle civiltà scomparse.", options: ["studiavano, si ricostruivano, si scoprivano", "studiano, si ricostruiscono, si scoprono", "studiarono, si ricostruirono, si scoprirono", "studiassero, si ricostruissero, si scoprissero"], correct: 0, expl: "MIX: Attivo + Pronominale + Pronominale imperfetto"}
+        ];
+
+        // Mischia le risposte per ogni domanda
+        function shuffleOptions(questions) {
+            return questions.map(q => {
+                // Crea array di indici e mischia
+                const indices = [0, 1, 2, 3];
+                for (let i = indices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [indices[i], indices[j]] = [indices[j], indices[i]];
+                }
+
+                // Trova nuova posizione della risposta corretta
+                const newCorrectIndex = indices.indexOf(q.correct);
+
+                // Crea nuovo array di opzioni mischiate
+                const shuffledOptions = indices.map(i => q.options[i]);
+
+                return {
+                    ...q,
+                    options: shuffledOptions,
+                    correct: newCorrectIndex
+                };
+            });
+        }
+
+        let questions = [];
+        let currentQuestion = 0;
+        let userAnswers = new Array(100).fill(null);
+        let score = 0;
+        let studentName = "";
+        let studentSurname = "";
+        let studentEmail = "";
+
+        document.getElementById('nomeInput').addEventListener('input', checkInputs);
+        document.getElementById('cognomeInput').addEventListener('input', checkInputs);
+        document.getElementById('emailInput').addEventListener('input', checkInputs);
+
+        function checkInputs() {
+            const nome = document.getElementById('nomeInput').value.trim();
+            const cognome = document.getElementById('cognomeInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+            const btn = document.getElementById('startBtn');
+
+            if (nome.length > 0 && cognome.length > 0 && email.length > 0 && email.includes('@')) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+
+        function startQuiz() {
+            studentName = document.getElementById('nomeInput').value.trim();
+            studentSurname = document.getElementById('cognomeInput').value.trim();
+            studentEmail = document.getElementById('emailInput').value.trim();
+
+            if (!studentName || !studentSurname || !studentEmail) {
+                alert("Compila tutti i campi obbligatori!");
+                return;
+            }
+
+            // Mischia le risposte all'avvio
+            questions = shuffleOptions(originalQuestions);
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+
+            currentQuestion = 0;
+            userAnswers = new Array(100).fill(null);
+            score = 0;
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionText').textContent = q.q;
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+
+            const progress = ((currentQuestion + 1) / 100) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            q.options.forEach(function(opt, index) {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = opt;
+                btn.onclick = function() { selectAnswer(index); };
+
+                if (userAnswers[currentQuestion] !== null) {
+                    btn.disabled = true;
+                    if (index === q.correct) {
+                        btn.classList.add('correct');
+                    } else if (index === userAnswers[currentQuestion]) {
+                        btn.classList.add('wrong');
+                    }
+                }
+
+                container.appendChild(btn);
+            });
+
+            const feedback = document.getElementById('feedback');
+            if (userAnswers[currentQuestion] !== null) {
+                feedback.textContent = q.expl;
+                feedback.className = userAnswers[currentQuestion] === q.correct ? 
+                    'feedback-message correct' : 'feedback-message wrong';
+                feedback.classList.remove('hidden');
+            } else {
+                feedback.classList.add('hidden');
+            }
+
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.disabled = userAnswers[currentQuestion] === null;
+            nextBtn.textContent = currentQuestion === 99 ? 'Vedi Risultati →' : 'Successiva →';
+        }
+
+        function selectAnswer(index) {
+            if (userAnswers[currentQuestion] !== null) return;
+
+            userAnswers[currentQuestion] = index;
+            const q = questions[currentQuestion];
+            const buttons = document.querySelectorAll('.answer-btn');
+
+            buttons.forEach(function(btn, i) {
+                btn.disabled = true;
+                if (i === q.correct) {
+                    btn.classList.add('correct');
+                } else if (i === index) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = q.expl;
+            feedback.className = index === q.correct ? 
+                'feedback-message correct' : 'feedback-message wrong';
+            feedback.classList.remove('hidden');
+
+            if (index === q.correct) score++;
+
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion === 99) {
+                showResults();
+            } else {
+                currentQuestion++;
+                showQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            document.getElementById('studentNameDisplay').textContent = studentName + " " + studentSurname;
+
+            // Calcolo risultati
+            let correct = 0;
+            for (let i = 0; i < 100; i++) {
+                if (userAnswers[i] === questions[i].correct) {
+                    correct++;
+                }
+            }
+
+            const wrong = 100 - correct;
+            const percentage = Math.round((correct / 100) * 100);
+
+            // Aggiorna i box principali
+            document.getElementById('finalScore').textContent = correct + '/100';
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('wrongCount').textContent = wrong;
+            document.getElementById('percentage').textContent = percentage + '%';
+
+            // Aggiorna statistiche dettagliate
+            document.getElementById('statCorrect').textContent = correct;
+            document.getElementById('statWrong').textContent = wrong;
+            document.getElementById('statPercent').textContent = percentage + '%';
+
+            // Sistema di valutazione con 60% sufficiente
+            const evaluation = getEvaluation(percentage);
+            document.getElementById('gradeDisplay').textContent = evaluation.grade;
+            document.getElementById('statusDisplay').textContent = evaluation.status;
+            document.getElementById('statGrade').textContent = evaluation.grade;
+            document.getElementById('statResult').textContent = evaluation.status;
+
+            const evalBox = document.getElementById('evaluationBox');
+            evalBox.className = 'evaluation-box' + (evaluation.sufficient ? ' sufficient' : ' insufficient');
+
+            // Genera testo risultati
+            const resultsText = generateResultsText(correct, wrong, percentage, evaluation);
+            document.getElementById('resultsText').value = resultsText;
+        }
+
+        function getEvaluation(percentage) {
+            if (percentage >= 90) {
+                return { grade: '30/30', status: 'Eccellente - Padronanza completa', sufficient: true };
+            } else if (percentage >= 80) {
+                return { grade: '27-29/30', status: 'Buono - Comprensione solida', sufficient: true };
+            } else if (percentage >= 70) {
+                return { grade: '24-26/30', status: 'Soddisfacente - Conoscenza accettabile', sufficient: true };
+            } else if (percentage >= 60) {
+                return { grade: '18-23/30', status: 'Sufficiente - Necessari approfondimenti', sufficient: true };
+            } else {
+                return { grade: '<18/30', status: 'Insufficiente - Ristudiare i contenuti', sufficient: false };
+            }
+        }
+
+        function generateResultsText(correct, wrong, percentage, evaluation) {
+            const date = new Date().toLocaleDateString('it-IT');
+            const time = new Date().toLocaleTimeString('it-IT');
+
+            let text = '═════════════════════════════════════════════════════════════\n';
+            text += '     RISULTATI TEST UNIVERSITARIO - IMPERFETTO INDICATIVO\n';
+            text += '═════════════════════════════════════════════════════════════\n\n';
+
+            text += 'DATI CANDIDATO:\n';
+            text += '─────────────────────────────────────────────────────────────\n';
+            text += 'Nome: ' + studentName + ' ' + studentSurname + '\n';
+            text += 'Email: ' + studentEmail + '\n';
+            text += 'Data: ' + date + '\n';
+            text += 'Ora: ' + time + '\n\n';
+
+            text += 'RISULTATI GLOBALI:\n';
+            text += '─────────────────────────────────────────────────────────────\n';
+            text += 'Risposte corrette: ' + correct + '/100\n';
+            text += 'Risposte sbagliate: ' + wrong + '/100\n';
+            text += 'Percentuale di successo: ' + percentage + '%\n';
+            text += 'Valutazione: ' + evaluation.grade + '\n';
+            text += 'Giudizio: ' + evaluation.status + '\n\n';
+
+            text += 'GIUDIZIO FINALE:\n';
+            text += '─────────────────────────────────────────────────────────────\n';
+            if (percentage >= 90) {
+                text += 'Eccellente. Padronanza completa dell\'imperfetto indicativo.\n';
+            } else if (percentage >= 80) {
+                text += 'Buono. Comprensione solida con margini di miglioramento.\n';
+            } else if (percentage >= 70) {
+                text += 'Soddisfacente. Conoscenza accettabile con aree da consolidare.\n';
+            } else if (percentage >= 60) {
+                text += 'Sufficiente. Necessari ulteriori studi e approfondimenti.\n';
+            } else {
+                text += 'Insufficiente. Ristudiare completamente i contenuti.\n';
+            }
+            text += '\n';
+
+            text += 'DETTAGLIO DOMANDA PER DOMANDA:\n';
+            text += '═════════════════════════════════════════════════════════════\n';
+            for (let i = 0; i < 100; i++) {
+                const ans = userAnswers[i];
+                const q = questions[i];
+                const isCorrect = ans === q.correct;
+                text += '\nDomanda ' + (i + 1) + ': ' + (isCorrect ? '✓ CORRETTA' : '✗ ERRATA') + '\n';
+                text += 'Testo: ' + q.q + '\n';
+                text += 'Risposta data: ' + (ans !== null ? q.options[ans] : 'Non risposto') + '\n';
+                text += 'Risposta corretta: ' + q.options[q.correct] + '\n';
+                text += 'Spiegazione: ' + q.expl + '\n';
+                text += '─────────────────────────────────────────────────────────────\n';
+            }
+
+            text += '\n═════════════════════════════════════════════════════════════\n';
+            text += 'Test generato dal Sistema Didattico Universitario\n';
+            text += 'Imperfetto Indicativo - Attivo, Passivo e Pronominale (100 esercizi)\n';
+            text += 'Soglia di sufficienza: 60% (60/100 risposte corrette)\n';
+            text += '═════════════════════════════════════════════════════════════\n';
+
+            return text;
+        }
+
+        function sendResults() {
+            const resultsText = document.getElementById('resultsText').value;
+            const subject = encodeURIComponent('Risultati Test Imperfetto Indicativo - ' + studentName + ' ' + studentSurname);
+            const body = encodeURIComponent(resultsText);
+
+            // Email fissa del docente
+            const teacherEmail = 'giancarlo.vettori@cpiatv1.edu.it';
+
+            // Crea mailto link con email del docente
+            const mailtoLink = 'mailto:' + teacherEmail + '?subject=' + subject + '&body=' + body;
+
+            // Apri client email
+            window.location.href = mailtoLink;
+
+            // Mostra conferma
+            setTimeout(function() {
+                alert('Email preparata per: ' + teacherEmail + '\n\nSe il client email non si apre automaticamente, copia il testo dalla casella sopra e invialo manualmente a:\n' + teacherEmail);
+            }, 500);
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+            document.getElementById('nomeInput').value = '';
+            document.getElementById('cognomeInput').value = '';
+            document.getElementById('emailInput').value = '';
+            document.getElementById('startBtn').disabled = true;
+            currentQuestion = 0;
+            userAnswers = new Array(100).fill(null);
+            score = 0;
+            studentName = '';
+            studentSurname = '';
+            studentEmail = '';
+        }
+    </script>
+</body>
+</html>
