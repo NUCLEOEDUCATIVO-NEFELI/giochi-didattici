@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test di Ascolto Italiano - Livello A2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #11998e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.98);
+            border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: rgba(255,255,255,0.5);
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* START SCREEN */
+        .start-screen {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            color: #1a0533;
+            margin-bottom: 20px;
+        }
+
+        .start-screen p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: #1a0533;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05em;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-family: 'Source Sans Pro', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2d1b69;
+            box-shadow: 0 0 0 3px rgba(45,27,105,0.1);
+        }
+
+        #startBtn {
+            padding: 16px 45px;
+            font-size: 1.15em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #2d1b69, #11998e);
+            color: white;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(45,27,105,0.3);
+        }
+
+        #startBtn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(45,27,105,0.4);
+        }
+
+        #startBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .grading-scale {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0 30px 0;
+            text-align: left;
+            border: 2px solid #e9ecef;
+        }
+
+        .grading-scale h4 {
+            color: #1a0533;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .grade-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .grade-item:last-child {
+            border-bottom: none;
+        }
+
+        .grade-range {
+            font-weight: 700;
+            color: #2d1b69;
+        }
+
+        .grade-value {
+            color: #666;
+        }
+
+        .progress-container {
+            margin: 20px 30px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e8e8e8;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2d1b69, #11998e);
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .section {
+            padding: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            color: #1a0533;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2d1b69;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #11998e;
+        }
+
+        .section-icon {
+            font-size: 1.3em;
+            color: #11998e;
+        }
+
+        .audio-btn {
+            background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(45,27,105,0.3);
+        }
+
+        .audio-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(45,27,105,0.4);
+        }
+
+        .audio-btn.playing {
+            background: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .question {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            border-left: 6px solid #2d1b69;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .question:hover {
+            transform: translateX(5px);
+        }
+
+        .question-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #2d1b69, #11998e);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: 700;
+            margin-right: 12px;
+            font-size: 0.95em;
+            box-shadow: 0 4px 10px rgba(45,27,105,0.2);
+        }
+
+        .question-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: #1a0533;
+            margin-bottom: 18px;
+            font-size: 1.15em;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            font-weight: 600;
+            color: #495057;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #2d1b69;
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .option:hover {
+            border-color: #2d1b69;
+            background: #f8f9ff;
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(45,27,105,0.1);
+        }
+
+        .option:hover::before {
+            transform: scaleY(1);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #2d1b69;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .option.correct::before {
+            background: #28a745;
+            transform: scaleY(1);
+        }
+
+        .option.wrong {
+            border-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .option.wrong::before {
+            background: #dc3545;
+            transform: scaleY(1);
+        }
+
+        .controls {
+            padding: 35px;
+            text-align: center;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);
+            color: white;
+            border: none;
+            padding: 16px 45px;
+            border-radius: 50px;
+            font-size: 1.15em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(45,27,105,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(45,27,105,0.4);
+        }
+
+        /* RESULTS SCREEN */
+        .results-container {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .results-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4em;
+            color: #1a0533;
+            margin-bottom: 10px;
+        }
+
+        .student-name {
+            font-size: 1.5em;
+            color: #2d1b69;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .score-display {
+            font-size: 5em;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #1a0533, #11998e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+
+        .score-label {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .evaluation-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+        }
+
+        .evaluation-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .evaluation-box .grade {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .evaluation-box .status {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .evaluation-box.sufficient {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            box-shadow: 0 10px 30px rgba(17,153,142,0.3);
+        }
+
+        .evaluation-box.insufficient {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            box-shadow: 0 10px 30px rgba(235,51,73,0.3);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-box {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #1a0533;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 1em;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .result-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .result-box .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #2d1b69, #11998e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-box .label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .stats-detail {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+            border: 2px solid #e9ecef;
+        }
+
+        .stats-detail h4 {
+            color: #1a0533;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #1a0533;
+        }
+
+        .stat-value.success {
+            color: #28a745;
+        }
+
+        .stat-value.error {
+            color: #dc3545;
+        }
+
+        .email-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 35px;
+            border: 2px solid #e9ecef;
+        }
+
+        .email-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: #1a0533;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .email-section p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .results-text {
+            width: 100%;
+            min-height: 250px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            resize: vertical;
+            background: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-send {
+            padding: 16px 40px;
+            font-size: 1.15em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(45,27,105,0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(45,27,105,0.4);
+        }
+
+        .btn-send::before {
+            content: '✉';
+            font-size: 1.3em;
+        }
+
+        #restartBtn {
+            padding: 14px 30px;
+            font-size: 1.05em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: 2px solid #2d1b69;
+            border-radius: 10px;
+            cursor: pointer;
+            background: white;
+            color: #2d1b69;
+            transition: all 0.3s ease;
+        }
+
+        #restartBtn:hover {
+            background: #2d1b69;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 1em;
+            margin-top: 10px;
+            font-family: 'Source Sans Pro', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #2d1b69;
+            box-shadow: 0 0 0 3px rgba(45,27,105,0.1);
+        }
+
+        .true-false {
+            display: flex;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .tf-option {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            font-weight: 700;
+            font-size: 1.05em;
+            background: white;
+            color: #495057;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tf-option::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #2d1b69;
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .tf-option:hover {
+            border-color: #2d1b69;
+            background: #f8f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(45,27,105,0.1);
+        }
+
+        .tf-option:hover::before {
+            transform: scaleY(1);
+        }
+
+        .tf-option.selected {
+            border-color: #2d1b69;
+            background: #f0f4ff;
+            box-shadow: 0 4px 15px rgba(45,27,105,0.15);
+        }
+
+        .tf-option.selected::before {
+            transform: scaleY(1);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .section { padding: 20px; }
+            .true-false { flex-direction: column; gap: 10px; }
+            .question { padding: 20px; }
+            .score-display { font-size: 3.5em; }
+            .results-grid { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column; }
+            .start-screen { padding: 25px; }
+            .start-screen h2 { font-size: 1.8em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- START SCREEN -->
+        <div id="startScreen">
+            <div class="header">
+                <h1>🎧 TEST DI ASCOLTO A2</h1>
+                <p>Comprensione orale - Livello Pre-intermedio</p>
+            </div>
+            <div class="start-screen">
+                <h2>Benvenuto al Test di Ascolto</h2>
+                <p>Questo test valuta la comprensione orale attraverso 5 sezioni tematiche. Ascolta attentamente gli audio e rispondi alle domande. Durata stimata: 30-40 minuti.</p>
+
+                <div class="grading-scale">
+                    <h4>📊 Sistema di Valutazione</h4>
+                    <div class="grade-item"><span class="grade-range">90-100%</span><span class="grade-value">30/30 - Eccellente (Livello B1)</span></div>
+                    <div class="grade-item"><span class="grade-range">80-89%</span><span class="grade-value">27-29/30 - Buono</span></div>
+                    <div class="grade-item"><span class="grade-range">70-79%</span><span class="grade-value">24-26/30 - Soddisfacente</span></div>
+                    <div class="grade-item"><span class="grade-range">60-69%</span><span class="grade-value">18-23/30 - Sufficiente</span></div>
+                    <div class="grade-item"><span class="grade-range">&lt;60%</span><span class="grade-value">Insufficiente - Ripassare A1</span></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nomeInput">Nome *</label>
+                    <input type="text" id="nomeInput" placeholder="Es: Marco">
+                </div>
+                <div class="form-group">
+                    <label for="cognomeInput">Cognome *</label>
+                    <input type="text" id="cognomeInput" placeholder="Es: Rossi">
+                </div>
+                <div class="form-group">
+                    <label for="emailInput">Email *</label>
+                    <input type="email" id="emailInput" placeholder="Es: marco.rossi@gmail.com">
+                </div>
+                <button id="startBtn" disabled onclick="startQuiz()">Avvia Test</button>
+            </div>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quizScreen" class="hidden">
+            <div class="header">
+                <h1>🎧 TEST DI ASCOLTO A2</h1>
+                <p>Comprensione orale - Livello Pre-intermedio</p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- SEZIONE 1: Informazioni Personali -->
+            <div class="section">
+                <h2 class="section-title"><span class="section-icon">👤</span> Sezione 1: Informazioni Personali</h2>
+                <button class="audio-btn" onclick="playAudio('section1')">▶ Ascolta il dialogo</button>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">1</span>
+                    <div class="question-text">Come si chiama la persona nel dialogo?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q1" value="a"> Marco Rossi</label>
+                        <label class="option"><input type="radio" name="q1" value="b"> Luca Bianchi</label>
+                        <label class="option"><input type="radio" name="q1" value="c"> Giuseppe Verdi</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">2</span>
+                    <div class="question-text">Quanti anni ha?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q2" value="a"> 25 anni</label>
+                        <label class="option"><input type="radio" name="q2" value="b"> 30 anni</label>
+                        <label class="option"><input type="radio" name="q2" value="c"> 28 anni</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">3</span>
+                    <div class="question-text">Di dove è originario?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q3" value="a"> Di Firenze</label>
+                        <label class="option"><input type="radio" name="q3" value="b"> Di Roma</label>
+                        <label class="option"><input type="radio" name="q3" value="c"> Di Milano</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">4</span>
+                    <div class="question-text">Che lavoro fa?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q4" value="a"> Insegnante</label>
+                        <label class="option"><input type="radio" name="q4" value="b"> Cuoco</label>
+                        <label class="option"><input type="radio" name="q4" value="c"> Medico</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">5</span>
+                    <div class="question-text">Dove abita attualmente?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q5" value="a"> In centro</label>
+                        <label class="option"><input type="radio" name="q5" value="b"> In periferia</label>
+                        <label class="option"><input type="radio" name="q5" value="c"> Vicino al mare</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">6</span>
+                    <div class="question-text">È sposato?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q6', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q6', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q6" id="q6">
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">7</span>
+                    <div class="question-text">Ha figli?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q7', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q7', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q7" id="q7">
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">8</span>
+                    <div class="question-text">Qual è il suo numero di telefono?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q8" value="a"> 333-1234567</label>
+                        <label class="option"><input type="radio" name="q8" value="b"> 320-9876543</label>
+                        <label class="option"><input type="radio" name="q8" value="c"> 347-5558899</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">9</span>
+                    <div class="question-text">Qual è la sua email?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q9" value="a"> luca.b@email.it</label>
+                        <label class="option"><input type="radio" name="q9" value="b"> lucabianchi@gmail.com</label>
+                        <label class="option"><input type="radio" name="q9" value="c"> l.bianchi@libero.it</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">10</span>
+                    <div class="question-text">Che hobby ha?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q10" value="a"> Leggere e dipingere</label>
+                        <label class="option"><input type="radio" name="q10" value="b"> Cucinare e fare sport</label>
+                        <label class="option"><input type="radio" name="q10" value="c"> Viaggiare e fotografare</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEZIONE 2: Al Ristorante -->
+            <div class="section">
+                <h2 class="section-title"><span class="section-icon">🍽️</span> Sezione 2: Al Ristorante</h2>
+                <button class="audio-btn" onclick="playAudio('section2')">▶ Ascolta la conversazione</button>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">11</span>
+                    <div class="question-text">Quante persone sono al tavolo?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q11" value="a"> Due</label>
+                        <label class="option"><input type="radio" name="q11" value="b"> Tre</label>
+                        <label class="option"><input type="radio" name="q11" value="c"> Quattro</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">12</span>
+                    <div class="question-text">Cosa ordinano come antipasto?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q12" value="a"> Bruschette</label>
+                        <label class="option"><input type="radio" name="q12" value="b"> Tagliere di salumi</label>
+                        <label class="option"><input type="radio" name="q12" value="c"> Insalata caprese</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">13</span>
+                    <div class="question-text">Cosa prende Marco come primo piatto?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q13" value="a"> Spaghetti alle vongole</label>
+                        <label class="option"><input type="radio" name="q13" value="b"> Lasagne</label>
+                        <label class="option"><input type="radio" name="q13" value="c"> Risotto ai funghi</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">14</span>
+                    <div class="question-text">Anna è vegetariana?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q14', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q14', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q14" id="q14">
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">15</span>
+                    <div class="question-text">Cosa bevono?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q15" value="a"> Acqua e Coca-Cola</label>
+                        <label class="option"><input type="radio" name="q15" value="b"> Vino rosso e acqua</label>
+                        <label class="option"><input type="radio" name="q15" value="c"> Birra e vino bianco</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">16</span>
+                    <div class="question-text">Quanto costa il conto totale?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q16" value="a"> 85 euro</label>
+                        <label class="option"><input type="radio" name="q16" value="b"> 92 euro</label>
+                        <label class="option"><input type="radio" name="q16" value="c"> 78 euro</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">17</span>
+                    <div class="question-text">Lasciano la mancia?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q17', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q17', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q17" id="q17">
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">18</span>
+                    <div class="question-text">Come pagano?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q18" value="a"> Solo in contanti</label>
+                        <label class="option"><input type="radio" name="q18" value="b"> Metà contanti e metà carta</label>
+                        <label class="option"><input type="radio" name="q18" value="c"> Solo con carta di credito</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">19</span>
+                    <div class="question-text">A che ora arrivano al ristorante?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q19" value="a"> Alle 20:30</label>
+                        <label class="option"><input type="radio" name="q19" value="b"> Alle 19:00</label>
+                        <label class="option"><input type="radio" name="q19" value="c"> Alle 21:00</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">20</span>
+                    <div class="question-text">Hanno prenotato il tavolo?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q20', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q20', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q20" id="q20">
+                </div>
+            </div>
+
+            <!-- SEZIONE 3: Alla Stazione -->
+            <div class="section">
+                <h2 class="section-title"><span class="section-icon">🚂</span> Sezione 3: Alla Stazione</h2>
+                <button class="audio-btn" onclick="playAudio('section3')">▶ Ascolta l'annuncio</button>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">21</span>
+                    <div class="question-text">Da quale binario parte il treno?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q21" value="a"> Binario 3</label>
+                        <label class="option"><input type="radio" name="q21" value="b"> Binario 5</label>
+                        <label class="option"><input type="radio" name="q21" value="c"> Binario 7</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">22</span>
+                    <div class="question-text">Qual è la destinazione del treno?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q22" value="a"> Venezia</label>
+                        <label class="option"><input type="radio" name="q22" value="b"> Firenze</label>
+                        <label class="option"><input type="radio" name="q22" value="c"> Napoli</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">23</span>
+                    <div class="question-text">C'è un ritardo?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q23', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q23', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q23" id="q23">
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">24</span>
+                    <div class="question-text">Di quanti minuti è il ritardo?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q24" value="a"> 5 minuti</label>
+                        <label class="option"><input type="radio" name="q24" value="b"> 15 minuti</label>
+                        <label class="option"><input type="radio" name="q24" value="c"> 30 minuti</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">25</span>
+                    <div class="question-text">Che tipo di treno è?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q25" value="a"> Regionale</label>
+                        <label class="option"><input type="radio" name="q25" value="b"> Intercity</label>
+                        <label class="option"><input type="radio" name="q25" value="c"> Frecciarossa</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">26</span>
+                    <div class="question-text">Qual è il numero del treno?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q26" value="a"> 9520</label>
+                        <label class="option"><input type="radio" name="q26" value="b"> 8530</label>
+                        <label class="option"><input type="radio" name="q26" value="c"> 7410</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">27</span>
+                    <div class="question-text">Dove devono presentarsi i passeggeri?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q27" value="a"> Al bar</label>
+                        <label class="option"><input type="radio" name="q27" value="b"> Sottopasso numero 2</label>
+                        <label class="option"><input type="radio" name="q27" value="c"> Sala d'attesa</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">28</span>
+                    <div class="question-text">Il treno è diretto?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q28', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q28', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q28" id="q28">
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">29</span>
+                    <div class="question-text">Qual è la prima fermata intermedia?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q29" value="a"> Roma Termini</label>
+                        <label class="option"><input type="radio" name="q29" value="b"> Bologna Centrale</label>
+                        <label class="option"><input type="radio" name="q29" value="c"> Torino Porta Nuova</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">30</span>
+                    <div class="question-text">A che ora era prevista la partenza originale?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q30" value="a"> 14:00</label>
+                        <label class="option"><input type="radio" name="q30" value="b"> 14:30</label>
+                        <label class="option"><input type="radio" name="q30" value="c"> 15:00</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEZIONE 4: Al Supermercato -->
+            <div class="section">
+                <h2 class="section-title"><span class="section-icon">🛒</span> Sezione 4: Al Supermercato</h2>
+                <button class="audio-btn" onclick="playAudio('section4')">▶ Ascolta la lista della spesa</button>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">31</span>
+                    <div class="question-text">Quanti litri di latte servono?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q31" value="a"> Un litro</label>
+                        <label class="option"><input type="radio" name="q31" value="b"> Due litri</label>
+                        <label class="option"><input type="radio" name="q31" value="c"> Tre litri</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">32</span>
+                    <div class="question-text">Che tipo di pane comprare?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q32" value="a"> Pane bianco</label>
+                        <label class="option"><input type="radio" name="q32" value="b"> Pane integrale</label>
+                        <label class="option"><input type="radio" name="q32" value="c"> Focaccia</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">33</span>
+                    <div class="question-text">Quante uova servono?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q33" value="a"> Una dozzina</label>
+                        <label class="option"><input type="radio" name="q33" value="b"> Sei uova</label>
+                        <label class="option"><input type="radio" name="q33" value="c"> Quattro uova</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">34</span>
+                    <div class="question-text">C'è il pollo nella lista?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q34', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q34', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q34" id="q34">
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">35</span>
+                    <div class="question-text">Quanti chili di pasta?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q35" value="a"> Un chilo</label>
+                        <label class="option"><input type="radio" name="q35" value="b"> Due chili</label>
+                        <label class="option"><input type="radio" name="q35" value="c"> Mezzo chilo</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">36</span>
+                    <div class="question-text">Che frutta comprare?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q36" value="a"> Mele e banane</label>
+                        <label class="option"><input type="radio" name="q36" value="b"> Arance e limoni</label>
+                        <label class="option"><input type="radio" name="q36" value="c"> Uva e pere</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">37</span>
+                    <div class="question-text">C'è lo yogurt nella lista?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q37', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q37', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q37" id="q37">
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">38</span>
+                    <div class="question-text">Quanto caffè?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q38" value="a"> 250 grammi</label>
+                        <label class="option"><input type="radio" name="q38" value="b"> 500 grammi</label>
+                        <label class="option"><input type="radio" name="q38" value="c"> Un chilo</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">39</span>
+                    <div class="question-text">Serve lo zucchero?</div>
+                    <div class="true-false">
+                        <div class="tf-option" onclick="selectTF(this, 'q39', 'true')">Vero</div>
+                        <div class="tf-option" onclick="selectTF(this, 'q39', 'false')">Falso</div>
+                    </div>
+                    <input type="hidden" name="q39" id="q39">
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">40</span>
+                    <div class="question-text">Qual è il budget massimo?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q40" value="a"> 30 euro</label>
+                        <label class="option"><input type="radio" name="q40" value="b"> 40 euro</label>
+                        <label class="option"><input type="radio" name="q40" value="c"> 50 euro</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEZIONE 5: Programma Giornaliero -->
+            <div class="section">
+                <h2 class="section-title"><span class="section-icon">📅</span> Sezione 5: Programma Giornaliero</h2>
+                <button class="audio-btn" onclick="playAudio('section5')">▶ Ascolta la giornata tipo</button>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">41</span>
+                    <div class="question-text">A che ora si sveglia?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q41" value="a"> Alle 6:00</label>
+                        <label class="option"><input type="radio" name="q41" value="b"> Alle 7:00</label>
+                        <label class="option"><input type="radio" name="q41" value="c"> Alle 8:00</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">42</span>
+                    <div class="question-text">Cosa fa prima di colazione?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q42" value="a"> Legge il giornale</label>
+                        <label class="option"><input type="radio" name="q42" value="b"> Fa ginnastica</label>
+                        <label class="option"><input type="radio" name="q42" value="c"> Si fa la doccia</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">43</span>
+                    <div class="question-text">Dove lavora?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q43" value="a"> In un ufficio</label>
+                        <label class="option"><input type="radio" name="q43" value="b"> In negozio</label>
+                        <label class="option"><input type="radio" name="q43" value="c"> A casa</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">44</span>
+                    <div class="question-text">A che ora inizia a lavorare?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q44" value="a"> Alle 8:00</label>
+                        <label class="option"><input type="radio" name="q44" value="b"> Alle 9:00</label>
+                        <label class="option"><input type="radio" name="q44" value="c"> Alle 10:00</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">45</span>
+                    <div class="question-text">Quanto dura la pausa pranzo?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q45" value="a"> 30 minuti</label>
+                        <label class="option"><input type="radio" name="q45" value="b"> 45 minuti</label>
+                        <label class="option"><input type="radio" name="q45" value="c"> Un'ora</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">46</span>
+                    <div class="question-text">Cosa fa nel pomeriggio?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q46" value="a"> Va in palestra</label>
+                        <label class="option"><input type="radio" name="q46" value="b"> Va al cinema</label>
+                        <label class="option"><input type="radio" name="q46" value="c"> Visita amici</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">47</span>
+                    <div class="question-text">A che ora finisce di lavorare?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q47" value="a"> Alle 17:00</label>
+                        <label class="option"><input type="radio" name="q47" value="b"> Alle 18:00</label>
+                        <label class="option"><input type="radio" name="q47" value="c"> Alle 19:00</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="c">
+                    <span class="question-number">48</span>
+                    <div class="question-text">Cosa fa la sera?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q48" value="a"> Esce sempre</label>
+                        <label class="option"><input type="radio" name="q48" value="b"> Lavora extra</label>
+                        <label class="option"><input type="radio" name="q48" value="c"> Guarda la televisione</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <span class="question-number">49</span>
+                    <div class="question-text">A che ora va a dormire?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q49" value="a"> Alle 23:00</label>
+                        <label class="option"><input type="radio" name="q49" value="b"> A mezzanotte</label>
+                        <label class="option"><input type="radio" name="q49" value="c"> Alle 22:00</label>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <span class="question-number">50</span>
+                    <div class="question-text">Come va al lavoro?</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q50" value="a"> In macchina</label>
+                        <label class="option"><input type="radio" name="q50" value="b"> In autobus</label>
+                        <label class="option"><input type="radio" name="q50" value="c"> A piedi</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn-primary" onclick="calculateScore()">📊 Calcola Risultato</button>
+            </div>
+        </div>
+
+        <!-- RESULTS SCREEN -->
+        <div id="resultsScreen" class="hidden">
+            <div class="header">
+                <h1>RISULTATI FINALI</h1>
+                <p>Test di Ascolto A2 - Comprensione orale</p>
+            </div>
+            <div class="results-container">
+                <div class="student-name" id="studentNameDisplay"></div>
+                <h2>Punteggio Ottenuto</h2>
+                <div class="score-display" id="finalScore"></div>
+                <div class="score-label">Risposte corrette su 50</div>
+
+                <div id="evaluationBox" class="evaluation-box">
+                    <h3>Valutazione</h3>
+                    <div class="grade" id="gradeDisplay"></div>
+                    <div class="status" id="statusDisplay"></div>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-box">
+                        <span class="number" id="correctCount"></span>
+                        <span class="label">Corrette</span>
+                    </div>
+                    <div class="result-box">
+                        <span class="number" id="wrongCount"></span>
+                        <span class="label">Sbagliate</span>
+                    </div>
+                    <div class="result-box">
+                        <span class="number" id="percentage"></span>
+                        <span class="label">Percentuale</span>
+                    </div>
+                </div>
+
+                <div class="stats-detail">
+                    <h4>📈 Dettaglio Statistiche</h4>
+                    <div class="stat-row">
+                        <span class="stat-label">Risposte Corrette:</span>
+                        <span class="stat-value success" id="statCorrect"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Risposte Sbagliate:</span>
+                        <span class="stat-value error" id="statWrong"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Percentuale Successo:</span>
+                        <span class="stat-value" id="statPercent"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Voto Finale:</span>
+                        <span class="stat-value" id="statGrade"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Esito:</span>
+                        <span class="stat-value" id="statResult"></span>
+                    </div>
+                </div>
+
+                <div class="email-section">
+                    <h3>📧 Invia Risultati</h3>
+                    <p>Clicca su "Invio" per inviare automaticamente i risultati completi a <strong>giancarlo.vettori@cpiatv1.edu.it</strong></p>
+                    <textarea id="resultsText" class="results-text"></textarea>
+                    <div class="button-group">
+                        <button class="btn-send" onclick="sendResults()">Invio</button>
+                        <button id="restartBtn" onclick="restartQuiz()">Ricomincia Test</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Testi audio per la sintesi vocale
+        const audioTexts = {
+            section1: "Buongiorno, mi chiamo Luca Bianchi e ho ventotto anni. Sono nato a Firenze ma ora vivo a Livorno, vicino al mare. Lavoro come cuoco in un ristorante nel centro della città. Sono sposato con Maria da tre anni ma non abbiamo figli. Il mio numero di telefono è trequattrosette-cinquecinquecinque-ottoottonove nove, e la mia email è luca punto b chiocciola email punto it. Nel tempo libero mi piace cucinare per gli amici e fare sport, specialmente nuoto e calcio.",
+
+            section2: "Buonasera, tavolo per quattro persone? Sì, abbiamo prenotato a nome Rossi. Perfetto, il tavolo numero dodici è pronto. Per bere? Prendiamo una bottiglia di vino rosso della casa e un litro d'acqua naturale. Per antipasto porti un tagliere di salumi e formaggi per tutti. Come primo piatto, io prendo gli spaghetti alle vongole, mia moglie prende la pasta al pomodoro perché è vegetariana, e i ragazzi prendono entrambi le lasagne. Per secondo... prendiamo due bistecche e due insalate miste. Per dessert? Quattro caffè e il conto, per favore. Sono ottantacinque euro in totale. Paghi metà in contanti e metà con carta? Sì, esatto. Ecco dieci euro di mancia. Grazie mille, buona serata!",
+
+            section3: "Attenzione passeggeri, treno Frecciarossa numero 9520 per Napoli Centrale, delle quattordici e trenta, oggi in partenza dal binario 5 con un ritardo previsto di quindici minuti. Il treno è diretto con fermate intermedie a Roma Termini e Salerno. I passeggeri sono pregati di recarsi al sottopasso numero 2 per l'imbarco. Ripeto: treno 9520 per Napoli, binario 5, ritardo quindici minuti. Grazie per l'attenzione.",
+
+            section4: "Ciao, puoi andare a fare la spesa? Sì, certo. Dimmi cosa serve. Allora: tre litri di latte fresco, pane integrale, una dozzina di uova, due chili di pasta, mezzo chilo di caffè macinato, mele e banane, yogurt bianco naturale, e non dimenticare lo zucchero. Ah, prendi anche del pollo per stasera. Quanto posso spendere? Massimo cinquanta euro. Va bene, ci vediamo dopo.",
+
+            section5: "La mia giornata tipo: mi sveglio alle sette del mattino, mi faccio la doccia e faccio colazione con caffè e cornetto. Esco di casa alle otto e prendo l'autobus numero quindici per andare in ufficio. Lavoro dalle nove alle diciotto con un'ora di pausa pranzo. Dopo lavoro, il martedì e il giovedì vado in palestra per un'ora. La sera ceno a casa con la famiglia e guardo un po' di televisione. Vado a dormire sempre verso le undici di sera. Il weekend invece il programma è diverso."
+        };
+
+        let currentAudio = null;
+        let speechSynthesis = window.speechSynthesis;
+        let studentName = "";
+        let studentSurname = "";
+        let studentEmail = "";
+        let userAnswers = new Array(50).fill(null);
+        let questions = [];
+
+        // Inizializza le domande
+        for (let i = 1; i <= 50; i++) {
+            const q = document.querySelector(`[name="q${i}"]`);
+            if (q) {
+                const questionDiv = q.closest('.question');
+                if (questionDiv) {
+                    questions.push({
+                        id: i,
+                        correct: questionDiv.dataset.correct,
+                        text: questionDiv.querySelector('.question-text').textContent
+                    });
+                }
+            }
+        }
+
+        // Gestione input iniziali
+        document.getElementById('nomeInput').addEventListener('input', checkInputs);
+        document.getElementById('cognomeInput').addEventListener('input', checkInputs);
+        document.getElementById('emailInput').addEventListener('input', checkInputs);
+
+        function checkInputs() {
+            const nome = document.getElementById('nomeInput').value.trim();
+            const cognome = document.getElementById('cognomeInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+            document.getElementById('startBtn').disabled = !(nome.length > 0 && cognome.length > 0 && email.length > 0 && email.includes('@'));
+        }
+
+        function startQuiz() {
+            studentName = document.getElementById('nomeInput').value.trim();
+            studentSurname = document.getElementById('cognomeInput').value.trim();
+            studentEmail = document.getElementById('emailInput').value.trim();
+
+            if (!studentName || !studentSurname || !studentEmail) {
+                alert("Compila tutti i campi!");
+                return;
+            }
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+            document.getElementById('resultsScreen').classList.add('hidden');
+
+            // Reset risposte
+            userAnswers = new Array(50).fill(null);
+
+            // Reset UI
+            document.querySelectorAll('.question').forEach(q => {
+                q.classList.remove('correct', 'wrong');
+            });
+            document.querySelectorAll('input[type="radio"]').forEach(r => {
+                r.checked = false;
+            });
+            document.querySelectorAll('.tf-option').forEach(t => {
+                t.classList.remove('selected');
+            });
+            document.querySelectorAll('input[type="hidden"]').forEach(h => {
+                h.value = '';
+            });
+
+            updateProgressBar();
+        }
+
+        function playAudio(section) {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                document.querySelectorAll('.audio-btn').forEach(btn => {
+                    btn.classList.remove('playing');
+                    btn.innerHTML = '▶ Ascolta';
+                });
+                return;
+            }
+
+            const btn = event.target;
+            const text = audioTexts[section];
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'it-IT';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+
+            utterance.onstart = () => {
+                btn.classList.add('playing');
+                btn.innerHTML = '⏹ Stop';
+            };
+
+            utterance.onend = () => {
+                btn.classList.remove('playing');
+                btn.innerHTML = '▶ Ascolta';
+            };
+
+            speechSynthesis.speak(utterance);
+        }
+
+        function selectTF(element, name, value) {
+            const parent = element.parentElement;
+            parent.querySelectorAll('.tf-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById(name).value = value;
+
+            // Aggiorna array risposte
+            const qNum = parseInt(name.replace('q', ''));
+            userAnswers[qNum - 1] = value;
+
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            let answered = 0;
+            for (let i = 1; i <= 50; i++) {
+                const question = document.querySelector(`[name="q${i}"]`);
+                if (question) {
+                    if (question.type === 'radio') {
+                        if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+                    } else if (question.value) {
+                        answered++;
+                    }
+                }
+            }
+            const progress = (answered / 50) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function calculateScore() {
+            let score = 0;
+            let answered = 0;
+
+            // Raccoglie tutte le risposte
+            for (let i = 1; i <= 50; i++) {
+                const question = document.querySelector(`[name="q${i}"]`);
+                if (!question) continue;
+
+                let userAnswer = '';
+
+                if (question.type === 'radio') {
+                    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                    if (selected) {
+                        userAnswer = selected.value;
+                        answered++;
+                    }
+                } else {
+                    userAnswer = question.value;
+                    if (userAnswer) answered++;
+                }
+
+                userAnswers[i-1] = userAnswer;
+
+                const questionDiv = question.closest('.question');
+                const correctAnswer = questionDiv.dataset.correct;
+
+                if (userAnswer === correctAnswer) {
+                    score++;
+                    questionDiv.classList.add('correct');
+                    questionDiv.classList.remove('wrong');
+                } else if (userAnswer) {
+                    questionDiv.classList.add('wrong');
+                    questionDiv.classList.remove('correct');
+                }
+            }
+
+            // Mostra schermata risultati
+            showResults(score, answered);
+        }
+
+        function showResults(score, answered) {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            const wrong = 50 - score;
+            const percentage = Math.round((score / 50) * 100);
+
+            document.getElementById('studentNameDisplay').textContent = studentName + " " + studentSurname;
+            document.getElementById('finalScore').textContent = score + '/50';
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('wrongCount').textContent = wrong;
+            document.getElementById('percentage').textContent = percentage + '%';
+
+            document.getElementById('statCorrect').textContent = score;
+            document.getElementById('statWrong').textContent = wrong;
+            document.getElementById('statPercent').textContent = percentage + '%';
+
+            const evaluation = getEvaluation(percentage);
+            document.getElementById('gradeDisplay').textContent = evaluation.grade;
+            document.getElementById('statusDisplay').textContent = evaluation.status;
+            document.getElementById('statGrade').textContent = evaluation.grade;
+            document.getElementById('statResult').textContent = evaluation.status;
+
+            const evalBox = document.getElementById('evaluationBox');
+            evalBox.className = 'evaluation-box' + (evaluation.sufficient ? ' sufficient' : ' insufficient');
+
+            document.getElementById('resultsText').value = generateResultsText(score, wrong, percentage, evaluation);
+
+            // Scroll in cima
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function getEvaluation(percentage) {
+            if (percentage >= 90) return { grade: '30/30', status: 'Eccellente - Livello B1', sufficient: true };
+            else if (percentage >= 80) return { grade: '27-29/30', status: 'Buono - Comprensione solida', sufficient: true };
+            else if (percentage >= 70) return { grade: '24-26/30', status: 'Soddisfacente - Conoscenza accettabile', sufficient: true };
+            else if (percentage >= 60) return { grade: '18-23/30', status: 'Sufficiente - Necessari approfondimenti', sufficient: true };
+            else return { grade: '<18/30', status: 'Insufficiente - Ristudiare i contenuti', sufficient: false };
+        }
+
+        function generateResultsText(correct, wrong, percentage, evaluation) {
+            const date = new Date().toLocaleDateString('it-IT');
+            const time = new Date().toLocaleTimeString('it-IT');
+            let text = '=============================================================\n';
+            text += '     RISULTATI TEST DI ASCOLTO - LIVELLO A2\n';
+            text += '=============================================================\n\n';
+            text += 'DATI CANDIDATO:\n';
+            text += '-------------------------------------------------------------\n';
+            text += 'Nome: ' + studentName + ' ' + studentSurname + '\n';
+            text += 'Email: ' + studentEmail + '\n';
+            text += 'Data: ' + date + '\n';
+            text += 'Ora: ' + time + '\n\n';
+            text += 'RISULTATI GLOBALI:\n';
+            text += '-------------------------------------------------------------\n';
+            text += 'Risposte corrette: ' + correct + '/50\n';
+            text += 'Risposte sbagliate: ' + wrong + '/50\n';
+            text += 'Percentuale: ' + percentage + '%\n';
+            text += 'Valutazione: ' + evaluation.grade + '\n';
+            text += 'Giudizio: ' + evaluation.status + '\n\n';
+            text += 'DETTAGLIO DOMANDA PER DOMANDA:\n';
+            text += '=============================================================\n';
+
+            for (let i = 0; i < 50; i++) {
+                if (!questions[i]) continue;
+                const ans = userAnswers[i];
+                const q = questions[i];
+                const isCorrect = ans === q.correct;
+                text += '\nDomanda ' + (i + 1) + ': ' + (isCorrect ? 'CORRETTA' : 'ERRATA') + '\n';
+                text += 'Testo: ' + q.text + '\n';
+                text += 'Risposta data: ' + (ans ? ans : 'Non risposto') + '\n';
+                text += 'Risposta corretta: ' + q.correct + '\n';
+                text += '-------------------------------------------------------------\n';
+            }
+
+            text += '\n=============================================================\n';
+            text += 'Test: Comprensione orale italiano - Livello A2\n';
+            text += 'Soglia di sufficienza: 60% (30/50 risposte corrette)\n';
+            text += '=============================================================\n';
+            return text;
+        }
+
+        function sendResults() {
+            const resultsText = document.getElementById('resultsText').value;
+            const subject = encodeURIComponent('Risultati Test Ascolto A2 - ' + studentName + ' ' + studentSurname);
+            const body = encodeURIComponent(resultsText);
+            const teacherEmail = 'giancarlo.vettori@cpiatv1.edu.it';
+            window.location.href = 'mailto:' + teacherEmail + '?subject=' + subject + '&body=' + body;
+            setTimeout(function() {
+                alert('Email preparata per: ' + teacherEmail + '\n\nSe il client email non si apre, copia il testo dalla casella e invialo manualmente a:\n' + teacherEmail);
+            }, 500);
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+
+            // Reset campi
+            document.getElementById('nomeInput').value = '';
+            document.getElementById('cognomeInput').value = '';
+            document.getElementById('emailInput').value = '';
+            document.getElementById('startBtn').disabled = true;
+
+            // Reset variabili
+            studentName = '';
+            studentSurname = '';
+            studentEmail = '';
+            userAnswers = new Array(50).fill(null);
+
+            // Reset progress bar
+            document.getElementById('progressBar').style.width = '0%';
+        }
+
+        // Event listener per radio buttons
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'radio') {
+                const name = e.target.name;
+                const qNum = parseInt(name.replace('q', ''));
+                userAnswers[qNum - 1] = e.target.value;
+                updateProgressBar();
+            }
+        });
+    </script>
+</body>
+</html>
