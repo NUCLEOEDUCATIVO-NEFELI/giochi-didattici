@@ -892,9 +892,9 @@
                     <span class="question-number">9</span>
                     <div class="question-text">Qual è la sua email?</div>
                     <div class="options">
-                        <label class="option"><input type="radio" name="q9" value="a"> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="05697066642b67456068646c692b6c71">[email&#160;protected]</a></label>
-                        <label class="option"><input type="radio" name="q9" value="b"> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f79b829496959e9699949f9eb7909a969e9bd994989a">[email&#160;protected]</a></label>
-                        <label class="option"><input type="radio" name="q9" value="c"> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95f9bbf7fcf4fbf6fdfcd5f9fcf7f0e7fabbfce1">[email&#160;protected]</a></label>
+                        <label class="option"><input type="radio" name="q9" value="a"> luca.b@email.it</label>
+                        <label class="option"><input type="radio" name="q9" value="b"> lucabianchi@gmail.com</label>
+                        <label class="option"><input type="radio" name="q9" value="c"> l.bianchi@libero.it</label>
                     </div>
                 </div>
 
@@ -1697,4 +1697,12 @@
 
             // Reset variabili
             studentName = '';
-            studentSurname =
+            studentSurname = '';
+            studentEmail = '';
+            userAnswers = new Array(50).fill(null);
+
+            updateProgressBar();
+        }
+    </script>
+</body>
+</html>
