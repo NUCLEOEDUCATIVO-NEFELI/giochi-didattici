@@ -162,18 +162,6 @@
             position: relative;
             z-index: 1;
             line-height: 1.3;
-            margin-bottom: 15px;
-        }
-
-        .question-hint {
-            font-size: 1.2em;
-            color: rgba(255,255,255,0.9);
-            font-weight: bold;
-            position: relative;
-            z-index: 1;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 20px;
         }
 
         .buttons-container {
@@ -449,13 +437,6 @@
             color: #666;
             margin-bottom: 10px;
         }
-
-        .correction {
-            font-size: 1.1em;
-            color: #00b894;
-            margin-top: 10px;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
@@ -470,10 +451,10 @@
                 <h3>📚 Come si gioca</h3>
                 <ul>
                     <li>Leggi la frase con l'aggettivo possessivo</li>
-                    <li>Controlla se la forma è corretta</li>
+                    <li>Valuta se la forma è corretta</li>
                     <li>Clicca VERO se è giusta ✓</li>
                     <li>Clicca FALSO se è sbagliata ✗</li>
-                    <li>Attenzione agli errori di concordanza!</li>
+                    <li>Attenzione: articolo + possessivo + sostantivo devono concordare!</li>
                 </ul>
             </div>
 
@@ -497,7 +478,7 @@
 
         <div class="header">
             <h1>AGGETTIVI POSSESSIVI</h1>
-            <div class="subtitle">La frase è corretta? VERO o FALSO?</div>
+            <div class="subtitle">La frase è corretta?</div>
         </div>
 
         <div class="score-board">
@@ -513,7 +494,6 @@
 
         <div class="question-card" id="questionCard">
             <div class="question-text" id="questionText">Pronti...</div>
-            <div class="question-hint" id="questionHint">...</div>
         </div>
 
         <div class="buttons-container" id="buttonsContainer">
@@ -532,105 +512,107 @@
         // Database domande VERO/FALSO - Aggettivi Possessivi
         const allQuestions = [
             // FRASI CORRETTE (isCorrect: true)
-            { text: "Il mio cane è molto carino", hint: "io → cane (m. sing.)", isCorrect: true },
-            { text: "La mia macchina è nuova", hint: "io → macchina (f. sing.)", isCorrect: true },
-            { text: "I miei amici sono simpatici", hint: "io → amici (m. pl.)", isCorrect: true },
-            { text: "Le mie scarpe sono rosse", hint: "io → scarpe (f. pl.)", isCorrect: true },
-            { text: "La mia casa è grande", hint: "io → casa (f. sing.)", isCorrect: true },
-            { text: "Il tuo telefono squilla", hint: "tu → telefono (m. sing.)", isCorrect: true },
-            { text: "La tua borsa è elegante", hint: "tu → borsa (f. sing.)", isCorrect: true },
-            { text: "I tuoi fratelli studiano", hint: "tu → fratelli (m. pl.)", isCorrect: true },
-            { text: "Le tue idee sono buone", hint: "tu → idee (f. pl.)", isCorrect: true },
-            { text: "Il suo ufficio è lontano", hint: "lui → ufficio (m. sing.)", isCorrect: true },
-            { text: "La sua moglie è dottoressa", hint: "lui → moglie (f. sing.)", isCorrect: true },
-            { text: "I suoi figli giocano", hint: "lei → figli (m. pl.)", isCorrect: true },
-            { text: "Le sue lettere sono importanti", hint: "lei → lettere (f. pl.)", isCorrect: true },
-            { text: "Il nostro professore è severo", hint: "noi → professore (m. sing.)", isCorrect: true },
-            { text: "La nostra scuola è bella", hint: "noi → scuola (f. sing.)", isCorrect: true },
-            { text: "I nostri compagni studiano", hint: "noi → compagni (m. pl.)", isCorrect: true },
-            { text: "Le nostre lezioni iniziano", hint: "noi → lezioni (f. pl.)", isCorrect: true },
-            { text: "Il vostro cane è aggressivo", hint: "voi → cane (m. sing.)", isCorrect: true },
-            { text: "La vostra casa è accogliente", hint: "voi → casa (f. sing.)", isCorrect: true },
-            { text: "I vostri figli crescono", hint: "voi → figli (m. pl.)", isCorrect: true },
-            { text: "Le vostre piante fioriscono", hint: "voi → piante (f. pl.)", isCorrect: true },
-            { text: "Il loro cane è randagio", hint: "loro → cane (m. sing.)", isCorrect: true },
-            { text: "La loro macchina è nuova", hint: "loro → macchina (f. sing.)", isCorrect: true },
-            { text: "I loro amici arrivano", hint: "loro → amici (m. pl.)", isCorrect: true },
-            { text: "Le loro valigie sono pesanti", hint: "loro → valigie (f. pl.)", isCorrect: true },
-            { text: "Il mio zaino è pesante", hint: "io → zaino (m. sing.)", isCorrect: true },
-            { text: "La mia bicicletta è nuova", hint: "io → bicicletta (f. sing.)", isCorrect: true },
-            { text: "I miei genitori viaggiano", hint: "io → genitori (m. pl.)", isCorrect: true },
-            { text: "Le mie chiavi sono qui", hint: "io → chiavi (f. pl.)", isCorrect: true },
-            { text: "Il tuo gatto dorme", hint: "tu → gatto (m. sing.)", isCorrect: true },
-            { text: "La tua sorella canta", hint: "tu → sorella (f. sing.)", isCorrect: true },
-            { text: "I tuoi genitori lavorano", hint: "tu → genitori (m. pl.)", isCorrect: true },
-            { text: "Le tue amiche arrivano", hint: "tu → amiche (f. pl.)", isCorrect: true },
-            { text: "Il suo cane abbaia", hint: "lui → cane (m. sing.)", isCorrect: true },
-            { text: "La sua zia abita qui", hint: "lei → zia (f. sing.)", isCorrect: true },
-            { text: "I suoi amici lo chiamano", hint: "lui → amici (m. pl.)", isCorrect: true },
-            { text: "Le sue cose sono sparse", hint: "lei → cose (f. pl.)", isCorrect: true },
-            { text: "Il nostro paese è piccolo", hint: "noi → paese (m. sing.)", isCorrect: true },
-            { text: "La nostra squadra vince", hint: "noi → squadra (f. sing.)", isCorrect: true },
-            { text: "I nostri vicini sono gentili", hint: "noi → vicini (m. pl.)", isCorrect: true },
-            { text: "Le nostre vacanze sono finite", hint: "noi → vacanze (f. pl.)", isCorrect: true },
-            { text: "Il vostro lavoro è difficile", hint: "voi → lavoro (m. sing.)", isCorrect: true },
-            { text: "La vostra auto è veloce", hint: "voi → auto (f. sing.)", isCorrect: true },
-            { text: "I vostri genitori vi aspettano", hint: "voi → genitori (m. pl.)", isCorrect: true },
-            { text: "Le vostre cose sono pronte", hint: "voi → cose (f. pl.)", isCorrect: true },
-            { text: "Il loro professore è bravo", hint: "loro → professore (m. sing.)", isCorrect: true },
-            { text: "La loro idea è geniale", hint: "loro → idea (f. sing.)", isCorrect: true },
-            { text: "I loro figli studiano", hint: "loro → figli (m. pl.)", isCorrect: true },
-            { text: "Le loro scarpe sono belle", hint: "loro → scarpe (f. pl.)", isCorrect: true },
+            { text: "Il mio cane è molto carino", isCorrect: true },
+            { text: "La mia macchina è nuova", isCorrect: true },
+            { text: "I miei amici sono simpatici", isCorrect: true },
+            { text: "Le mie scarpe sono rosse", isCorrect: true },
+            { text: "La mia casa è grande", isCorrect: true },
+            { text: "Il tuo telefono squilla", isCorrect: true },
+            { text: "La tua borsa è elegante", isCorrect: true },
+            { text: "I tuoi fratelli studiano", isCorrect: true },
+            { text: "Le tue idee sono buone", isCorrect: true },
+            { text: "Il suo ufficio è lontano", isCorrect: true },
+            { text: "La sua moglie è dottoressa", isCorrect: true },
+            { text: "I suoi figli giocano", isCorrect: true },
+            { text: "Le sue lettere sono importanti", isCorrect: true },
+            { text: "Il nostro professore è severo", isCorrect: true },
+            { text: "La nostra scuola è bella", isCorrect: true },
+            { text: "I nostri compagni studiano", isCorrect: true },
+            { text: "Le nostre lezioni iniziano", isCorrect: true },
+            { text: "Il vostro cane è aggressivo", isCorrect: true },
+            { text: "La vostra casa è accogliente", isCorrect: true },
+            { text: "I vostri figli crescono", isCorrect: true },
+            { text: "Le vostre piante fioriscono", isCorrect: true },
+            { text: "Il loro cane è randagio", isCorrect: true },
+            { text: "La loro macchina è nuova", isCorrect: true },
+            { text: "I loro amici arrivano", isCorrect: true },
+            { text: "Le loro valigie sono pesanti", isCorrect: true },
+            { text: "Il mio zaino è pesante", isCorrect: true },
+            { text: "La mia bicicletta è nuova", isCorrect: true },
+            { text: "I miei genitori viaggiano", isCorrect: true },
+            { text: "Le mie chiavi sono qui", isCorrect: true },
+            { text: "Il tuo gatto dorme", isCorrect: true },
+            { text: "La tua sorella canta", isCorrect: true },
+            { text: "I tuoi genitori lavorano", isCorrect: true },
+            { text: "Le tue amiche arrivano", isCorrect: true },
+            { text: "Il suo cane abbaia", isCorrect: true },
+            { text: "La sua zia abita qui", isCorrect: true },
+            { text: "I suoi amici lo chiamano", isCorrect: true },
+            { text: "Le sue cose sono sparse", isCorrect: true },
+            { text: "Il nostro paese è piccolo", isCorrect: true },
+            { text: "La nostra squadra vince", isCorrect: true },
+            { text: "I nostri vicini sono gentili", isCorrect: true },
+            { text: "Le nostre vacanze sono finite", isCorrect: true },
+            { text: "Il vostro lavoro è difficile", isCorrect: true },
+            { text: "La vostra auto è veloce", isCorrect: true },
+            { text: "I vostri genitori vi aspettano", isCorrect: true },
+            { text: "Le vostre cose sono pronte", isCorrect: true },
+            { text: "Il loro professore è bravo", isCorrect: true },
+            { text: "La loro idea è geniale", isCorrect: true },
+            { text: "I loro figli studiano", isCorrect: true },
+            { text: "Le loro scarpe sono belle", isCorrect: true },
+            { text: "Il mio libro è interessante", isCorrect: true },
+            { text: "La mia penna scrive bene", isCorrect: true },
 
-            // FRASI SBAGLIATE (isCorrect: false) - Errori comuni
-            { text: "La mio cane è carino", hint: "ERRORE: 'la' con 'mio'", isCorrect: false, correction: "Il mio cane" },
-            { text: "Il mia macchina è nuova", hint: "ERRORE: 'il' con 'mia'", isCorrect: false, correction: "La mia macchina" },
-            { text: "Le miei amici sono simpatici", hint: "ERRORE: 'le' con 'miei'", isCorrect: false, correction: "I miei amici" },
-            { text: "I mie scarpe sono rosse", hint: "ERRORE: 'i' con 'mie'", isCorrect: false, correction: "Le mie scarpe" },
-            { text: "Il tua borsa è elegante", hint: "ERRORE: 'il' con 'tua'", isCorrect: false, correction: "La tua borsa" },
-            { text: "La tuo telefono squilla", hint: "ERRORE: 'la' con 'tuo'", isCorrect: false, correction: "Il tuo telefono" },
-            { text: "Le tuoi fratelli studiano", hint: "ERRORE: 'le' con 'tuoi'", isCorrect: false, correction: "I tuoi fratelli" },
-            { text: "I tue idee sono buone", hint: "ERRORE: 'i' con 'tue'", isCorrect: false, correction: "Le tue idee" },
-            { text: "La suo ufficio è lontano", hint: "ERRORE: 'la' con 'suo'", isCorrect: false, correction: "Il suo ufficio" },
-            { text: "Il sua moglie è dottoressa", hint: "ERRORE: 'il' con 'sua'", isCorrect: false, correction: "La sua moglie" },
-            { text: "Le suoi figli giocano", hint: "ERRORE: 'le' con 'suoi'", isCorrect: false, correction: "I suoi figli" },
-            { text: "I sue lettere sono importanti", hint: "ERRORE: 'i' con 'sue'", isCorrect: false, correction: "Le sue lettere" },
-            { text: "La nostro paese è piccolo", hint: "ERRORE: 'la' con 'nostro'", isCorrect: false, correction: "Il nostro paese" },
-            { text: "Il nostra squadra vince", hint: "ERRORE: 'il' con 'nostra'", isCorrect: false, correction: "La nostra squadra" },
-            { text: "Le nostri vicini sono gentili", hint: "ERRORE: 'le' con 'nostri'", isCorrect: false, correction: "I nostri vicini" },
-            { text: "I nostre vacanze sono finite", hint: "ERRORE: 'i' con 'nostre'", isCorrect: false, correction: "Le nostre vacanze" },
-            { text: "La vostro cane è aggressivo", hint: "ERRORE: 'la' con 'vostro'", isCorrect: false, correction: "Il vostro cane" },
-            { text: "Il vostra casa è accogliente", hint: "ERRORE: 'il' con 'vostra'", isCorrect: false, correction: "La vostra casa" },
-            { text: "Le vostri figli crescono", hint: "ERRORE: 'le' con 'vostri'", isCorrect: false, correction: "I vostri figli" },
-            { text: "I vostre piante fioriscono", hint: "ERRORE: 'i' con 'vostre'", isCorrect: false, correction: "Le vostre piante" },
-            { text: "La loro cane è randagio", hint: "ERRORE: 'la' con 'loro' (masc.)", isCorrect: false, correction: "Il loro cane" },
-            { text: "Il loro macchina è nuova", hint: "ERRORE: 'il' con 'loro' (fem.)", isCorrect: false, correction: "La loro macchina" },
-            { text: "Le loro amici arrivano", hint: "ERRORE: 'le' con 'loro' (masc. pl.)", isCorrect: false, correction: "I loro amici" },
-            { text: "I loro valigie sono pesanti", hint: "ERRORE: 'i' con 'loro' (fem. pl.)", isCorrect: false, correction: "Le loro valigie" },
-            { text: "La mio gatto dorme", hint: "ERRORE: concordanza articolo", isCorrect: false, correction: "Il mio gatto" },
-            { text: "Il mia sorella canta", hint: "ERRORE: concordanza articolo", isCorrect: false, correction: "La mia sorella" },
-            { text: "Le mie genitori lavorano", hint: "ERRORE: genitori è maschile", isCorrect: false, correction: "I miei genitori" },
-            { text: "I miei amiche arrivano", hint: "ERRORE: amiche è femminile", isCorrect: false, correction: "Le mie amiche" },
-            { text: "La tuo zaino è pesante", hint: "ERRORE: concordanza articolo", isCorrect: false, correction: "Il tuo zaino" },
-            { text: "Il tua bicicletta è nuova", hint: "ERRORE: concordanza articolo", isCorrect: false, correction: "La tua bicicletta" },
-            { text: "Le sue scarpe sono sparse", hint: "ERRORE: sparse ≠ cose sparse", isCorrect: false, correction: "Le sue cose" },
-            { text: "I suoi valigie sono pesanti", hint: "ERRORE: valigie è femminile", isCorrect: false, correction: "Le sue valigie" },
-            { text: "Il nostro lezioni iniziano", hint: "ERRORE: lezioni è femminile plurale", isCorrect: false, correction: "Le nostre lezioni" },
-            { text: "La nostro professore è severo", hint: "ERRORE: concordanza articolo", isCorrect: false, correction: "Il nostro professore" },
-            { text: "I vostro cose sono pronte", hint: "ERRORE: concordanza", isCorrect: false, correction: "Le vostre cose" },
-            { text: "Le vostra genitori vi aspettano", hint: "ERRORE: concordanza", isCorrect: false, correction: "I vostri genitori" },
-            { text: "Il loro idea è geniale", hint: "ERRORE: idea è femminile", isCorrect: false, correction: "La loro idea" },
-            { text: "La loro figli studiano", hint: "ERRORE: figli è maschile plurale", isCorrect: false, correction: "I loro figli" },
-            { text: "Mio cane è carino", hint: "ERRORE: manca l'articolo", isCorrect: false, correction: "Il mio cane" },
-            { text: "Tua casa è grande", hint: "ERRORE: manca l'articolo", isCorrect: false, correction: "La tua casa" },
-            { text: "Suoi amici arrivano", hint: "ERRORE: manca l'articolo", isCorrect: false, correction: "I suoi amici" },
-            { text: "Nostre scarpe sono belle", hint: "ERRORE: manca l'articolo", isCorrect: false, correction: "Le nostre scarpe" },
-            { text: "Vostro lavoro è difficile", hint: "ERRORE: manca l'articolo", isCorrect: false, correction: "Il vostro lavoro" },
-            { text: "Loro cane abbaia", hint: "ERRORE: manca l'articolo", isCorrect: false, correction: "Il loro cane" },
-            { text: "Il miei libri sono interessanti", hint: "ERRORE: 'il' plurale", isCorrect: false, correction: "I miei libri" },
-            { text: "I mia penna non scrive", hint: "ERRORE: plurale/singolare", isCorrect: false, correction: "La mia penna" },
-            { text: "La tuoi amici sono qui", hint: "ERRORE: femminile/maschile", isCorrect: false, correction: "I tuoi amici" },
-            { text: "Le tua macchina è veloce", hint: "ERRORE: plurale/singolare", isCorrect: false, correction: "La tua macchina" }
+            // FRASI SBAGLIATE (isCorrect: false)
+            { text: "La mio cane è carino", isCorrect: false },
+            { text: "Il mia macchina è nuova", isCorrect: false },
+            { text: "Le miei amici sono simpatici", isCorrect: false },
+            { text: "I mie scarpe sono rosse", isCorrect: false },
+            { text: "Il tua borsa è elegante", isCorrect: false },
+            { text: "La tuo telefono squilla", isCorrect: false },
+            { text: "Le tuoi fratelli studiano", isCorrect: false },
+            { text: "I tue idee sono buone", isCorrect: false },
+            { text: "La suo ufficio è lontano", isCorrect: false },
+            { text: "Il sua moglie è dottoressa", isCorrect: false },
+            { text: "Le suoi figli giocano", isCorrect: false },
+            { text: "I sue lettere sono importanti", isCorrect: false },
+            { text: "La nostro paese è piccolo", isCorrect: false },
+            { text: "Il nostra squadra vince", isCorrect: false },
+            { text: "Le nostri vicini sono gentili", isCorrect: false },
+            { text: "I nostre vacanze sono finite", isCorrect: false },
+            { text: "La vostro cane è aggressivo", isCorrect: false },
+            { text: "Il vostra casa è accogliente", isCorrect: false },
+            { text: "Le vostri figli crescono", isCorrect: false },
+            { text: "I vostre piante fioriscono", isCorrect: false },
+            { text: "La loro cane è randagio", isCorrect: false },
+            { text: "Il loro macchina è nuova", isCorrect: false },
+            { text: "Le loro amici arrivano", isCorrect: false },
+            { text: "I loro valigie sono pesanti", isCorrect: false },
+            { text: "La mio gatto dorme", isCorrect: false },
+            { text: "Il mia sorella canta", isCorrect: false },
+            { text: "Le mie genitori lavorano", isCorrect: false },
+            { text: "I miei amiche arrivano", isCorrect: false },
+            { text: "La tuo zaino è pesante", isCorrect: false },
+            { text: "Il tua bicicletta è nuova", isCorrect: false },
+            { text: "Le sue scarpe sono sparse", isCorrect: false },
+            { text: "I suoi valigie sono pesanti", isCorrect: false },
+            { text: "Il nostro lezioni iniziano", isCorrect: false },
+            { text: "La nostro professore è severo", isCorrect: false },
+            { text: "I vostro cose sono pronte", isCorrect: false },
+            { text: "Le vostra genitori vi aspettano", isCorrect: false },
+            { text: "Il loro idea è geniale", isCorrect: false },
+            { text: "La loro figli studiano", isCorrect: false },
+            { text: "Mio cane è carino", isCorrect: false },
+            { text: "Tua casa è grande", isCorrect: false },
+            { text: "Suoi amici arrivano", isCorrect: false },
+            { text: "Nostre scarpe sono belle", isCorrect: false },
+            { text: "Vostro lavoro è difficile", isCorrect: false },
+            { text: "Loro cane abbaia", isCorrect: false },
+            { text: "Il miei libri sono interessanti", isCorrect: false },
+            { text: "I mia penna non scrive", isCorrect: false },
+            { text: "La tuoi amici sono qui", isCorrect: false },
+            { text: "Le tua macchina è veloce", isCorrect: false }
         ];
 
         let questions = [];
@@ -830,7 +812,6 @@
 
             const q = questions[currentQuestion];
             document.getElementById('questionText').textContent = q.text;
-            document.getElementById('questionHint').textContent = q.hint;
 
             const card = document.getElementById('questionCard');
             card.style.animation = 'none';
@@ -901,7 +882,7 @@
 
             const speedEl = document.getElementById('speedIndicator');
             if (musicTempo >= 2) {
-                speedEl.textContent = '🔥🔥🔓 ULTRA!';
+                speedEl.textContent = '🔥🔥🔥 ULTRA!';
                 speedEl.style.color = '#d63031';
             } else if (musicTempo >= 1.5) {
                 speedEl.textContent = '🔥🔥 RAPIDO!';
