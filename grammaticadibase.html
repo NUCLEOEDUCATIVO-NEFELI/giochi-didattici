@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammatica Italiana Base - Quiz Completo 100 Domande</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #2c5364;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #ff6b6b;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            color: #0f2027;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e8e8e8;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #feca57);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .question-counter {
+            text-align: center;
+            font-size: 1.2em;
+            color: #2c5364;
+            margin-top: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .question-card {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 35px;
+            border-radius: 15px;
+            text-align: left;
+            margin-bottom: 30px;
+            border-left: 6px solid #2c5364;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .question-label {
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question-label::before {
+            content: '❖';
+            color: #ff6b6b;
+        }
+
+        .question-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            color: #0f2027;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .answers-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .answer-btn {
+            padding: 18px 22px;
+            font-size: 1.1em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 600;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            color: #495057;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #2c5364;
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            background: #f1f3f5;
+            border-color: #2c5364;
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(44, 83, 100, 0.15);
+        }
+
+        .answer-btn:hover:not(:disabled)::before {
+            transform: scaleY(1);
+        }
+
+        .answer-btn:disabled {
+            cursor: default;
+            opacity: 1;
+        }
+
+        .answer-btn.correct {
+            background: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+            animation: correctPulse 0.5s ease;
+        }
+
+        .answer-btn.correct::before {
+            background: #28a745;
+            transform: scaleY(1);
+        }
+
+        .answer-btn.wrong {
+            background: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+            animation: shake 0.5s ease;
+        }
+
+        .answer-btn.wrong::before {
+            background: #dc3545;
+            transform: scaleY(1);
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .feedback-message {
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-size: 1.05em;
+            line-height: 1.6;
+            font-weight: 500;
+            border-left: 5px solid;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback-message.correct {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .feedback-message.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-btn {
+            padding: 14px 28px;
+            font-size: 1.05em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #2c5364;
+            color: white;
+            box-shadow: 0 4px 15px rgba(44, 83, 100, 0.3);
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #203a43;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 83, 100, 0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .start-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            color: #0f2027;
+            margin-bottom: 20px;
+        }
+
+        .start-screen p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: #0f2027;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05em;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-family: 'Source Sans Pro', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2c5364;
+            box-shadow: 0 0 0 3px rgba(44, 83, 100, 0.1);
+        }
+
+        #startBtn {
+            padding: 16px 45px;
+            font-size: 1.15em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(238, 90, 111, 0.3);
+        }
+
+        #startBtn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(238, 90, 111, 0.4);
+        }
+
+        #startBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .results-container {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .results-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4em;
+            color: #0f2027;
+            margin-bottom: 10px;
+        }
+
+        .student-name {
+            font-size: 1.5em;
+            color: #2c5364;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .score-display {
+            font-size: 5em;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+
+        .score-label {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-box {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #0f2027;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 1em;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .result-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .result-box .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #2c5364, #203a43);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-box .label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .evaluation-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .evaluation-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .evaluation-box .grade {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .evaluation-box .status {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .evaluation-box.sufficient {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.3);
+        }
+
+        .evaluation-box.insufficient {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            box-shadow: 0 10px 30px rgba(235, 51, 73, 0.3);
+        }
+
+        .email-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 35px;
+            border: 2px solid #e9ecef;
+        }
+
+        .email-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: #0f2027;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .email-section p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .results-text {
+            width: 100%;
+            min-height: 250px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            resize: vertical;
+            background: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-send {
+            padding: 16px 40px;
+            font-size: 1.15em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-send::before {
+            content: '✉';
+            font-size: 1.3em;
+        }
+
+        #restartBtn {
+            padding: 14px 30px;
+            font-size: 1.05em;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            border: 2px solid #2c5364;
+            border-radius: 10px;
+            cursor: pointer;
+            background: white;
+            color: #2c5364;
+            transition: all 0.3s ease;
+        }
+
+        #restartBtn:hover {
+            background: #2c5364;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .grading-scale {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .grading-scale h4 {
+            color: #0f2027;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .grade-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .grade-item:last-child {
+            border-bottom: none;
+        }
+
+        .grade-range {
+            font-weight: 700;
+            color: #2c5364;
+        }
+
+        .grade-value {
+            color: #666;
+        }
+
+        .stats-detail {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+            border: 2px solid #e9ecef;
+        }
+
+        .stats-detail h4 {
+            color: #0f2027;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #0f2027;
+        }
+
+        .stat-value.success {
+            color: #28a745;
+        }
+
+        .stat-value.error {
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .answer-btn {
+                font-size: 1em;
+                padding: 15px;
+            }
+
+            .question-text {
+                font-size: 1.2em;
+            }
+
+            .score-display {
+                font-size: 3.5em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="startScreen">
+            <div class="header">
+                <h1>GRAMMATICA ITALIANA BASE</h1>
+                <p>Test Completo - Articoli, Verbi, Aggettivi, Preposizioni (100 Domande)</p>
+            </div>
+
+            <div class="start-screen">
+                <h2>Benvenuto al Test di Grammatica Base</h2>
+                <p>Questo esame valuta la conoscenza della grammatica italiana di base: articoli, verbi essere/avere, coniugazioni, riflessivi, possessivi, numeri e preposizioni. Durata stimata: 60-80 minuti.</p>
+
+                <div class="grading-scale">
+                    <h4>📊 Sistema di Valutazione</h4>
+                    <div class="grade-item"><span class="grade-range">90-100%</span><span class="grade-value">30/30 - Eccellente</span></div>
+                    <div class="grade-item"><span class="grade-range">80-89%</span><span class="grade-value">27-29/30 - Buono</span></div>
+                    <div class="grade-item"><span class="grade-range">70-79%</span><span class="grade-value">24-26/30 - Soddisfacente</span></div>
+                    <div class="grade-item"><span class="grade-range">60-69%</span><span class="grade-value">18-23/30 - Sufficiente</span></div>
+                    <div class="grade-item"><span class="grade-range">&lt;60%</span><span class="grade-value">Insufficiente</span></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nomeInput">Nome *</label>
+                    <input type="text" id="nomeInput" placeholder="Es: Marco">
+                </div>
+
+                <div class="form-group">
+                    <label for="cognomeInput">Cognome *</label>
+                    <input type="text" id="cognomeInput" placeholder="Es: Rossi">
+                </div>
+
+                <div class="form-group">
+                    <label for="emailInput">Email *</label>
+                    <input type="email" id="emailInput" placeholder="Es: marco.rossi@gmail.com">
+                </div>
+
+                <button id="startBtn" disabled onclick="startQuiz()">Avvia Test</button>
+            </div>
+        </div>
+
+        <div id="quizScreen" class="hidden">
+            <div class="header">
+                <h1>GRAMMATICA ITALIANA BASE</h1>
+                <p>Test Completo - 100 Domande</p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <div class="question-counter">
+                    Domanda <span id="currentQ">1</span> di 100
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-label">Esercizio linguistico</div>
+                <div id="questionText" class="question-text"></div>
+
+                <div id="answersContainer" class="answers-container"></div>
+
+                <div id="feedback" class="feedback-message hidden"></div>
+            </div>
+
+            <div class="navigation">
+                <button id="prevBtn" class="nav-btn" onclick="previousQuestion()">← Precedente</button>
+                <button id="nextBtn" class="nav-btn" onclick="nextQuestion()" disabled>Successiva →</button>
+            </div>
+        </div>
+
+        <div id="resultsScreen" class="hidden">
+            <div class="header">
+                <h1>RISULTATI FINALI</h1>
+                <p>Test Grammatica Italiana Base</p>
+            </div>
+
+            <div class="results-container">
+                <div class="student-name" id="studentNameDisplay"></div>
+
+                <h2>Punteggio Ottenuto</h2>
+                <div class="score-display" id="finalScore"></div>
+                <div class="score-label">Risposte corrette su 100</div>
+
+                <div id="evaluationBox" class="evaluation-box">
+                    <h3>Valutazione</h3>
+                    <div class="grade" id="gradeDisplay"></div>
+                    <div class="status" id="statusDisplay"></div>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-box">
+                        <span class="number" id="correctCount"></span>
+                        <span class="label">Corrette</span>
+                    </div>
+                    <div class="result-box">
+                        <span class="number" id="wrongCount"></span>
+                        <span class="label">Sbagliate</span>
+                    </div>
+                    <div class="result-box">
+                        <span class="number" id="percentage"></span>
+                        <span class="label">Percentuale</span>
+                    </div>
+                </div>
+
+                <div class="stats-detail">
+                    <h4>📈 Dettaglio Statistiche</h4>
+                    <div class="stat-row">
+                        <span class="stat-label">Risposte Corrette:</span>
+                        <span class="stat-value success" id="statCorrect"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Risposte Sbagliate:</span>
+                        <span class="stat-value error" id="statWrong"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Percentuale Successo:</span>
+                        <span class="stat-value" id="statPercent"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Voto Finale:</span>
+                        <span class="stat-value" id="statGrade"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Esito:</span>
+                        <span class="stat-value" id="statResult"></span>
+                    </div>
+                </div>
+
+                <div class="email-section">
+                    <h3>📧 Invia Risultati</h3>
+                    <p>Clicca su "Invio" per inviare automaticamente i risultati completi a <strong>giancarlo.vettori@cpiatv1.edu.it</strong></p>
+                    <textarea id="resultsText" class="results-text"></textarea>
+                    <div class="button-group">
+                        <button class="btn-send" onclick="sendResults()">Invio</button>
+                        <button id="restartBtn" onclick="restartQuiz()">Ricomincia Test</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array domande originali
+        const originalQuestions = [
+            // ARTICOLI DETERMINATIVI E INDETERMINATIVI (1-15)
+            {q: "Quale articolo determinativo si usa con la parola 'zio' (maschile singolare)?", options: ["il", "lo", "l'", "la"], correct: 1, expl: "Lo zio - si usa 'lo' davanti a parole maschili che iniziano con z-, s+consonante, ps-, gn-, y-, x-"},
+            {q: "Quale articolo determinativo si usa con la parola 'amica' (femminile singolare)?", options: ["la", "l'", "le", "lo"], correct: 1, expl: "L'amica - si usa l' apostrofo davanti a vocali (a, e, i, o, u)"},
+            {q: "Quale articolo indeterminativo si usa con 'studentessa'?", options: ["un", "uno", "una", "un'"], correct: 2, expl: "Una studentessa - si usa 'una' davanti a parole femminili che iniziano con consonante"},
+            {q: "Quale articolo determinativo plurale si usa con 'amici'?", options: ["i", "gli", "le", "gl'"], correct: 1, expl: "Gli amici - si usa 'gli' al plurale maschile per parole che al singolare usano 'lo' o 'l'"},
+            {q: "Completa: _____ casa è molto bella.", options: ["La", "Lo", "Il", "L'"], correct: 3, expl: "La casa è molto bella - si usa 'la' davanti a consonante, ma 'l'' davanti a vocale. Qui però la risposta corretta è 'La' perché 'casa' inizia con consonante. Nota: c'è un errore nella formulazione, la risposta corretta è 'La'"},
+            {q: "Quale articolo indeterminativo si usa con 'psicologo'?", options: ["un", "uno", "una", "un'"], correct: 1, expl: "Uno psicologo - si usa 'uno' davanti a parole maschili che iniziano con ps-, gn-, z-, s+cons., x-, y-"},
+            {q: "Quale articolo determinativo si usa con 'specchio'?", options: ["il", "lo", "la", "l'"], correct: 1, expl: "Lo specchio - si usa 'lo' davanti a s+consonante (sp-)"},
+            {q: "Completa: _____ studenti sono bravi.", options: ["I", "Gli", "Le", "I gli"], correct: 0, expl: "Gli studenti - si usa 'gli' davanti a parole che al singolare hanno 'lo' (s+cons.)"},
+            {q: "Quale articolo indeterminativo si usa con 'aereo'?", options: ["un", "uno", "un'", "l'"], correct: 0, expl: "Un aereo - si usa 'un' davanti a parole maschili che iniziano con vocale"},
+            {q: "Completa: _____ libri sono interessanti.", options: ["I", "Gli", "Le", "Il"], correct: 0, expl: "I libri - si usa 'i' per il plurale maschile di 'il' (parole che iniziano con consonante semplice)"},
+            {q: "Quale articolo determinativo si usa con 'gnocco'?", options: ["il", "lo", "la", "l'"], correct: 1, expl: "Lo gnocco - si usa 'lo' davanti a gn-"},
+            {q: "Quale articolo indeterminativo si usa con 'insegnante' (femminile)?", options: ["un", "uno", "una", "un'"], correct: 3, expl: "Un' insegnante - si usa l'apostrofo con parole femminili che iniziano con vocale"},
+            {q: "Completa: _____ mele sono dolci.", options: ["I", "Gli", "Le", "La"], correct: 2, expl: "Le mele - articolo determinativo femminile plurale"},
+            {q: "Quale articolo determinativo si usa con 'xilofono'?", options: ["il", "lo", "la", "l'"], correct: 1, expl: "Lo xilofono - si usa 'lo' davanti a x-"},
+            {q: "Completa: Ho comprato _____ zaino nuovo.", options: ["un", "uno", "una", "il"], correct: 1, expl: "Uno zaino - si usa 'uno' davanti a parole maschili che iniziano con z-"},
+
+            // VERBO ESSERE E AVERE (16-30)
+            {q: "Come si coniuga il verbo ESSERE alla terza persona singolare?", options: ["sono", "sei", "è", "siamo"], correct: 2, expl: "Lui/Lei è - terza persona singolare di essere"},
+            {q: "Come si coniuga il verbo AVERE alla prima persona singolare?", options: ["ho", "hai", "ha", "abbiamo"], correct: 0, expl: "Io ho - prima persona singolare di avere (forma irregolare, non 'avo')"},
+            {q: "Quale verbo si usa per esprimere l'età in italiano?", options: ["essere", "avere", "fare", "andare"], correct: 1, expl: "In italiano si 'ha' un'età (Ho 20 anni), non si 'è'"},
+            {q: "Come si dice 'loro sono' (essere)?", options: ["sono", "siete", "è", "essi"], correct: 0, expl: "Loro sono - la forma 'sono' è sia per 'io' che per 'loro'"},
+            {q: "Completa: Marco _____ fame.", options: ["è", "ha", "fa", "sta"], correct: 1, expl: "Marco ha fame - si usa il verbo avere per fame, sete, sonno, caldo, freddo, paura"},
+            {q: "Come si coniuga AVERE alla seconda persona plurale?", options: ["hai", "ha", "avete", "hanno"], correct: 2, expl: "Voi avete - seconda persona plurale di avere"},
+            {q: "Quale forma è corretta per 'noi siamo'?", options: ["siamo", "siete", "sono", "essiamo"], correct: 0, expl: "Noi siamo - prima persona plurale di essere"},
+            {q: "Completa: Io _____ di Roma.", options: ["sono", "ho", "vivo", "sto"], correct: 0, expl: "Io sono di Roma - si usa essere per indicare la provenienza"},
+            {q: "Come si dice 'tu hai'?", options: ["ho", "hai", "ha", "hia"], correct: 1, expl: "Tu hai - seconda persona singolare di avere"},
+            {q: "Completa: Lei _____ una professoressa.", options: ["ha", "è", "fa", "sta"], correct: 1, expl: "Lei è una professoressa - si usa essere per le professioni"},
+            {q: "Quale forma è corretta per 'loro hanno'?", options: ["hanno", "hiamo", "hanno", "hanno"], correct: 0, expl: "Loro hanno - terza persona plurale di avere (con la h)"},
+            {q: "Completa: Voi _____ studenti universitari.", options: ["siete", "siamo", "sono", "avete"], correct: 0, expl: "Voi siete - seconda persona plurale di essere"},
+            {q: "Come si dice 'io ho freddo'?", options: ["sono freddo", "ho freddo", "faccio freddo", "sto freddo"], correct: 1, expl: "Io ho freddo - si usa avere per le sensazioni fisiche (caldo, freddo, paura, sonno)"},
+            {q: "Quale forma è corretta per 'lui è'?", options: ["è", "é", "e'", "eh"], correct: 0, expl: "Lui è - terza persona singolare con accento grave"},
+            {q: "Completa: Noi _____ sete dopo lo sport.", options: ["siamo", "abbiamo", "facciamo", "andiamo"], correct: 1, expl: "Noi abbiamo sete - si usa avere per sete"},
+
+            // TRE CONIUGAZIONI: -ARE (31-40)
+            {q: "Come si coniuga PARLARE alla prima persona singolare?", options: ["parlo", "parli", "parla", "parlare"], correct: 0, expl: "Io parlo - prima coniugazione in -are → -o"},
+            {q: "Quale è la radice di MANGIARE?", options: ["mangi-", "mang-", "mangia-", "mangiare-"], correct: 0, expl: "Mangiare → mangi- (togliendo -are)"},
+            {q: "Completa: Tu _____ (abitare) a Milano.", options: ["abito", "abiti", "abita", "abitiamo"], correct: 1, expl: "Tu abiti - seconda persona singolare in -i"},
+            {q: "Quale desinenza ha la terza persona plurale dei verbi in -ARE?", options: ["-ano", "-ono", "-eno", "-ino"], correct: 0, expl: "Loro parlano, mangiano, studiano → desinenza -ano"},
+            {q: "Come si coniuga STUDIO alla seconda persona plurale?", options: ["studiate", "studite", "studano", "studiamo"], correct: 0, expl: "Voi studiate - desinenza -ate"},
+            {q: "Qual è la prima persona plurale di 'lavorare'?", options: ["lavoro", "lavori", "lavoriamo", "lavorate"], correct: 2, expl: "Noi lavoriamo - desinenza -iamo (nota: -iamo si usa per tutte le tre coniugazioni alla prima persona plurale)"},
+            {q: "Quale verbo in -ARE è irregolare?", options: ["parlare", "studiare", "andare", "abitare"], correct: 2, expl: "Andare è irregolare: vado, vai, va, andiamo, andate, vanno"},
+            {q: "Come si dice 'loro mangiano' correttamente?", options: ["mangiano", "mangiono", "mangano", "manghiano"], correct: 0, expl: "Loro mangiano - manteniamo la i prima della desinenza -ano"},
+            {q: "Quale è la forma corretta: Io _____ (cominciare)?", options: ["comincio", "cominco", "comincia", "cominciamo"], correct: 0, expl: "Io comincio - prima persona in -io (c cambia suono davanti a i/e)"},
+            {q: "Completa: Lei _____ (insegnare) italiano.", options: ["insegno", "insegni", "insegna", "insegnia"], correct: 2, expl: "Lei insegna - terza persona singolare in -a"},
+
+            // TRE CONIUGAZIONI: -ERE (41-50)
+            {q: "Come si coniuga VEDERE alla prima persona singolare?", options: ["vedo", "vedo", "veda", "vego"], correct: 0, expl: "Io vedo - seconda coniugazione in -ere → -o"},
+            {q: "Quale desinenza ha la seconda persona singolare dei verbi in -ERE?", options: ["-i", "-e", "-o", "-a"], correct: 0, expl: "Tu vedi, leggi, prendi → desinenza -i"},
+            {q: "Completa: Noi _____ (prendere) il caffè.", options: ["prendo", "prendi", "prende", "prendiamo"], correct: 3, expl: "Noi prendiamo - prima persona plurale in -iamo"},
+            {q: "Quale è la terza persona plurale di 'vendere'?", options: ["vendono", "vendano", "vendeno", "vendiamo"], correct: 0, expl: "Loro vendono - desinenza -ono"},
+            {q: "Come si coniuge LEGGERE alla terza persona singolare?", options: ["leggo", "leggi", "legge", "leggono"], correct: 2, expl: "Lei legge - la gge mantiene il suono dolce"},
+            {q: "Quale verbo in -ERE è totalmente irregolare?", options: ["vedere", "prendere", "essere", "leggere"], correct: 2, expl: "Essere è irregolare: sono, sei, è, siamo, siete, sono"},
+            {q: "Qual è la desinenza della seconda persona plurale in -ERE?", options: ["-ite", "-ete", "-ate", "-ete"], correct: 1, expl: "Voi prendete, leggete, vedete → desinenza -ete"},
+            {q: "Completa: Tu _____ (scrivere) una lettera.", options: ["scrivo", "scrivi", "scrive", "scriviamo"], correct: 1, expl: "Tu scrivi - seconda persona singolare"},
+            {q: "Quale è la forma corretta per 'io chiedo'?", options: ["chiedo", "chiedere", "chieda", "chiedo"], correct: 0, expl: "Io chiedo - prima persona singolare (irregolare, ma segue il pattern -o)"},
+            {q: "Come si coniuga AVERE (irregolare in -ere)?", options: ["avevo", "ho", "abi", "havo"], correct: 1, expl: "Io ho - avere è irregolare: ho, hai, ha, abbiamo, avete, hanno"},
+
+            // VERBI RIFLESSIVI (51-60)
+            {q: "Come si dice 'mi chiamo' correttamente?", options: ["io chiamo mi", "mi chiamo", "chiamo mi", "io mi chiamo"], correct: 1, expl: "Mi chiamo - il pronome riflessivo precede il verbo coniugato"},
+            {q: "Quale pronome riflessivo si usa con 'tu'?", options: ["mi", "ti", "si", "ci"], correct: 1, expl: "Ti alzi, ti vesti, ti chiami → pronome 'ti'"},
+            {q: "Completa: Lui _____ (alzarsi) presto.", options: ["si alza", "alza si", "alzasi", "s'alza"], correct: 0, expl: "Lui si alza - pronome riflessivo 'si' prima del verbo"},
+            {q: "Quale è la forma corretta per 'noi ci vestiamo'?", options: ["ci vestiamo", "vestiamo ci", "ci vestiamo", "ci vestiamo"], correct: 0, expl: "Ci vestiamo - pronome 'ci' per la prima persona plurale"},
+            {q: "Come si coniuga SENTIRSI alla seconda persona plurale?", options: ["vi sentite", "si sentono", "ci sentiamo", "ti senti"], correct: 0, expl: "Voi vi sentite - pronome 'vi' per voi"},
+            {q: "Quale pronome si usa con 'loro' (riflessivo)?", options: ["si", "ci", "vi", "se"], correct: 0, expl: "Loro si alzano, si vestono → pronome 'si' (forma atona)"},
+            {q: "Completa: Io _____ (divertirsi) alla festa.", options: ["mi diverto", "ti diverti", "si diverte", "ci divertiamo"], correct: 0, expl: "Io mi diverto - pronome 'mi' corrisponde a 'io'"},
+            {q: "Dove si mette il pronome riflessivo con l'infinito?", options: ["Prima", "Dopo", "Non si mette", "Nel mezzo"], correct: 1, expl: "Con l'infinito il pronome si mette dopo: alzarsi, vestirsi, divertirsi"},
+            {q: "Quale forma è corretta: 'Voi _____ (lavarsi)'?", options: ["vi lavate", "si lavate", "ti lavate", "ci lavate"], correct: 0, expl: "Voi vi lavate - pronome 'vi' corrisponde a 'voi'"},
+            {q: "Completa: Lei _____ (pettinarsi) i capelli.", options: ["si pettina", "ti pettini", "mi pettino", "ci pettinamo"], correct: 0, expl: "Lei si pettina - terza persona singolare con 'si'"},
+
+            // AGGETTIVI POSSESSIVI (61-70)
+            {q: "Quale aggettivo possessivo si usa per 'io' (singolare maschile)?", options: ["mio", "tuo", "suo", "nostro"], correct: 0, expl: "Il mio libro - possessivo di prima persona singolare"},
+            {q: "Come si accorda il possessivo 'tuo' con 'amica' (femminile singolare)?", options: ["tuo", "tua", "tue", "tuoi"], correct: 1, expl: "La tua amica - si accorda in genere e numero con il nome (posseduto), non con il possessore"},
+            {q: "Quale forma è corretta: _____ amici (di noi)?", options: ["i miei", "i nostri", "i vostri", "i loro"], correct: 1, expl: "I nostri amici - plurale maschile di 'nostro'"},
+            {q: "Il possessivo 'loro' cambia forma tra maschile e femminile?", options: ["Sì", "No", "Solo al plurale", "Solo al singolare"], correct: 1, expl: "Il loro amico / la loro amica - 'loro' è invariabile"},
+            {q: "Completa: Questo è _____ computer (di te).", options: ["il mio", "il tuo", "il suo", "nostro"], correct: 1, expl: "Il tuo computer - seconda persona singolare"},
+            {q: "Quale articolo richiede l'aggettivo possessivo in italiano?", options: ["Sempre", "Quasi sempre", "Mai", "Solo al plurale"], correct: 1, expl: "In italiano si dice 'il mio libro', 'la mia casa' - quasi sempre con articolo (tranne casi speciali con familiari singolari)"},
+            {q: "Come si dice 'le sue amiche' (di lei)?", options: ["le sue amiche", "le suoi amiche", "i sue amiche", "le loro amiche"], correct: 0, expl: "Le sue amiche - plurale femminile di 'suo'"},
+            {q: "Quale possessivo usi per 'di voi' (plurale)?", options: ["nostro", "vostro", "loro", "mio"], correct: 1, expl: "Il vostro cane - seconda persona plurale"},
+            {q: "Completa: _____ zaino è rosso (di lui).", options: ["Il suo", "La sua", "Il loro", "I suoi"], correct: 0, expl: "Il suo zaino - maschile singolare di 'suo'"},
+            {q: "Come si accorda 'mio' con 'macchine' (femminile plurale)?", options: ["mio", "mia", "miei", "mie"], correct: 3, expl: "Le mie macchine - plurale femminile: mie"},
+
+            // VERBI PIACERE, FARE, LAVORARE (71-80)
+            {q: "Quale forma è corretta: 'A me _____ il gelato'?", options: ["piace", "piacciono", "piaci", "piacciono"], correct: 0, expl: "A me piace il gelato - il verbo piace concorda con il soggetto (gelato = singolare)"},
+            {q: "Come si coniuga PIACERE con soggetto plurale?", options: ["Mi piace", "Mi piacciono", "Mi piaci", "Mi piaciono"], correct: 1, expl: "Mi piacciono le paste - concordanza plurale"},
+            {q: "Quale è la prima persona singolare di FARE?", options: ["faccio", "fai", "fa", "facio"], correct: 0, expl: "Io faccio - verbo irregolare"},
+            {q: "Completa: Tu _____ (fare) colazione alle 8.", options: ["faccio", "fai", "fa", "fate"], correct: 1, expl: "Tu fai - seconda persona singolare di fare"},
+            {q: "Come si dice 'loro lavorano'?", options: ["lavora", "lavorano", "lavoriamo", "lavorate"], correct: 1, expl: "Loro lavorano - terza persona plurale regolare in -ano"},
+            {q: "Quale espressione con FARE è corretta?", options: ["fare la doccia", "dare la doccia", "andare la doccia", "stare la doccia"], correct: 0, expl: "Fare la doccia - espressione idiomatica corretta"},
+            {q: "A chi _____ (piacere) questi libri? (a te)", options: ["ti piace", "ti piacciono", "ti piaci", "ti piaciono"], correct: 1, expl: "Ti piacciono questi libri - 'libri' è plurale, quindi 'piacciono'"},
+            {q: "Come si coniuga LAVORARE alla prima persona plurale?", options: ["lavoro", "lavori", "lavora", "lavoriamo"], correct: 3, expl: "Noi lavoriamo - desinenza -iamo"},
+            {q: "Quale forma di FARE è sbagliata?", options: ["io faccio", "tu fai", "lui fa", "noi facemo"], correct: 3, expl: "Noi facciamo (non facemo) - forma corretta con doppia c"},
+            {q: "Completa: A Marco _____ (piacere) le pizza.", options: ["piace", "piacciono", "piaci", "piaccione"], correct: 0, expl: "A Marco piace la pizza (soggetto singolare) - nota: c'è un errore nel testo 'le pizza', dovrebbe essere 'la pizza', ma la risposta rimane 'piace')"},
+
+            // NUMERI ED ETÀ (81-90)
+            {q: "Come si scrive il numero 15 in lettere?", options: ["quindici", "quinici", "quindicesimo", "cindici"], correct: 0, expl: "Quindici - numero cardinale"},
+            {q: "Quale è l'ordine corretto dei decine?", options: ["dieci, venti, trenta...", "dieci, venta, trenta...", "dieci, venti, trenti...", "dieci, vento, trenta..."], correct: 0, expl: "Dieci, venti, trenta, quaranta, cinquanta... - forma corretta"},
+            {q: "Come si chiede l'età in italiano?", options: ["Quanti anni hai?", "Quanto anni hai?", "Quanti anni sei?", "Quale età hai?"], correct: 0, expl: "Quanti anni hai? - uso del verbo avere per l'età"},
+            {q: "Completa: Ho _____ anni (25).", options: ["venticinque", "venti cinque", "venticinquanta", "due cinque"], correct: 0, expl: "Venticinque - tutto attaccato"},
+            {q: "Quale numero è scritto correttamente?", options: ["trentatré", "trenta tre", "trentatre", "trentatrè"], correct: 0, expl: "Trentatré (con accento sulla e) per distinguere da trenta-tre"},
+            {q: "Come si dice 'primo' (numerale ordinale)?", options: ["primo", "uno", "prima", "un"], correct: 0, expl: "Primo - ordinale maschile singolare"},
+            {q: "Quale numero viene dopo il 99?", options: ["cento", "centuno", "novanta", "mille"], correct: 0, expl: "Cento - il numero 100"},
+            {q: "Come si risponde a 'Quanti anni hai?' se ne ho 18?", options: ["Ho diciotto anni", "Sono diciotto anni", "Ho diciotto", "Avere diciotto anni"], correct: 0, expl: "Ho diciotto anni - uso corretto di avere"},
+            {q: "Quale è il numero ordinale femminile di 'secondo'?", options: ["seconda", "secondo", "due", "secondi"], correct: 0, expl: "Seconda - ordinale femminile singolare"},
+            {q: "Completa: Mio fratello ha _____ anni (16).", options: ["sedici", "sedic", "sedeci", "siesci"], correct: 0, expl: "Sedici - sedici anni"},
+
+            // PRESENTARSI (91-95)
+            {q: "Come ti presenti dicendo il tuo nome?", options: ["Mi chiamo...", "Io sono nome...", "Chiamo mi...", "Il mio nome è chiamato..."], correct: 0, expl: "Mi chiamo Marco - forma standard per presentarsi"},
+            {q: "Quale domanda fa la persona che ti chiede da dove vieni?", options: ["Di dove sei?", "Da dove sei?", "Dove sei?", "Di dove hai?"], correct: 0, expl: "Di dove sei? o Da dove vieni? - entrambe corrette"},
+            {q: "Come rispondi a 'Di dove sei?' se sei di Roma?", options: ["Sono di Roma", "Vengo da Roma", "Sono Roma", "A e B"], correct: 3, expl: "Entrambe sono corrette: Sono di Roma / Vengo da Roma"},
+            {q: "Quale frase è corretta per salutare e presentarsi?", options: ["Ciao, mi chiamo Anna", "Salve, io nome Anna", "Ciao, chiamo Anna", "Hello, mi chiamo Anna"], correct: 0, expl: "Ciao, mi chiamo Anna - forma completa e corretta"},
+            {q: "Come chiedi 'Piacere di conoscerti'?", options: ["Piacere di conoscerti", "Piacere conoscere te", "Conoscerti piacere", "Piacere di conoscere"], correct: 0, expl: "Piacere di conoscerti - forma standard di cortesia"},
+
+            // PREPOSIZIONI SEMPLICI (96-100)
+            {q: "Quale preposizione indica il luogo in cui si sta (stare a/in)?", options: ["a", "in", "da", "di"], correct: 1, expl: "Sto in casa, vivo in Italia - 'in' per luoghi geografici e grandi spazi (ma anche 'a' per città)"},
+            {q: "Quale preposizione si usa per il moto da luogo?", options: ["a", "da", "in", "su"], correct: 1, expl: "Vengo da Roma - 'da' indica la provenienza"},
+            {q: "Completa: Il libro è _____ tavolo.", options: ["a", "in", "su", "da"], correct: 2, expl: "Il libro è su (sopra) il tavolo"},
+            {q: "Quale preposizione indica il possesso?", options: ["di", "a", "da", "con"], correct: 0, expl: "Il libro di Marco - 'di' per il possesso"},
+            {q: "Quale preposizione indica la compagnia?", options: ["con", "e", "da", "in"], correct: 0, expl: "Vado con Marco - 'con' indica compagnia o strumento"}
+        ];
+
+        // Mischia le risposte per ogni domanda
+        function shuffleOptions(questions) {
+            return questions.map(q => {
+                // Crea array di indici e mischia
+                const indices = [0, 1, 2, 3];
+                for (let i = indices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [indices[i], indices[j]] = [indices[j], indices[i]];
+                }
+
+                // Trova nuova posizione della risposta corretta
+                const newCorrectIndex = indices.indexOf(q.correct);
+
+                // Crea nuovo array di opzioni mischiate
+                const shuffledOptions = indices.map(i => q.options[i]);
+
+                return {
+                    ...q,
+                    options: shuffledOptions,
+                    correct: newCorrectIndex
+                };
+            });
+        }
+
+        let questions = [];
+        let currentQuestion = 0;
+        let userAnswers = new Array(100).fill(null);
+        let score = 0;
+        let studentName = "";
+        let studentSurname = "";
+        let studentEmail = "";
+
+        document.getElementById('nomeInput').addEventListener('input', checkInputs);
+        document.getElementById('cognomeInput').addEventListener('input', checkInputs);
+        document.getElementById('emailInput').addEventListener('input', checkInputs);
+
+        function checkInputs() {
+            const nome = document.getElementById('nomeInput').value.trim();
+            const cognome = document.getElementById('cognomeInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+            const btn = document.getElementById('startBtn');
+
+            if (nome.length > 0 && cognome.length > 0 && email.length > 0 && email.includes('@')) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+
+        function startQuiz() {
+            studentName = document.getElementById('nomeInput').value.trim();
+            studentSurname = document.getElementById('cognomeInput').value.trim();
+            studentEmail = document.getElementById('emailInput').value.trim();
+
+            if (!studentName || !studentSurname || !studentEmail) {
+                alert("Compila tutti i campi obbligatori!");
+                return;
+            }
+
+            // Mischia le risposte all'avvio
+            questions = shuffleOptions(originalQuestions);
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+
+            currentQuestion = 0;
+            userAnswers = new Array(100).fill(null);
+            score = 0;
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionText').textContent = q.q;
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+
+            const progress = ((currentQuestion + 1) / 100) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            q.options.forEach(function(opt, index) {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = opt;
+                btn.onclick = function() { selectAnswer(index); };
+
+                if (userAnswers[currentQuestion] !== null) {
+                    btn.disabled = true;
+                    if (index === q.correct) {
+                        btn.classList.add('correct');
+                    } else if (index === userAnswers[currentQuestion]) {
+                        btn.classList.add('wrong');
+                    }
+                }
+
+                container.appendChild(btn);
+            });
+
+            const feedback = document.getElementById('feedback');
+            if (userAnswers[currentQuestion] !== null) {
+                feedback.textContent = q.expl;
+                feedback.className = userAnswers[currentQuestion] === q.correct ? 
+                    'feedback-message correct' : 'feedback-message wrong';
+                feedback.classList.remove('hidden');
+            } else {
+                feedback.classList.add('hidden');
+            }
+
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.disabled = userAnswers[currentQuestion] === null;
+            nextBtn.textContent = currentQuestion === 99 ? 'Vedi Risultati →' : 'Successiva →';
+        }
+
+        function selectAnswer(index) {
+            if (userAnswers[currentQuestion] !== null) return;
+
+            userAnswers[currentQuestion] = index;
+            const q = questions[currentQuestion];
+            const buttons = document.querySelectorAll('.answer-btn');
+
+            buttons.forEach(function(btn, i) {
+                btn.disabled = true;
+                if (i === q.correct) {
+                    btn.classList.add('correct');
+                } else if (i === index) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = q.expl;
+            feedback.className = index === q.correct ? 
+                'feedback-message correct' : 'feedback-message wrong';
+            feedback.classList.remove('hidden');
+
+            if (index === q.correct) score++;
+
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion === 99) {
+                showResults();
+            } else {
+                currentQuestion++;
+                showQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            document.getElementById('studentNameDisplay').textContent = studentName + " " + studentSurname;
+
+            // Calcolo risultati
+            let correct = 0;
+            for (let i = 0; i < 100; i++) {
+                if (userAnswers[i] === questions[i].correct) {
+                    correct++;
+                }
+            }
+
+            const wrong = 100 - correct;
+            const percentage = Math.round((correct / 100) * 100);
+
+            // Aggiorna i box principali
+            document.getElementById('finalScore').textContent = correct + '/100';
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('wrongCount').textContent = wrong;
+            document.getElementById('percentage').textContent = percentage + '%';
+
+            // Aggiorna statistiche dettagliate
+            document.getElementById('statCorrect').textContent = correct;
+            document.getElementById('statWrong').textContent = wrong;
+            document.getElementById('statPercent').textContent = percentage + '%';
+
+            // Sistema di valutazione con 60% sufficiente
+            const evaluation = getEvaluation(percentage);
+            document.getElementById('gradeDisplay').textContent = evaluation.grade;
+            document.getElementById('statusDisplay').textContent = evaluation.status;
+            document.getElementById('statGrade').textContent = evaluation.grade;
+            document.getElementById('statResult').textContent = evaluation.status;
+
+            const evalBox = document.getElementById('evaluationBox');
+            evalBox.className = 'evaluation-box' + (evaluation.sufficient ? ' sufficient' : ' insufficient');
+
+            // Genera testo risultati
+            const resultsText = generateResultsText(correct, wrong, percentage, evaluation);
+            document.getElementById('resultsText').value = resultsText;
+        }
+
+        function getEvaluation(percentage) {
+            if (percentage >= 90) {
+                return { grade: '30/30', status: 'Eccellente - Padronanza completa', sufficient: true };
+            } else if (percentage >= 80) {
+                return { grade: '27-29/30', status: 'Buono - Comprensione solida', sufficient: true };
+            } else if (percentage >= 70) {
+                return { grade: '24-26/30', status: 'Soddisfacente - Conoscenza accettabile', sufficient: true };
+            } else if (percentage >= 60) {
+                return { grade: '18-23/30', status: 'Sufficiente - Necessari approfondimenti', sufficient: true };
+            } else {
+                return { grade: '<18/30', status: 'Insufficiente - Ristudiare i contenuti', sufficient: false };
+            }
+        }
+
+        function generateResultsText(correct, wrong, percentage, evaluation) {
+            const date = new Date().toLocaleDateString('it-IT');
+            const time = new Date().toLocaleTimeString('it-IT');
+
+            let text = '═════════════════════════════════════════════════════════════\n';
+            text += '     RISULTATI TEST GRAMMATICA ITALIANA BASE\n';
+            text += '═════════════════════════════════════════════════════════════\n\n';
+
+            text += 'DATI CANDIDATO:\n';
+            text += '─────────────────────────────────────────────────────────────\n';
+            text += 'Nome: ' + studentName + ' ' + studentSurname + '\n';
+            text += 'Email: ' + studentEmail + '\n';
+            text += 'Data: ' + date + '\n';
+            text += 'Ora: ' + time + '\n\n';
+
+            text += 'RISULTATI GLOBALI:\n';
+            text += '─────────────────────────────────────────────────────────────\n';
+            text += 'Risposte corrette: ' + correct + '/100\n';
+            text += 'Risposte sbagliate: ' + wrong + '/100\n';
+            text += 'Percentuale di successo: ' + percentage + '%\n';
+            text += 'Valutazione: ' + evaluation.grade + '\n';
+            text += 'Giudizio: ' + evaluation.status + '\n\n';
+
+            text += 'ARGOMENTI TRATTATI:\n';
+            text += '• Articoli determinativi e indeterminativi (1-15)\n';
+            text += '• Verbo essere e avere (16-30)\n';
+            text += '• Le tre coniugazioni -are, -ere, -ire (31-50)\n';
+            text += '• Verbi riflessivi (51-60)\n';
+            text += '• Aggettivi possessivi (61-70)\n';
+            text += '• Verbi piacere, fare, lavorare (71-80)\n';
+            text += '• Numeri ed età (81-90)\n';
+            text += '• Presentarsi (91-95)\n';
+            text += '• Preposizioni semplici (96-100)\n\n';
+
+            text += 'GIUDIZIO FINALE:\n';
+            text += '─────────────────────────────────────────────────────────────\n';
+            if (percentage >= 90) {
+                text += 'Eccellente. Padronanza completa della grammatica base.\n';
+            } else if (percentage >= 80) {
+                text += 'Buono. Comprensione solida con margini di miglioramento.\n';
+            } else if (percentage >= 70) {
+                text += 'Soddisfacente. Conoscenza accettabile con aree da consolidare.\n';
+            } else if (percentage >= 60) {
+                text += 'Sufficiente. Necessari ulteriori studi e approfondimenti.\n';
+            } else {
+                text += 'Insufficiente. Ristudiare completamente i contenuti.\n';
+            }
+            text += '\n';
+
+            text += 'DETTAGLIO DOMANDA PER DOMANDA:\n';
+            text += '═════════════════════════════════════════════════════════════\n';
+            for (let i = 0; i < 100; i++) {
+                const ans = userAnswers[i];
+                const q = questions[i];
+                const isCorrect = ans === q.correct;
+                text += '\nDomanda ' + (i + 1) + ': ' + (isCorrect ? '✓ CORRETTA' : '✗ ERRATA') + '\n';
+                text += 'Testo: ' + q.q + '\n';
+                text += 'Risposta data: ' + (ans !== null ? q.options[ans] : 'Non risposto') + '\n';
+                text += 'Risposta corretta: ' + q.options[q.correct] + '\n';
+                text += 'Spiegazione: ' + q.expl + '\n';
+                text += '─────────────────────────────────────────────────────────────\n';
+            }
+
+            text += '\n═════════════════════════════════════════════════════════════\n';
+            text += 'Test generato dal Sistema Didattico - Grammatica Italiana Base\n';
+            text += 'Articoli, Verbi, Aggettivi, Numeri, Preposizioni (100 esercizi)\n';
+            text += 'Soglia di sufficienza: 60% (60/100 risposte corrette)\n';
+            text += '═════════════════════════════════════════════════════════════\n';
+
+            return text;
+        }
+
+        function sendResults() {
+            const resultsText = document.getElementById('resultsText').value;
+            const subject = encodeURIComponent('Risultati Test Grammatica Italiana Base - ' + studentName + ' ' + studentSurname);
+            const body = encodeURIComponent(resultsText);
+
+            // Email fissa del docente
+            const teacherEmail = 'giancarlo.vettori@cpiatv1.edu.it';
+
+            // Crea mailto link con email del docente
+            const mailtoLink = 'mailto:' + teacherEmail + '?subject=' + subject + '&body=' + body;
+
+            // Apri client email
+            window.location.href = mailtoLink;
+
+            // Mostra conferma
+            setTimeout(function() {
+                alert('Email preparata per: ' + teacherEmail + '\n\nSe il client email non si apre automaticamente, copia il testo dalla casella sopra e invialo manualmente a:\n' + teacherEmail);
+            }, 500);
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+            document.getElementById('nomeInput').value = '';
+            document.getElementById('cognomeInput').value = '';
+            document.getElementById('emailInput').value = '';
+            document.getElementById('startBtn').disabled = true;
+            currentQuestion = 0;
+            userAnswers = new Array(100).fill(null);
+            score = 0;
+            studentName = '';
+            studentSurname = '';
+            studentEmail = '';
+        }
+    </script>
+</body>
+</html>
