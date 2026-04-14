@@ -831,7 +831,7 @@
 
                 <div class="email-section">
                     <h3>📧 Invia Risultati</h3>
-                    <p>Clicca su "Invio" per inviare automaticamente i risultati completi a <strong>giancarlo.vettori@cpiatv1.edu.it</strong></p>
+                    <p>Clicca su "Invio" per inviare automaticamente i risultati completi a <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dabdb3bbb4b9bba8b6b5f4acbfaeaeb5a8b39ab9aab3bbaeacebf4bfbeaff4b3ae">[email&#160;protected]</a></strong></p>
                     <textarea id="resultsText" class="results-text"></textarea>
                     <div class="button-group">
                         <button class="btn-send" onclick="sendResults()">Invio</button>
@@ -842,7 +842,7 @@
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Array domande originali
         const originalQuestions = [
             // ARTICOLI DETERMINATIVI E INDETERMINATIVI (1-15)
@@ -850,10 +850,10 @@
             {q: "Quale articolo determinativo si usa con la parola 'amica' (femminile singolare)?", options: ["la", "l'", "le", "lo"], correct: 1, expl: "L'amica - si usa l' apostrofo davanti a vocali (a, e, i, o, u)"},
             {q: "Quale articolo indeterminativo si usa con 'studentessa'?", options: ["un", "uno", "una", "un'"], correct: 2, expl: "Una studentessa - si usa 'una' davanti a parole femminili che iniziano con consonante"},
             {q: "Quale articolo determinativo plurale si usa con 'amici'?", options: ["i", "gli", "le", "gl'"], correct: 1, expl: "Gli amici - si usa 'gli' al plurale maschile per parole che al singolare usano 'lo' o 'l'"},
-            {q: "Completa: _____ casa è molto bella.", options: ["La", "Lo", "Il", "L'"], correct: 3, expl: "La casa è molto bella - si usa 'la' davanti a consonante, ma 'l'' davanti a vocale. Qui però la risposta corretta è 'La' perché 'casa' inizia con consonante. Nota: c'è un errore nella formulazione, la risposta corretta è 'La'"},
+            {q: "Completa: _____ casa è molto bella.", options: ["La", "Lo", "Il", "L'"], correct: 0, expl: "La casa è molto bella - si usa 'la' davanti a consonante (c non è vocale)"},
             {q: "Quale articolo indeterminativo si usa con 'psicologo'?", options: ["un", "uno", "una", "un'"], correct: 1, expl: "Uno psicologo - si usa 'uno' davanti a parole maschili che iniziano con ps-, gn-, z-, s+cons., x-, y-"},
             {q: "Quale articolo determinativo si usa con 'specchio'?", options: ["il", "lo", "la", "l'"], correct: 1, expl: "Lo specchio - si usa 'lo' davanti a s+consonante (sp-)"},
-            {q: "Completa: _____ studenti sono bravi.", options: ["I", "Gli", "Le", "I gli"], correct: 0, expl: "Gli studenti - si usa 'gli' davanti a parole che al singolare hanno 'lo' (s+cons.)"},
+            {q: "Completa: _____ studenti sono bravi.", options: ["I", "Gli", "Le", "I gli"], correct: 1, expl: "Gli studenti - si usa 'gli' davanti a parole che al singolare hanno 'lo' (s+consonante)"},
             {q: "Quale articolo indeterminativo si usa con 'aereo'?", options: ["un", "uno", "un'", "l'"], correct: 0, expl: "Un aereo - si usa 'un' davanti a parole maschili che iniziano con vocale"},
             {q: "Completa: _____ libri sono interessanti.", options: ["I", "Gli", "Le", "Il"], correct: 0, expl: "I libri - si usa 'i' per il plurale maschile di 'il' (parole che iniziano con consonante semplice)"},
             {q: "Quale articolo determinativo si usa con 'gnocco'?", options: ["il", "lo", "la", "l'"], correct: 1, expl: "Lo gnocco - si usa 'lo' davanti a gn-"},
@@ -876,7 +876,7 @@
             {q: "Quale forma è corretta per 'loro hanno'?", options: ["hanno", "hiamo", "hanno", "hanno"], correct: 0, expl: "Loro hanno - terza persona plurale di avere (con la h)"},
             {q: "Completa: Voi _____ studenti universitari.", options: ["siete", "siamo", "sono", "avete"], correct: 0, expl: "Voi siete - seconda persona plurale di essere"},
             {q: "Come si dice 'io ho freddo'?", options: ["sono freddo", "ho freddo", "faccio freddo", "sto freddo"], correct: 1, expl: "Io ho freddo - si usa avere per le sensazioni fisiche (caldo, freddo, paura, sonno)"},
-            {q: "Quale forma è corretta per 'lui è'?", options: ["è", "é", "e'", "eh"], correct: 0, expl: "Lui è - terza persona singolare con accento grave"},
+            {q: "Quale forma è corretta per 'lui è'?", options: ["è", "é", "e'", "eh"], correct: 0, expl: "Lui è - terza persona singolare di essere con accento grave"},
             {q: "Completa: Noi _____ sete dopo lo sport.", options: ["siamo", "abbiamo", "facciamo", "andiamo"], correct: 1, expl: "Noi abbiamo sete - si usa avere per sete"},
 
             // TRE CONIUGAZIONI: -ARE (31-40)
@@ -896,7 +896,7 @@
             {q: "Quale desinenza ha la seconda persona singolare dei verbi in -ERE?", options: ["-i", "-e", "-o", "-a"], correct: 0, expl: "Tu vedi, leggi, prendi → desinenza -i"},
             {q: "Completa: Noi _____ (prendere) il caffè.", options: ["prendo", "prendi", "prende", "prendiamo"], correct: 3, expl: "Noi prendiamo - prima persona plurale in -iamo"},
             {q: "Quale è la terza persona plurale di 'vendere'?", options: ["vendono", "vendano", "vendeno", "vendiamo"], correct: 0, expl: "Loro vendono - desinenza -ono"},
-            {q: "Come si coniuge LEGGERE alla terza persona singolare?", options: ["leggo", "leggi", "legge", "leggono"], correct: 2, expl: "Lei legge - la gge mantiene il suono dolce"},
+            {q: "Come si coniuga LEGGERE alla terza persona singolare?", options: ["leggo", "leggi", "legge", "leggono"], correct: 2, expl: "Lei legge - la gge mantiene il suono dolce"},
             {q: "Quale verbo in -ERE è totalmente irregolare?", options: ["vedere", "prendere", "essere", "leggere"], correct: 2, expl: "Essere è irregolare: sono, sei, è, siamo, siete, sono"},
             {q: "Qual è la desinenza della seconda persona plurale in -ERE?", options: ["-ite", "-ete", "-ate", "-ete"], correct: 1, expl: "Voi prendete, leggete, vedete → desinenza -ete"},
             {q: "Completa: Tu _____ (scrivere) una lettera.", options: ["scrivo", "scrivi", "scrive", "scriviamo"], correct: 1, expl: "Tu scrivi - seconda persona singolare"},
@@ -937,11 +937,11 @@
             {q: "A chi _____ (piacere) questi libri? (a te)", options: ["ti piace", "ti piacciono", "ti piaci", "ti piaciono"], correct: 1, expl: "Ti piacciono questi libri - 'libri' è plurale, quindi 'piacciono'"},
             {q: "Come si coniuga LAVORARE alla prima persona plurale?", options: ["lavoro", "lavori", "lavora", "lavoriamo"], correct: 3, expl: "Noi lavoriamo - desinenza -iamo"},
             {q: "Quale forma di FARE è sbagliata?", options: ["io faccio", "tu fai", "lui fa", "noi facemo"], correct: 3, expl: "Noi facciamo (non facemo) - forma corretta con doppia c"},
-            {q: "Completa: A Marco _____ (piacere) le pizza.", options: ["piace", "piacciono", "piaci", "piaccione"], correct: 0, expl: "A Marco piace la pizza (soggetto singolare) - nota: c'è un errore nel testo 'le pizza', dovrebbe essere 'la pizza', ma la risposta rimane 'piace')"},
+            {q: "Completa: A Marco _____ (piacere) la pizza.", options: ["piace", "piacciono", "piaci", "piaccione"], correct: 0, expl: "A Marco piace la pizza (soggetto singolare)"},
 
             // NUMERI ED ETÀ (81-90)
             {q: "Come si scrive il numero 15 in lettere?", options: ["quindici", "quinici", "quindicesimo", "cindici"], correct: 0, expl: "Quindici - numero cardinale"},
-            {q: "Quale è l'ordine corretto dei decine?", options: ["dieci, venti, trenta...", "dieci, venta, trenta...", "dieci, venti, trenti...", "dieci, vento, trenta..."], correct: 0, expl: "Dieci, venti, trenta, quaranta, cinquanta... - forma corretta"},
+            {q: "Quale è l'ordine corretto delle decine?", options: ["dieci, venti, trenta...", "dieci, venta, trenta...", "dieci, venti, trenti...", "dieci, vento, trenta..."], correct: 0, expl: "Dieci, venti, trenta, quaranta, cinquanta... - forma corretta"},
             {q: "Come si chiede l'età in italiano?", options: ["Quanti anni hai?", "Quanto anni hai?", "Quanti anni sei?", "Quale età hai?"], correct: 0, expl: "Quanti anni hai? - uso del verbo avere per l'età"},
             {q: "Completa: Ho _____ anni (25).", options: ["venticinque", "venti cinque", "venticinquanta", "due cinque"], correct: 0, expl: "Venticinque - tutto attaccato"},
             {q: "Quale numero è scritto correttamente?", options: ["trentatré", "trenta tre", "trentatre", "trentatrè"], correct: 0, expl: "Trentatré (con accento sulla e) per distinguere da trenta-tre"},
@@ -953,7 +953,7 @@
 
             // PRESENTARSI (91-95)
             {q: "Come ti presenti dicendo il tuo nome?", options: ["Mi chiamo...", "Io sono nome...", "Chiamo mi...", "Il mio nome è chiamato..."], correct: 0, expl: "Mi chiamo Marco - forma standard per presentarsi"},
-            {q: "Quale domanda fa la persona che ti chiede da dove vieni?", options: ["Di dove sei?", "Da dove sei?", "Dove sei?", "Di dove hai?"], correct: 0, expl: "Di dove sei? o Da dove vieni? - entrambe corrette"},
+            {q: "Quale domanda pone una persona che ti chiede da dove vieni?", options: ["Di dove sei?", "Da dove vieni?", "Dove sei?", "Di dove hai?"], correct: 0, expl: "Di dove sei? o Da dove vieni? - entrambe corrette, ma 'Di dove sei?' è più standard"},
             {q: "Come rispondi a 'Di dove sei?' se sei di Roma?", options: ["Sono di Roma", "Vengo da Roma", "Sono Roma", "A e B"], correct: 3, expl: "Entrambe sono corrette: Sono di Roma / Vengo da Roma"},
             {q: "Quale frase è corretta per salutare e presentarsi?", options: ["Ciao, mi chiamo Anna", "Salve, io nome Anna", "Ciao, chiamo Anna", "Hello, mi chiamo Anna"], correct: 0, expl: "Ciao, mi chiamo Anna - forma completa e corretta"},
             {q: "Come chiedi 'Piacere di conoscerti'?", options: ["Piacere di conoscerti", "Piacere conoscere te", "Conoscerti piacere", "Piacere di conoscere"], correct: 0, expl: "Piacere di conoscerti - forma standard di cortesia"},
@@ -1180,7 +1180,7 @@
             } else if (percentage >= 60) {
                 return { grade: '18-23/30', status: 'Sufficiente - Necessari approfondimenti', sufficient: true };
             } else {
-                return { grade: '<18/30', status: 'Insufficiente - Ristudiare i contenuti', sufficient: false };
+                return { grade: '<18/30', status: 'Insufficiente - Necessario riprendere lo studio', sufficient: false };
             }
         }
 
@@ -1229,7 +1229,7 @@
             } else if (percentage >= 60) {
                 text += 'Sufficiente. Necessari ulteriori studi e approfondimenti.\n';
             } else {
-                text += 'Insufficiente. Ristudiare completamente i contenuti.\n';
+                text += 'Insufficiente. Riprendere completamente lo studio dei contenuti.\n';
             }
             text += '\n';
 
@@ -1283,13 +1283,3 @@
             document.getElementById('cognomeInput').value = '';
             document.getElementById('emailInput').value = '';
             document.getElementById('startBtn').disabled = true;
-            currentQuestion = 0;
-            userAnswers = new Array(100).fill(null);
-            score = 0;
-            studentName = '';
-            studentSurname = '';
-            studentEmail = '';
-        }
-    </script>
-</body>
-</html>
