@@ -454,10 +454,226 @@
             outline: 3px solid var(--accent);
             outline-offset: 2px;
         }
+        /* Login System Styles */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .login-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .login-container {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #c9a227, #1e3a5f);
+        }
+
+        .login-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .login-container h2 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .login-container .subtitle {
+            color: var(--text-medium);
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Source Sans Pro', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 95, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-error {
+            color: #e53e3e;
+            font-size: 0.9em;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: background 0.3s;
+            margin-left: 10px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .guest-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .guest-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .login-divider {
+            margin: 20px 0;
+            position: relative;
+            text-align: center;
+        }
+
+        .login-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .login-divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            color: var(--text-light);
+            font-size: 0.85em;
+        }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
+<!-- Login Overlay -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-container">
+            <div class="login-icon">🔐</div>
+            <h2>Accedi al Portale</h2>
+            <p class="subtitle">PORTALE ACCADEMICO PER L'APPRENDIMENTO DELLA LINGUA ITALIANA - GAMING - ESERCIZI - TEST DI COMPRENSIONE</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Nome Utente</label>
+                    <input type="text" id="username" name="username" placeholder="Inserisci il tuo nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Inserisci la password" required>
+                </div>
+                <button type="submit" class="login-btn">Accedi</button>
+                <div class="login-divider">
+                    <span>oppure</span>
+                </div>
+                <button type="button" class="guest-btn" id="guestBtn">Accedi come Ospite</button>
+                <div id="loginError" class="login-error">Credenziali non valide. Riprova.</div>
+            </form>
+        </div>
+    </div>
+
     <header class="header">
         <div class="header-top">
             <div class="logo-section">
@@ -473,6 +689,10 @@
                 <a href="#risorse">Risorse</a>
                 <a href="#contatti">Contatti</a>
             </nav>
+            <div class="user-info" id="userInfo" style="display: none;">
+                <span id="userName">Utente</span>
+                <button class="logout-btn" id="logoutBtn">Esci</button>
+            </div>
         </div>
         <div class="breadcrumb">
             <div class="breadcrumb-content">
@@ -988,5 +1208,95 @@
                         <span class="card-arrow">→</span       
         </div>
     </footer>
+    
+    <!-- Login System JavaScript -->
+    <script>
+        // Database utenti predefiniti (username: password)
+        const validUsers = {
+            'admin': 'admin2024',
+            'studente1': 'italiano123',
+            'studente2': 'lingua2024',
+            'prof': 'docente2024',
+            'maria': 'maria123',
+            'luca': 'luca456',
+            'giulia': 'giulia789',
+            'marco': 'marco2024',
+            'anna': 'anna567',
+            'paolo': 'paolo890'
+        };
+
+        // Gestione Login System
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginOverlay = document.getElementById('loginOverlay');
+            const loginForm = document.getElementById('loginForm');
+            const loginError = document.getElementById('loginError');
+            const guestBtn = document.getElementById('guestBtn');
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            // Controlla se c'è una sessione attiva
+            const currentUser = localStorage.getItem('portaleUser');
+            if (currentUser) {
+                showMainContent(currentUser);
+            }
+
+            // Gestione submit form
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value.trim().toLowerCase();
+                const password = document.getElementById('password').value;
+
+                // Verifica credenziali
+                if (validUsers[username] && validUsers[username] === password) {
+                    // Salva sessione
+                    localStorage.setItem('portaleUser', username);
+                    localStorage.setItem('portaleLoginTime', new Date().toISOString());
+                    localStorage.setItem('portaleRole', username === 'admin' ? 'admin' : 'studente');
+                    showMainContent(username);
+                    loginError.classList.remove('show');
+                } else {
+                    loginError.textContent = 'Username o password non validi. Riprova.';
+                    loginError.classList.add('show');
+                    // Shake effect sul form
+                    loginForm.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        loginForm.style.animation = '';
+                    }, 500);
+                }
+            });
+
+            // Login come ospite
+            guestBtn.addEventListener('click', function() {
+                localStorage.setItem('portaleUser', 'Ospite');
+                localStorage.setItem('portaleLoginTime', new Date().toISOString());
+                localStorage.setItem('portaleRole', 'guest');
+                showMainContent('Ospite');
+            });
+
+            // Logout
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('portaleUser');
+                localStorage.removeItem('portaleLoginTime');
+                localStorage.removeItem('portaleRole');
+                location.reload();
+            });
+
+            function showMainContent(username) {
+                loginOverlay.classList.add('hidden');
+                userInfo.style.display = 'flex';
+                userName.textContent = '👤 ' + username;
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+    
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+    </style>
 </body>
 </html>
