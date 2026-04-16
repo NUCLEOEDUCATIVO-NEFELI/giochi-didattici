@@ -646,6 +646,7 @@
     </style>
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 <!-- Login Overlay -->
@@ -665,10 +666,6 @@
                     <input type="password" id="password" name="password" placeholder="Inserisci la password" required>
                 </div>
                 <button type="submit" class="login-btn">Accedi</button>
-                <div class="login-divider">
-                    <span>oppure</span>
-                </div>
-                <button type="button" class="guest-btn" id="guestBtn">Accedi come Ospite</button>
                 <div id="loginError" class="login-error">Credenziali non valide. Riprova.</div>
             </form>
         </div>
@@ -1205,7 +1202,33 @@
                             <span class="tag highlight">10 TESTI esplicativi del vivere quotidiano</span>
                             <span class="tag">A2</span>
                         </div>
-                        <span class="card-arrow">→</span       
+                        <span class="card-arrow">→</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h5>Portale Didattico</h5>
+                <p>Piattaforma dedicata all'apprendimento della grammatica italiana attraverso esercizi interattivi e quiz valutativi.</p>
+            </div>
+            <div class="footer-section">
+                <h5>Link Utili</h5>
+                <p><a href="#">Guida all'uso</a><br>
+                <a href="#">Livelli CEFR</a><br>
+                <a href="#">Contatti</a></p>
+            </div>
+            <div class="footer-section">
+                <h5>Info</h5>
+                <p>Versione 1.0<br>
+                © 2024 Dipartimento di Italiano</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Accesso riservato agli studenti del corso</p>
         </div>
     </footer>
     
@@ -1230,7 +1253,6 @@
             const loginOverlay = document.getElementById('loginOverlay');
             const loginForm = document.getElementById('loginForm');
             const loginError = document.getElementById('loginError');
-            const guestBtn = document.getElementById('guestBtn');
             const userInfo = document.getElementById('userInfo');
             const userName = document.getElementById('userName');
             const logoutBtn = document.getElementById('logoutBtn');
@@ -1264,14 +1286,6 @@
                         loginForm.style.animation = '';
                     }, 500);
                 }
-            });
-
-            // Login come ospite
-            guestBtn.addEventListener('click', function() {
-                localStorage.setItem('portaleUser', 'Ospite');
-                localStorage.setItem('portaleLoginTime', new Date().toISOString());
-                localStorage.setItem('portaleRole', 'guest');
-                showMainContent('Ospite');
             });
 
             // Logout
