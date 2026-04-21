@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passato Prossimo - 1 Minuto Challenge!</title>
+    <title>Futuro Semplice - 1 Minuto Challenge!</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700;900&display=swap');
 
@@ -401,19 +401,18 @@
     <div class="start-screen" id="startScreen">
         <div class="modal">
             <div class="modal-icon">⏱</div>
-            <h2>Passato Prossimo</h2>
+            <h2>Futuro Semplice</h2>
             <div class="modal-sub">1 Minuto Challenge</div>
             <p>Leggi la frase. La forma in <strong>rosso</strong> è corretta?<br>
                Rispondi <strong>Vero</strong> o <strong>Falso</strong> il più velocemente possibile!</p>
             <div class="rules-box">
                 <h3>Regole Rapide</h3>
                 <ul>
-                    <li><strong>Ausiliare:</strong> <em>avere</em> o <em>essere</em> + participio passato</li>
-                    <li><strong>Con avere:</strong> participio invariabile — <em>ho mangiato, hai letto, ha capito</em></li>
-                    <li><strong>Con essere:</strong> participio concorda con il soggetto — <em>sono andato/a, siamo partiti/e</em></li>
-                    <li><strong>Participi -are → -ato:</strong> <em>parlato, lavorato, mangiato</em></li>
-                    <li><strong>Participi -ere → -uto / irregolari:</strong> <em>veduto/visto, letto, scritto, preso, perso</em></li>
-                    <li><strong>Participi -ire → -ito / irregolari:</strong> <em>capito, partito, aperto, venuto, uscito</em></li>
+                    <li><strong>Regolari -are:</strong> <em>-erò, -erai, -erà, -eremo, -erete, -eranno</em></li>
+                    <li><strong>Regolari -ere / -ire:</strong> <em>-rò, -rai, -rà, -remo, -rete, -ranno</em></li>
+                    <li><strong>Irregolari:</strong> <em>sarò, avrò, andrò, verrò, farò, dirò, potrò, dovrò, vorrò, berrò, rimarrò, saprò, starò, darò</em></li>
+                    <li><strong>-care / -gare</strong> → mantengono il suono duro: <em>cercherò, pagherò</em></li>
+                    <li><strong>-ciare / -giare</strong> → perdono la <em>i</em>: <em>comincerò, mangerò</em></li>
                 </ul>
             </div>
             <button class="start-btn" onclick="startGame()">Inizia il Gioco →</button>
@@ -438,7 +437,7 @@
     <div class="game-container hidden" id="gameContainer">
         <div class="game-header">
             <div>
-                <div class="game-title">Passato Prossimo</div>
+                <div class="game-title">Futuro Semplice</div>
                 <div class="game-subtitle">La forma evidenziata è corretta? Vero o Falso?</div>
             </div>
             <div class="timer-block">
@@ -495,261 +494,250 @@
 
             // ═══ FORME CORRETTE ═══════════════════════════════════════════════
 
-            // avere + -are (participio -ato) — corrette
-            { sentence: "Ieri io {ho parlato} con il direttore.", correct: true },
-            { sentence: "Tu {hai parlato} con Marco ieri sera?", correct: true },
-            { sentence: "Lei {ha parlato} al telefono per un'ora.", correct: true },
-            { sentence: "Noi {abbiamo parlato} di questo ieri.", correct: true },
-            { sentence: "Voi {avete parlato} con il professore.", correct: true },
-            { sentence: "Loro {hanno parlato} alla riunione.", correct: true },
+            // -are regolari
+            { sentence: "Domani io {parlerò} con il direttore.", correct: true },
+            { sentence: "Tu {parlerai} italiano molto bene presto.", correct: true },
+            { sentence: "Lei {parlerà} al telefono più tardi.", correct: true },
+            { sentence: "Noi {parleremo} di questo domani.", correct: true },
+            { sentence: "Voi {parlerete} con il professore lunedì.", correct: true },
+            { sentence: "Loro {parleranno} alla riunione di giovedì.", correct: true },
 
-            { sentence: "Stamattina io {ho lavorato} da casa.", correct: true },
-            { sentence: "Tu {hai lavorato} sabato scorso?", correct: true },
-            { sentence: "Lei {ha lavorato} fino a tardi.", correct: true },
-            { sentence: "Noi {abbiamo lavorato} sodo tutto il giorno.", correct: true },
-            { sentence: "Voi {avete lavorato} sullo stesso progetto.", correct: true },
-            { sentence: "Loro {hanno lavorato} tutta la notte.", correct: true },
+            { sentence: "Domani io {lavorerò} da casa.", correct: true },
+            { sentence: "Tu {lavorerai} il sabato?", correct: true },
+            { sentence: "Lei {lavorerà} in un'azienda internazionale.", correct: true },
+            { sentence: "Noi {lavoreremo} sodo per raggiungere l'obiettivo.", correct: true },
+            { sentence: "Voi {lavorerete} sullo stesso progetto.", correct: true },
+            { sentence: "Loro {lavoreranno} fino a tardi.", correct: true },
 
-            { sentence: "Io {ho studiato} tutta la notte.", correct: true },
-            { sentence: "Tu {hai studiato} con me ieri?", correct: true },
-            { sentence: "Lei {ha studiato} medicina.", correct: true },
-            { sentence: "Noi {abbiamo studiato} insieme per l'esame.", correct: true },
-            { sentence: "Loro {hanno studiato} all'estero.", correct: true },
+            { sentence: "Io {studierò} tutta la notte.", correct: true },
+            { sentence: "Tu {studierai} con me?", correct: true },
+            { sentence: "Lei {studierà} medicina.", correct: true },
+            { sentence: "Noi {studieremo} insieme per l'esame.", correct: true },
+            { sentence: "Voi {studierete} di più il prossimo anno.", correct: true },
+            { sentence: "Loro {studieranno} all'estero.", correct: true },
 
-            { sentence: "Io {ho mangiato} al ristorante ieri sera.", correct: true },
-            { sentence: "Tu {hai mangiato} con noi sabato?", correct: true },
-            { sentence: "Lui {ha mangiato} la pizza.", correct: true },
-            { sentence: "Noi {abbiamo mangiato} alle otto.", correct: true },
-            { sentence: "Loro {hanno mangiato} tardi.", correct: true },
+            // -care / -gare (corrette, con h)
+            { sentence: "La prossima estate io {cercherò} un nuovo lavoro.", correct: true },
+            { sentence: "Tu {cercherai} casa in centro.", correct: true },
+            { sentence: "Noi {cercheremo} di arrivare puntuali.", correct: true },
+            { sentence: "Io {pagherò} il conto.", correct: true },
+            { sentence: "Tu {pagherai} con la carta.", correct: true },
+            { sentence: "Lui {pagherà} il biglietto online.", correct: true },
 
-            { sentence: "Io {ho cercato} casa in centro.", correct: true },
-            { sentence: "Tu {hai cercato} le chiavi dappertutto.", correct: true },
-            { sentence: "Noi {abbiamo cercato} di arrivare puntuali.", correct: true },
-            { sentence: "Io {ho pagato} il conto.", correct: true },
-            { sentence: "Tu {hai pagato} con la carta?", correct: true },
-            { sentence: "Lui {ha pagato} il biglietto online.", correct: true },
+            // -ciare / -giare (corrette, senza i)
+            { sentence: "Io {comincerò} il corso lunedì.", correct: true },
+            { sentence: "Tu {comincerai} a studiare presto.", correct: true },
+            { sentence: "Il film {comincerà} alle nove.", correct: true },
+            { sentence: "Io {mangerò} al ristorante domani.", correct: true },
+            { sentence: "Tu {mangerai} con noi stasera?", correct: true },
+            { sentence: "Lui {mangerà} la pizza più tardi.", correct: true },
+            { sentence: "Noi {mangeremo} alle otto.", correct: true },
+            { sentence: "Tu {viaggerai} in Asia l'anno prossimo?", correct: true },
+            { sentence: "Lei {viaggerà} per lavoro.", correct: true },
 
-            { sentence: "Io {ho cominciato} il corso lunedì.", correct: true },
-            { sentence: "Il film {è cominciato} alle nove.", correct: true },
-            { sentence: "Tu {hai viaggiato} in Asia l'anno scorso?", correct: true },
+            // -ere regolari
+            { sentence: "Io {prenderò} il treno delle sette.", correct: true },
+            { sentence: "Tu {prenderai} l'ombrello?", correct: true },
+            { sentence: "Lui {prenderà} una decisione domani.", correct: true },
+            { sentence: "Noi {prenderemo} un caffè insieme.", correct: true },
+            { sentence: "Voi {prenderete} il bus o la metro?", correct: true },
+            { sentence: "Loro {prenderanno} il volo di sera.", correct: true },
 
-            // avere + -ere (participio -uto o irregolare) — corrette
-            { sentence: "Io {ho preso} il treno delle sette.", correct: true },
-            { sentence: "Tu {hai preso} l'ombrello?", correct: true },
-            { sentence: "Lui {ha preso} una decisione.", correct: true },
-            { sentence: "Noi {abbiamo preso} un caffè insieme.", correct: true },
-            { sentence: "Loro {hanno preso} il volo di sera.", correct: true },
+            { sentence: "Io {scriverò} una lettera domani.", correct: true },
+            { sentence: "Tu {scriverai} il tuo nome qui?", correct: true },
+            { sentence: "Lei {scriverà} il rapporto entro venerdì.", correct: true },
+            { sentence: "Noi {scriveremo} un articolo insieme.", correct: true },
 
-            { sentence: "Io {ho scritto} una lettera ieri.", correct: true },
-            { sentence: "Tu {hai scritto} il tuo nome qui?", correct: true },
-            { sentence: "Lei {ha scritto} il rapporto entro venerdì.", correct: true },
-            { sentence: "Noi {abbiamo scritto} un articolo insieme.", correct: true },
+            { sentence: "Io {leggerò} quel libro questa settimana.", correct: true },
+            { sentence: "Tu {leggerai} le istruzioni prima?", correct: true },
+            { sentence: "Lui {leggerà} la notizia domani.", correct: true },
 
-            { sentence: "Io {ho letto} quel libro questa settimana.", correct: true },
-            { sentence: "Tu {hai letto} le istruzioni prima?", correct: true },
-            { sentence: "Lui {ha letto} la notizia stamattina.", correct: true },
+            { sentence: "Io {risponderò} alla tua email più tardi.", correct: true },
+            { sentence: "Loro {risponderanno} entro domani.", correct: true },
 
-            { sentence: "Io {ho risposto} alla tua email.", correct: true },
-            { sentence: "Loro {hanno risposto} entro ieri.", correct: true },
+            // -ire regolari
+            { sentence: "Io {partirò} domani mattina.", correct: true },
+            { sentence: "Tu {partirai} con noi?", correct: true },
+            { sentence: "Lei {partirà} alle sei.", correct: true },
+            { sentence: "Noi {partiremo} dopo colazione.", correct: true },
+            { sentence: "Voi {partirete} in anticipo.", correct: true },
+            { sentence: "Loro {partiranno} la settimana prossima.", correct: true },
 
-            { sentence: "Io {ho visto} quel film.", correct: true },
-            { sentence: "Tu {hai visto} Marco oggi?", correct: true },
-            { sentence: "Loro {hanno visto} tutta la serie.", correct: true },
+            { sentence: "Io {finirò} il lavoro entro stasera.", correct: true },
+            { sentence: "Tu {finirai} prima di me.", correct: true },
+            { sentence: "Lui {finirà} il corso a giugno.", correct: true },
+            { sentence: "Noi {finiremo} presto.", correct: true },
+            { sentence: "Voi {finirete} in tempo?", correct: true },
+            { sentence: "Loro {finiranno} il progetto domani.", correct: true },
 
-            { sentence: "Io {ho chiuso} la finestra.", correct: true },
-            { sentence: "Lei {ha chiuso} il negozio.", correct: true },
+            { sentence: "Io {capirò} tutto alla fine.", correct: true },
+            { sentence: "Tu {capirai} quando sarai più grande.", correct: true },
+            { sentence: "Loro {capiranno} la lezione.", correct: true },
 
-            { sentence: "Io {ho perso} le chiavi.", correct: true },
-            { sentence: "Tu {hai perso} il treno?", correct: true },
+            // Irregolari — corretti
+            { sentence: "Domani io {sarò} a Parigi.", correct: true },
+            { sentence: "Tu {sarai} pronto?", correct: true },
+            { sentence: "Lei {sarà} contenta della notizia.", correct: true },
+            { sentence: "Noi {saremo} in anticipo.", correct: true },
+            { sentence: "Voi {sarete} stanchi dopo il viaggio.", correct: true },
+            { sentence: "Loro {saranno} qui alle tre.", correct: true },
 
-            { sentence: "Io {ho messo} il libro sul tavolo.", correct: true },
-            { sentence: "Lei {ha messo} la giacca.", correct: true },
+            { sentence: "Io {avrò} tempo domani.", correct: true },
+            { sentence: "Tu {avrai} bisogno di aiuto.", correct: true },
+            { sentence: "Lui {avrà} paura del dentista.", correct: true },
+            { sentence: "Noi {avremo} una riunione alle dieci.", correct: true },
+            { sentence: "Voi {avrete} le risposte domani.", correct: true },
+            { sentence: "Loro {avranno} molte domande.", correct: true },
 
-            { sentence: "Io {ho fatto} i compiti ieri sera.", correct: true },
-            { sentence: "Tu {hai fatto} la spesa?", correct: true },
-            { sentence: "Lui {ha fatto} del suo meglio.", correct: true },
-            { sentence: "Noi {abbiamo fatto} una passeggiata.", correct: true },
-            { sentence: "Loro {hanno fatto} una festa sabato.", correct: true },
+            { sentence: "Domani io {andrò} al mercato.", correct: true },
+            { sentence: "Tu {andrai} in vacanza quest'estate?", correct: true },
+            { sentence: "Lei {andrà} dal medico domani.", correct: true },
+            { sentence: "Noi {andremo} al mare il fine settimana.", correct: true },
+            { sentence: "Voi {andrete} a piedi o in macchina?", correct: true },
+            { sentence: "Loro {andranno} in Italia l'anno prossimo.", correct: true },
 
-            { sentence: "Io {ho detto} la verità.", correct: true },
-            { sentence: "Tu {hai detto} la tua opinione?", correct: true },
-            { sentence: "Lei {ha detto} di no.", correct: true },
-            { sentence: "Loro {hanno detto} la stessa cosa.", correct: true },
+            { sentence: "Io {verrò} alla festa.", correct: true },
+            { sentence: "Tu {verrai} con me?", correct: true },
+            { sentence: "Lui {verrà} tardi.", correct: true },
+            { sentence: "Noi {verremo} a trovarti domani.", correct: true },
+            { sentence: "Voi {verrete} anche voi?", correct: true },
+            { sentence: "Loro {verranno} in macchina.", correct: true },
 
-            { sentence: "Io {ho bevuto} un caffè.", correct: true },
-            { sentence: "Tu {hai bevuto} tutta l'acqua?", correct: true },
-            { sentence: "Lui {ha bevuto} il caffè al bar.", correct: true },
-            { sentence: "Noi {abbiamo bevuto} un brindisi.", correct: true },
+            { sentence: "Io {farò} i compiti stasera.", correct: true },
+            { sentence: "Tu {farai} la spesa domani.", correct: true },
+            { sentence: "Lui {farà} del suo meglio.", correct: true },
+            { sentence: "Noi {faremo} una passeggiata.", correct: true },
+            { sentence: "Voi {farete} tardi stasera?", correct: true },
+            { sentence: "Loro {faranno} una festa sabato.", correct: true },
 
-            { sentence: "Io {ho saputo} la risposta.", correct: true },
-            { sentence: "Tu {hai saputo} la notizia?", correct: true },
+            { sentence: "Io {dirò} la verità.", correct: true },
+            { sentence: "Tu {dirai} la tua opinione?", correct: true },
+            { sentence: "Lei {dirà} di no.", correct: true },
+            { sentence: "Loro {diranno} la stessa cosa.", correct: true },
 
-            { sentence: "Io {ho potuto} venire.", correct: true },
-            { sentence: "Noi {abbiamo potuto} partire presto.", correct: true },
+            { sentence: "Io {potrò} venire domani.", correct: true },
+            { sentence: "Tu {potrai} uscire dopo cena.", correct: true },
+            { sentence: "Lui {potrà} aiutarti.", correct: true },
+            { sentence: "Noi {potremo} partire presto.", correct: true },
+            { sentence: "Loro {potranno} finire in tempo.", correct: true },
 
-            { sentence: "Io {ho dovuto} lavorare sabato.", correct: true },
-            { sentence: "Tu {hai dovuto} aspettare?", correct: true },
-            { sentence: "Loro {hanno dovuto} partire.", correct: true },
+            { sentence: "Io {dovrò} lavorare sabato.", correct: true },
+            { sentence: "Tu {dovrai} studiare di più.", correct: true },
+            { sentence: "Lei {dovrà} aspettare.", correct: true },
+            { sentence: "Noi {dovremo} decidere presto.", correct: true },
+            { sentence: "Loro {dovranno} partire domani.", correct: true },
 
-            { sentence: "Io {ho voluto} un caffè.", correct: true },
-            { sentence: "Tu {hai voluto} venire con noi?", correct: true },
+            { sentence: "Io {vorrò} un caffè.", correct: true },
+            { sentence: "Tu {vorrai} venire con noi?", correct: true },
+            { sentence: "Lui {vorrà} sapere tutto.", correct: true },
+            { sentence: "Loro {vorranno} una spiegazione.", correct: true },
 
-            { sentence: "Io {ho avuto} tempo ieri.", correct: true },
-            { sentence: "Tu {hai avuto} bisogno di aiuto.", correct: true },
-            { sentence: "Lui {ha avuto} paura.", correct: true },
-            { sentence: "Noi {abbiamo avuto} una riunione.", correct: true },
-            { sentence: "Loro {hanno avuto} molte domande.", correct: true },
+            { sentence: "Io {berrò} un succo di frutta.", correct: true },
+            { sentence: "Tu {berrai} qualcosa?", correct: true },
+            { sentence: "Lui {berrà} il caffè al bar.", correct: true },
+            { sentence: "Noi {berremo} un brindisi.", correct: true },
 
-            // essere + verbi di moto/stato — corrette
-            { sentence: "Ieri io {sono andato} al mercato.", correct: true },
-            { sentence: "Tu {sei andato} in vacanza quest'estate?", correct: true },
-            { sentence: "Lei {è andata} dal medico ieri.", correct: true },
-            { sentence: "Noi {siamo andati} al mare.", correct: true },
-            { sentence: "Voi {siete andati} a piedi o in macchina?", correct: true },
-            { sentence: "Loro {sono andati} in Italia l'anno scorso.", correct: true },
+            { sentence: "Io {rimarrò} a casa.", correct: true },
+            { sentence: "Tu {rimarrai} con noi?", correct: true },
+            { sentence: "Lui {rimarrà} a dormire.", correct: true },
+            { sentence: "Loro {rimarranno} fino a domenica.", correct: true },
 
-            { sentence: "Io {sono venuto} alla festa.", correct: true },
-            { sentence: "Tu {sei venuto} con me?", correct: true },
-            { sentence: "Lui {è venuto} tardi.", correct: true },
-            { sentence: "Noi {siamo venuti} a trovarti.", correct: true },
-            { sentence: "Loro {sono venuti} in macchina.", correct: true },
+            { sentence: "Io {saprò} la risposta domani.", correct: true },
+            { sentence: "Tu {saprai} come comportarti.", correct: true },
+            { sentence: "Lei {saprà} cosa fare.", correct: true },
 
-            { sentence: "Io {sono partito} ieri mattina.", correct: true },
-            { sentence: "Tu {sei partita} con noi?", correct: true },
-            { sentence: "Lei {è partita} alle sei.", correct: true },
-            { sentence: "Noi {siamo partiti} dopo colazione.", correct: true },
-            { sentence: "Loro {sono partiti} la settimana scorsa.", correct: true },
+            { sentence: "Io {starò} bene, non preoccuparti.", correct: true },
+            { sentence: "Tu {starai} a casa oggi?", correct: true },
+            { sentence: "Noi {staremo} attenti.", correct: true },
 
-            { sentence: "Io {sono rimasto} a casa.", correct: true },
-            { sentence: "Tu {sei rimasta} con noi?", correct: true },
-            { sentence: "Lui {è rimasto} a dormire.", correct: true },
-            { sentence: "Loro {sono rimasti} fino a domenica.", correct: true },
-
-            { sentence: "Io {sono stato} a Roma.", correct: true },
-            { sentence: "Tu {sei stato} pronto.", correct: true },
-            { sentence: "Lei {è stata} contenta della notizia.", correct: true },
-            { sentence: "Noi {siamo stati} in anticipo.", correct: true },
-            { sentence: "Loro {sono stati} qui tutto il giorno.", correct: true },
-
-            { sentence: "Io {sono uscito} presto.", correct: true },
-            { sentence: "Tu {sei uscita} con loro?", correct: true },
-            { sentence: "Loro {sono usciti} insieme.", correct: true },
-
-            { sentence: "Io {sono entrato} in aula.", correct: true },
-            { sentence: "Lei {è entrata} senza bussare.", correct: true },
-
-            { sentence: "Il treno {è arrivato} in ritardo.", correct: true },
-            { sentence: "Loro {sono arrivati} tardi.", correct: true },
-            { sentence: "Tu {sei arrivata} in orario?", correct: true },
-
-            { sentence: "Io {sono tornato} a casa tardi.", correct: true },
-            { sentence: "Noi {siamo tornati} stanchi.", correct: true },
-            { sentence: "Lei {è tornata} dal lavoro.", correct: true },
-
-            { sentence: "Io {sono caduto} dalla bicicletta.", correct: true },
-            { sentence: "Lei {è caduta} sulle scale.", correct: true },
-
-            { sentence: "Il negozio {è aperto} alle nove.", correct: false },  // presente, non passato
-            // (errore nascosto — sopra è un falso che sembra vero)
-
-            { sentence: "La riunione {è finita} tardi.", correct: true },
-            { sentence: "Il corso {è finito} a giugno.", correct: true },
-            { sentence: "Loro {sono finiti} i biglietti.", correct: true },
-
-            { sentence: "Io {sono nato} a Milano.", correct: true },
-            { sentence: "Tu {sei nata} in Italia?", correct: true },
-
-            { sentence: "Mia nonna {è morta} l'anno scorso.", correct: true },
-            { sentence: "Il fiore {è cresciuto} in fretta.", correct: true },
+            { sentence: "Io {darò} una risposta entro domani.", correct: true },
+            { sentence: "Tu {darai} il libro a Marco.", correct: true },
+            { sentence: "Lei {darà} un esame difficile.", correct: true },
 
             // ═══ FORME SBAGLIATE ══════════════════════════════════════════════
 
-            // Ausiliare sbagliato: essere invece di avere
-            { sentence: "Ieri io {sono mangiato} al ristorante.", correct: false },
-            { sentence: "Tu {sei parlato} con Marco ieri sera?", correct: false },
-            { sentence: "Lui {è lavorato} fino a tardi.", correct: false },
-            { sentence: "Noi {siamo preso} il treno.", correct: false },
-            { sentence: "Voi {siete detto} la verità?", correct: false },
-            { sentence: "Loro {sono fatto} i compiti.", correct: false },
-            { sentence: "Io {sono bevuto} un caffè.", correct: false },
-            { sentence: "Tu {sei scritto} una lettera?", correct: false },
-            { sentence: "Lei {è letto} il libro.", correct: false },
+            // Usano il presente invece del futuro
+            { sentence: "Domani io {parlo} con lui.", correct: false },
+            { sentence: "Stasera loro {mangiano} fuori.", correct: false },
+            { sentence: "Domani tu {lavori} da casa.", correct: false },
+            { sentence: "La settimana prossima lei {studia} all'università.", correct: false },
+            { sentence: "Domani noi {usciamo} presto.", correct: false },
+            { sentence: "Il prossimo anno loro {vanno} in Italia.", correct: false },
 
-            // Ausiliare sbagliato: avere invece di essere
-            { sentence: "Ieri io {ho andato} al mercato.", correct: false },
-            { sentence: "Tu {hai venuto} alla festa?", correct: false },
-            { sentence: "Lui {ha partito} stamattina.", correct: false },
-            { sentence: "Noi {abbiamo stati} in anticipo.", correct: false },
-            { sentence: "Loro {hanno arrivati} tardi.", correct: false },
-            { sentence: "Io {ho uscito} presto.", correct: false },
-            { sentence: "Tu {hai rimasto} a casa?", correct: false },
-            { sentence: "Lei {ha tornata} dal lavoro.", correct: false },
-            { sentence: "Io {ho caduto} dalla bicicletta.", correct: false },
-            { sentence: "Noi {abbiamo partiti} dopo colazione.", correct: false },
+            // Irregolari con la radice sbagliata (usano il presente)
+            { sentence: "Domani io {vado} al mercato.", correct: false },
+            { sentence: "Lui {viene} alla festa domani.", correct: false },
+            { sentence: "Io {faccio} i compiti stasera.", correct: false },
+            { sentence: "Io {posso} venire domani.", correct: false },
+            { sentence: "Tu {devi} studiare di più.", correct: false },
+            { sentence: "Loro {vogliono} una spiegazione.", correct: false },
+            { sentence: "Io {sono} a Roma domani.", correct: false },
+            { sentence: "Tu {hai} bisogno di aiuto domani.", correct: false },
+            { sentence: "Io {dico} la verità domani.", correct: false },
+            { sentence: "Lui {beve} il caffè al bar domani.", correct: false },
+            { sentence: "Io {rimango} a casa domani.", correct: false },
+            { sentence: "Tu {sai} la risposta domani.", correct: false },
+            { sentence: "Io {sto} bene, non preoccuparti.", correct: false },
+            { sentence: "Io {do} una risposta entro domani.", correct: false },
 
-            // Participio sbagliato — forma inventata o errata
-            { sentence: "Io {ho parlato} con lui ieri.", correct: true },  // corretta (distractor)
-            { sentence: "Io {ho parlarato} con lui ieri.", correct: false },
-            { sentence: "Tu {hai mangiuto} la pizza?", correct: false },
-            { sentence: "Lui {ha scrivo} una lettera.", correct: false },
-            { sentence: "Noi {abbiamo vedo} quel film.", correct: false },
-            { sentence: "Io {ho leggo} quel libro.", correct: false },
-            { sentence: "Tu {hai rispondo} alla mia email?", correct: false },
-            { sentence: "Lei {ha chiuduto} la finestra.", correct: false },
-            { sentence: "Io {ho perduto} le chiavi.", correct: true },  // corretta (forma letteraria accettata)
-            { sentence: "Io {ho mettuto} il libro sul tavolo.", correct: false },
-            { sentence: "Lui {ha facendo} del suo meglio.", correct: false },
-            { sentence: "Tu {hai dicuto} la verità?", correct: false },
-            { sentence: "Io {ho bevato} un caffè.", correct: false },
-            { sentence: "Noi {abbiamo sapito} la risposta.", correct: false },
-            { sentence: "Loro {hanno potuto} venire.", correct: true },  // corretta (distractor)
-            { sentence: "Io {ho volito} un caffè.", correct: false },
-            { sentence: "Tu {hai avato} bisogno di aiuto.", correct: false },
+            // Desinenze inventate / sbagliate
+            { sentence: "Domani io {parlerrò} con lui.", correct: false },
+            { sentence: "Domani tu {parlerassi} con lui.", correct: false },
+            { sentence: "Lui {mangerebe} fuori stasera.", correct: false },
+            { sentence: "Noi {lavorerimo} domani.", correct: false },
+            { sentence: "Voi {studiereste} per l'esame domani.", correct: false },
+            { sentence: "Loro {finirebbero} il progetto domani.", correct: false },
+            { sentence: "Io {prenderebe} il treno.", correct: false },
+            { sentence: "Tu {scriverassi} una lettera.", correct: false },
+            { sentence: "Noi {partirimo} domani mattina.", correct: false },
+            { sentence: "Loro {capirebbe} la lezione.", correct: false },
 
-            // Accordo sbagliato del participio con essere
-            { sentence: "Lei {è andato} dal medico ieri.", correct: false },
-            { sentence: "Noi {siamo andato} al mare.", correct: false },
-            { sentence: "Loro {sono andato} in Italia.", correct: false },
-            { sentence: "Tu {sei venuta} con me? (riferito a un uomo)", correct: false },
-            { sentence: "Loro {sono venuto} in macchina.", correct: false },
-            { sentence: "Noi {siamo partito} dopo colazione.", correct: false },
-            { sentence: "Lei {è rimasto} a dormire.", correct: false },
-            { sentence: "Loro {sono rimasto} fino a domenica.", correct: false },
-            { sentence: "Noi {siamo stati} in anticipo.", correct: true },  // corretta (distractor)
-            { sentence: "Le ragazze {sono stati} qui.", correct: false },
-            { sentence: "Loro {sono arrivato} tardi.", correct: false },
-            { sentence: "Tu {sei tornato} dal lavoro? (riferito a una donna)", correct: false },
-            { sentence: "Le amiche {sono tornato} stanche.", correct: false },
-            { sentence: "Io {sono caduta} dalla bicicletta. (riferito a un uomo)", correct: false },
-            { sentence: "La riunione {è finito} tardi.", correct: false },
-            { sentence: "Loro {sono finito} i biglietti.", correct: false },
-            { sentence: "Tu {sei nata} in Italia?", correct: true },  // corretta (distractor)
-            { sentence: "Io {sono nato} a Milano. (riferito a una donna)", correct: false },
+            // Errori -care/-gare (dimenticano la h)
+            { sentence: "Io {cercerò} casa in centro.", correct: false },
+            { sentence: "Tu {pagerai} il conto domani.", correct: false },
+            { sentence: "Noi {cerceremo} di arrivare puntuali.", correct: false },
+            { sentence: "Lui {pagera} il biglietto online.", correct: false },
 
-            // Confusione con il presente
-            { sentence: "Ieri io {parlo} con lui.", correct: false },
-            { sentence: "Stamattina loro {mangiano} fuori.", correct: false },
-            { sentence: "Ieri tu {lavori} da casa.", correct: false },
-            { sentence: "La settimana scorsa lei {studia} all'università.", correct: false },
-            { sentence: "Ieri noi {usciamo} presto.", correct: false },
-            { sentence: "L'anno scorso loro {vanno} in Italia.", correct: false },
-            { sentence: "Ieri io {vado} al mercato.", correct: false },
-            { sentence: "Lui {viene} alla festa ieri.", correct: false },
-            { sentence: "Io {faccio} i compiti ieri sera.", correct: false },
-            { sentence: "Io {so} la risposta ieri.", correct: false },
-            { sentence: "Tu {sei} a Roma ieri.", correct: false },
+            // Errori -ciare/-giare (mantengono la i sbagliata)
+            { sentence: "Io {comincierò} il corso lunedì.", correct: false },
+            { sentence: "Il film {comincierà} alle nove.", correct: false },
+            { sentence: "Io {mangierò} la pizza stasera.", correct: false },
+            { sentence: "Tu {viaggierai} in Asia.", correct: false },
+            { sentence: "Noi {mangerimo} alle otto.", correct: false },
 
-            // Errori di persona nell'ausiliare
-            { sentence: "Io {hai mangiato} la pizza.", correct: false },
-            { sentence: "Tu {ho lavorato} stamattina.", correct: false },
-            { sentence: "Lui {abbiamo visto} il film.", correct: false },
-            { sentence: "Noi {hai detto} la verità.", correct: false },
-            { sentence: "Voi {ha fatto} tardi ieri sera?", correct: false },
-            { sentence: "Loro {ho bevuto} un caffè.", correct: false },
-            { sentence: "Io {siamo andati} al mare.", correct: false },
-            { sentence: "Tu {sono partita} alle sei.", correct: false },
-            { sentence: "Noi {è venuto} a trovarti.", correct: false },
-            { sentence: "Loro {sei rimasto} a casa.", correct: false },
+            // Errori di persona / numero
+            { sentence: "Io {partiranno} domani mattina.", correct: false },
+            { sentence: "Noi {partirà} dopo colazione.", correct: false },
+            { sentence: "Loro {partiremo} la settimana prossima.", correct: false },
+            { sentence: "Tu {finirò} prima di me.", correct: false },
+            { sentence: "Voi {finirà} in tempo?", correct: false },
+            { sentence: "Io {andranno} al mercato.", correct: false },
+            { sentence: "Noi {andrò} al mare.", correct: false },
+            { sentence: "Voi {andranno} a piedi.", correct: false },
+            { sentence: "Tu {verrò} con me?", correct: false },
+            { sentence: "Noi {verrà} a trovarti.", correct: false },
+            { sentence: "Loro {verremo} in macchina.", correct: false },
+            { sentence: "Tu {farò} la spesa domani.", correct: false },
+            { sentence: "Voi {farà} tardi stasera?", correct: false },
+            { sentence: "Io {saremo} a Parigi.", correct: false },
+            { sentence: "Tu {saranno} pronto?", correct: false },
+            { sentence: "Noi {sarà} in anticipo.", correct: false },
+            { sentence: "Lui {avremo} paura del dentista.", correct: false },
+            { sentence: "Voi {avrò} le risposte domani.", correct: false },
+            { sentence: "Io {diranno} la verità.", correct: false },
+            { sentence: "Tu {diremo} la tua opinione?", correct: false },
+            { sentence: "Io {potranno} venire domani.", correct: false },
+            { sentence: "Noi {potrò} partire presto.", correct: false },
+            { sentence: "Loro {dovrò} partire domani.", correct: false },
+            { sentence: "Io {vorranno} un caffè.", correct: false },
+            { sentence: "Noi {vorrò} partire presto.", correct: false },
+            { sentence: "Tu {berrò} qualcosa?", correct: false },
+            { sentence: "Loro {berremo} un brindisi.", correct: false },
+            { sentence: "Io {rimarranno} a casa.", correct: false },
+            { sentence: "Noi {rimarrò} qui.", correct: false },
+            { sentence: "Io {sapranno} la risposta domani.", correct: false },
+            { sentence: "Tu {starò} a casa oggi?", correct: false },
+            { sentence: "Io {daranno} una risposta entro domani.", correct: false },
         ];
 
         let questions = [];
