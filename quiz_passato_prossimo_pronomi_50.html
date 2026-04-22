@@ -3,794 +3,1105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passato Prossimo e Pronomi - Quiz 50 Domande</title>
+    <title>Passato Prossimo e Pronomi — Verifica 100 Domande</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --ink: #1a1a2e;
+            --ink-light: #3d3d5c;
+            --paper: #faf8f4;
+            --paper-dark: #f0ede6;
+            --rule: #c8c0b0;
+            --accent: #8b1a1a;
+            --accent-light: #c0392b;
+            --green: #1a5c3a;
+            --gold: #b8860b;
+            --shadow: rgba(26,26,46,0.12);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--paper-dark);
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(200,192,176,0.2) 27px, rgba(200,192,176,0.2) 28px);
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            align-items: flex-start;
+            padding: 40px 20px;
+            color: var(--ink);
         }
 
         .quiz-container {
             width: 100%;
-            max-width: 900px;
-            background: white;
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 820px;
+            background: var(--paper);
+            border: 1px solid var(--rule);
+            box-shadow: 0 2px 6px var(--shadow), 0 8px 24px var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.7);
         }
 
-        .header {
+        /* ── HEADER ── */
+        .page-header {
+            border-bottom: 3px double var(--ink);
+            padding: 32px 48px 24px;
             text-align: center;
-            margin-bottom: 30px;
+            background: var(--paper);
         }
 
-        .header h1 {
-            font-family: 'Fredoka One', cursive;
-            font-size: 2.2em;
-            color: #667eea;
-            text-shadow: 3px 3px 0px #764ba2;
+        .institution-name {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.72em;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--ink-light);
             margin-bottom: 10px;
         }
 
-        .progress-bar {
+        .doc-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4em;
+            font-weight: 600;
+            color: var(--ink);
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .doc-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1em;
+            font-style: italic;
+            color: var(--ink-light);
+        }
+
+        .header-rule {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 18px 0 0;
+        }
+
+        /* ── SCREENS ── */
+        .screen { padding: 40px 48px; }
+
+        .hidden { display: none !important; }
+
+        /* ── START SCREEN ── */
+        .section-label {
+            font-size: 0.68em;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-light);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .intro-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.12em;
+            color: var(--ink-light);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .fieldset-box {
+            border: 1px solid var(--rule);
+            padding: 24px 28px;
+            margin-bottom: 28px;
+            background: var(--paper-dark);
+        }
+
+        .fieldset-box legend-like {
+            display: block;
+            font-size: 0.72em;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--ink-light);
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 4px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 0.75em;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--ink-light);
+        }
+
+        .acad-input {
             width: 100%;
-            height: 20px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 30px;
+            padding: 10px 14px;
+            font-size: 1em;
+            font-family: 'Source Sans 3', sans-serif;
+            border: 1px solid var(--rule);
+            border-bottom: 2px solid var(--ink);
+            background: var(--paper);
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .acad-input:focus {
+            border-color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .err-msg {
+            font-size: 0.82em;
+            color: var(--accent);
+            display: none;
+            margin-top: 2px;
+        }
+
+        .err-msg.show { display: block; }
+
+        /* Topics table */
+        .topics-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.93em;
+            margin-bottom: 28px;
+        }
+
+        .topics-table th {
+            text-align: left;
+            font-size: 0.68em;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ink-light);
+            font-weight: 600;
+            padding: 8px 12px;
+            border-bottom: 2px solid var(--ink);
+        }
+
+        .topics-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--rule);
+            color: var(--ink);
+        }
+
+        .topics-table tr:last-child td { border-bottom: none; }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.72em;
+            letter-spacing: 0.08em;
+            padding: 2px 8px;
+            border: 1px solid var(--ink);
+            color: var(--ink-light);
+            font-weight: 600;
+        }
+
+        .start-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3em;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--paper);
+            background: var(--ink);
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .start-btn:hover { background: var(--accent); }
+
+        /* ── QUIZ SCREEN ── */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 20px 48px 16px;
+            border-bottom: 1px solid var(--rule);
+            background: var(--paper-dark);
+        }
+
+        .quiz-header .doc-title { font-size: 1.4em; }
+
+        .progress-info {
+            font-size: 0.78em;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-light);
+            font-weight: 600;
+        }
+
+        .progress-track {
+            height: 3px;
+            background: var(--rule);
+            width: 100%;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #00b894, #00cec9);
-            transition: width 0.3s;
-            border-radius: 10px;
+            background: var(--accent);
+            transition: width 0.4s ease;
         }
 
-        .question-counter {
-            text-align: center;
-            font-size: 1.2em;
-            color: #666;
+        .quiz-body { padding: 36px 48px 28px; }
+
+        .question-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
             margin-bottom: 20px;
-            font-weight: bold;
         }
 
-        .question-card {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            padding: 40px;
-            border-radius: 25px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 15px 35px rgba(250, 112, 154, 0.4);
+        .q-number {
+            font-size: 0.68em;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--accent);
+            border-left: 3px solid var(--accent);
+            padding-left: 10px;
+        }
+
+        .q-category {
+            font-size: 0.68em;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--rule);
+            font-weight: 600;
         }
 
         .question-text {
-            font-family: 'Fredoka One', cursive;
-            font-size: 1.8em;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.7em;
             line-height: 1.5;
+            color: var(--ink);
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--rule);
         }
 
-        .answers-container {
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            border-bottom: 2px solid var(--ink);
+            vertical-align: bottom;
+            margin: 0 4px;
+        }
+
+        .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 24px;
         }
 
-        .answer-btn {
-            padding: 20px;
-            font-size: 1.3em;
-            font-family: 'Nunito', sans-serif;
-            font-weight: bold;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .answer-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .answer-btn:disabled {
-            cursor: default;
-            opacity: 0.8;
-        }
-
-        .answer-btn.correct {
-            background: linear-gradient(135deg, #00b894 0%, #00a085 100%) !important;
-        }
-
-        .answer-btn.wrong {
-            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%) !important;
-        }
-
-        .navigation {
+        .opt-btn {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-top: 30px;
-        }
-
-        .nav-btn {
-            padding: 15px 30px;
-            font-size: 1.2em;
-            font-family: 'Fredoka One', cursive;
-            border: none;
-            border-radius: 15px;
+            gap: 14px;
+            padding: 14px 18px;
+            background: var(--paper);
+            border: 1px solid var(--rule);
             cursor: pointer;
-            transition: all 0.2s;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
-        }
-
-        .nav-btn:hover:not(:disabled) {
-            transform: scale(1.05);
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .results-container {
-            text-align: center;
-            padding: 40px;
-        }
-
-        .results-container h2 {
-            font-family: 'Fredoka One', cursive;
-            font-size: 3em;
-            color: #667eea;
-            margin-bottom: 30px;
-        }
-
-        .score-display {
-            font-size: 5em;
-            font-family: 'Fredoka One', cursive;
-            color: #00b894;
-            margin: 20px 0;
-        }
-
-        .score-label {
-            font-size: 1.5em;
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .result-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 1.2em;
-        }
-
-        .result-box .number {
-            font-family: 'Fredoka One', cursive;
-            font-size: 2em;
-            display: block;
-        }
-
-        .email-section {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 20px;
-            margin-top: 30px;
-        }
-
-        .email-section h3 {
-            font-family: 'Fredoka One', cursive;
-            color: #667eea;
-            margin-bottom: 15px;
-        }
-
-        .email-input {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.1em;
-            border: 3px solid #667eea;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-family: 'Nunito', sans-serif;
-        }
-
-        .send-btn {
-            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.3em;
-            font-family: 'Fredoka One', cursive;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .send-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .start-screen {
-            text-align: center;
-            padding: 40px;
-        }
-
-        .start-screen h2 {
-            font-family: 'Fredoka One', cursive;
-            font-size: 2.5em;
-            color: #667eea;
-            margin-bottom: 20px;
-        }
-
-        .rules-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 25px 0;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1em;
+            color: var(--ink);
             text-align: left;
+            transition: all 0.15s;
         }
 
-        .rules-box h3 {
-            font-family: 'Fredoka One', cursive;
-            margin-bottom: 15px;
-            text-align: center;
+        .opt-btn:hover:not(:disabled) {
+            border-color: var(--ink);
+            background: var(--paper-dark);
         }
 
-        .rules-box ul {
-            list-style: none;
-            padding: 0;
+        .opt-btn:disabled { cursor: default; }
+
+        .opt-letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border: 1px solid var(--rule);
+            font-size: 0.78em;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+            transition: all 0.15s;
         }
 
-        .rules-box li {
-            margin: 8px 0;
-            padding-left: 20px;
-            position: relative;
+        .opt-btn:hover:not(:disabled) .opt-letter {
+            border-color: var(--ink);
+            background: var(--ink);
+            color: var(--paper);
         }
 
-        .rules-box li::before {
-            content: '•';
-            position: absolute;
-            left: 5px;
+        .opt-btn.correct {
+            border-color: var(--green);
+            background: rgba(26,92,58,0.06);
         }
 
-        .start-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .opt-btn.correct .opt-letter {
+            border-color: var(--green);
+            background: var(--green);
             color: white;
-            border: none;
-            padding: 25px 60px;
-            font-size: 1.8em;
-            font-family: 'Fredoka One', cursive;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-            margin-top: 20px;
         }
 
-        .start-btn:hover {
-            transform: scale(1.05);
+        .opt-btn.wrong {
+            border-color: var(--accent);
+            background: rgba(139,26,26,0.06);
         }
 
-        .hidden {
-            display: none !important;
-        }
-
-        .feedback-message {
-            text-align: center;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-            font-weight: bold;
-            font-size: 1.2em;
-            line-height: 1.5;
-        }
-
-        .feedback-message.correct {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .feedback-message.wrong {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* Stili per input nome e cognome */
-        .student-info {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .opt-btn.wrong .opt-letter {
+            border-color: var(--accent);
+            background: var(--accent);
             color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 25px 0;
-            text-align: left;
         }
 
-        .student-info h3 {
-            font-family: 'Fredoka One', cursive;
+        /* Feedback */
+        .feedback-box {
+            padding: 14px 18px;
+            border-left: 3px solid transparent;
+            font-size: 0.93em;
+            line-height: 1.6;
             margin-bottom: 20px;
-            text-align: center;
-            color: #fff;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 1.1em;
-        }
-
-        .student-input {
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1em;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 10px;
-            font-family: 'Nunito', sans-serif;
-            background: rgba(255,255,255,0.9);
-            color: #333;
-        }
-
-        .student-input:focus {
-            outline: none;
-            border-color: #fff;
-            background: #fff;
-        }
-
-        .error-message {
-            color: #ffeb3b;
-            font-size: 0.9em;
-            margin-top: 5px;
             display: none;
         }
 
-        .error-message.show {
+        .feedback-box.correct {
+            display: block;
+            border-color: var(--green);
+            background: rgba(26,92,58,0.05);
+            color: var(--green);
+        }
+
+        .feedback-box.wrong {
+            display: block;
+            border-color: var(--accent);
+            background: rgba(139,26,26,0.05);
+            color: var(--accent);
+        }
+
+        .feedback-label {
+            font-size: 0.7em;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        /* Navigation */
+        .quiz-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 48px;
+            border-top: 1px solid var(--rule);
+            background: var(--paper-dark);
+        }
+
+        .nav-btn {
+            padding: 10px 28px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.85em;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: 1px solid var(--ink);
+            background: transparent;
+            color: var(--ink);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--ink);
+            color: var(--paper);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.primary {
+            background: var(--ink);
+            color: var(--paper);
+        }
+
+        .nav-btn.primary:hover:not(:disabled) {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* ── RESULTS SCREEN ── */
+        .results-header {
+            padding: 36px 48px 28px;
+            border-bottom: 3px double var(--ink);
+            text-align: center;
+        }
+
+        .results-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2em;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 6px;
+        }
+
+        .results-sub {
+            font-size: 0.82em;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-light);
+        }
+
+        .results-body { padding: 36px 48px; }
+
+        .student-info-display {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid var(--rule);
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            background: var(--paper-dark);
+            font-size: 0.88em;
+        }
+
+        .student-info-display .label {
+            font-size: 0.7em;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--ink-light);
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .student-info-display .value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .score-block {
+            text-align: center;
+            padding: 32px;
+            margin-bottom: 28px;
+            border: 1px solid var(--rule);
+        }
+
+        .score-label-sm {
+            font-size: 0.72em;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-light);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .score-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5em;
+            font-weight: 600;
+            color: var(--ink);
+            line-height: 1;
+        }
+
+        .score-denom {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2em;
+            color: var(--rule);
+        }
+
+        .verdict {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 6px 20px;
+            font-size: 0.78em;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            border: 2px solid var(--ink);
+        }
+
+        .verdict.pass { border-color: var(--green); color: var(--green); }
+        .verdict.fail { border-color: var(--accent); color: var(--accent); }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--rule);
+            border: 1px solid var(--rule);
+            margin-bottom: 32px;
+        }
+
+        .stat-cell {
+            background: var(--paper);
+            padding: 18px;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4em;
+            font-weight: 600;
+            color: var(--ink);
+            line-height: 1;
             display: block;
         }
+
+        .stat-label {
+            font-size: 0.68em;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--ink-light);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Email section */
+        .email-section {
+            border: 1px solid var(--rule);
+            padding: 24px 28px;
+            background: var(--paper-dark);
+            margin-bottom: 24px;
+        }
+
+        .email-section-label {
+            font-size: 0.68em;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--ink-light);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .acad-email-input {
+            width: 100%;
+            padding: 10px 14px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.95em;
+            border: 1px solid var(--rule);
+            border-bottom: 2px solid var(--ink);
+            background: var(--paper);
+            color: var(--ink-light);
+            margin-bottom: 14px;
+            outline: none;
+        }
+
+        .send-btn {
+            padding: 12px 32px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.85em;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .send-btn:hover { background: var(--accent); }
+
+        .copy-section-label {
+            font-size: 0.72em;
+            color: var(--ink-light);
+            margin: 14px 0 6px;
+        }
+
+        .results-textarea {
+            width: 100%;
+            height: 130px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            border: 1px solid var(--rule);
+            background: var(--paper);
+            color: var(--ink-light);
+            resize: none;
+        }
+
+        @media (max-width: 600px) {
+            .screen, .quiz-body { padding: 24px 20px; }
+            .quiz-header, .quiz-nav { padding: 16px 20px; }
+            .options-grid { grid-template-columns: 1fr; }
+            .input-row { grid-template-columns: 1fr; }
+            .results-body { padding: 24px 20px; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
     </style>
-<base target="_blank">
 </head>
 <body>
-    <div class="quiz-container">
-        <!-- SCHERMATA INIZIALE -->
-        <div id="startScreen" class="start-screen">
-            <h2>📚 PASSATO PROSSIMO E PRONOMI</h2>
-            <p style="font-size: 1.2em; color: #666; margin-bottom: 20px;">
-                Quiz di 50 domande a completamento<br>
-                Completa le frasi con la forma corretta
-            </p>
+<div class="quiz-container">
 
-            <!-- SEZIONE NOME E COGNOME -->
-            <div class="student-info">
-                <h3>✏️ Inserisci i tuoi dati</h3>
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div class="institution-name">CPIA — Centro Provinciale per l'Istruzione degli Adulti</div>
+        <div class="doc-title">Passato Prossimo e Pronomi</div>
+        <div class="doc-subtitle">Verifica di grammatica italiana — 100 domande</div>
+        <hr class="header-rule">
+    </div>
+
+    <!-- START SCREEN -->
+    <div id="startScreen" class="screen">
+        <div class="section-label">Informazioni generali</div>
+        <p class="intro-text">
+            La presente verifica è composta da 100 quesiti a scelta multipla riguardanti
+            il passato prossimo, i pronomi diretti e indiretti e l'accordo del participio passato.
+            Selezionare la risposta ritenuta corretta; verrà fornito un riscontro immediato dopo ogni risposta.
+        </p>
+
+        <div class="fieldset-box">
+            <legend-like>Dati dello studente</legend-like>
+            <div class="input-row">
                 <div class="input-group">
-                    <label for="studentName">Nome:</label>
-                    <input type="text" id="studentName" class="student-input" placeholder="Scrivi il tuo nome...">
-                    <div id="nameError" class="error-message">⚠️ Inserisci il tuo nome</div>
+                    <label for="studentName">Nome</label>
+                    <input type="text" id="studentName" class="acad-input" placeholder="Inserire il proprio nome">
+                    <div id="nameError" class="err-msg">Campo obbligatorio.</div>
                 </div>
                 <div class="input-group">
-                    <label for="studentSurname">Cognome:</label>
-                    <input type="text" id="studentSurname" class="student-input" placeholder="Scrivi il tuo cognome...">
-                    <div id="surnameError" class="error-message">⚠️ Inserisci il tuo cognome</div>
+                    <label for="studentSurname">Cognome</label>
+                    <input type="text" id="studentSurname" class="acad-input" placeholder="Inserire il proprio cognome">
+                    <div id="surnameError" class="err-msg">Campo obbligatorio.</div>
                 </div>
-            </div>
-
-            <div class="rules-box">
-                <h3>📖 Argomenti del Quiz</h3>
-                <ul>
-                    <li><strong>Passato Prossimo:</strong> scegliere ESSERE o AVERE</li>
-                    <li><strong>Pronomi Diretti:</strong> mi, ti, lo/la, li/le, ci, vi</li>
-                    <li><strong>Pronomi Indiretti:</strong> mi, ti, gli/le, ci, vi, gli</li>
-                    <li><strong>Accordo del participio:</strong> con pronomi diretti</li>
-                </ul>
-            </div>
-
-            <button class="start-btn" onclick="startQuiz()">INIZIA IL QUIZ! 🚀</button>
-        </div>
-
-        <!-- SCHERMATA DOMANDE -->
-        <div id="quizScreen" class="hidden">
-            <div class="header">
-                <h1>COMPLETA LA FRASE</h1>
-            </div>
-
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-            </div>
-
-            <div class="question-counter">
-                Domanda <span id="currentQ">1</span> di 50
-            </div>
-
-            <div class="question-card">
-                <div class="question-text" id="questionText">Caricamento...</div>
-            </div>
-
-            <div class="answers-container" id="answersContainer"></div>
-
-            <div id="feedback" class="feedback-message hidden"></div>
-
-            <div class="navigation">
-                <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" disabled>← Precedente</button>
-                <button class="nav-btn" id="nextBtn" onclick="nextQuestion()" disabled>Successiva →</button>
             </div>
         </div>
 
-        <!-- SCHERMATA RISULTATI -->
-        <div id="resultsScreen" class="results-container hidden">
-            <h2>🏆 QUIZ COMPLETATO!</h2>
+        <div class="section-label" style="margin-bottom:12px;">Argomenti trattati</div>
+        <table class="topics-table">
+            <thead>
+                <tr>
+                    <th>Argomento</th>
+                    <th>Contenuto</th>
+                    <th>Domande</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>I. Passato Prossimo</strong></td>
+                    <td>Ausiliare essere / avere</td>
+                    <td><span class="badge">1–25</span></td>
+                </tr>
+                <tr>
+                    <td><strong>II. Pronomi Diretti</strong></td>
+                    <td>mi, ti, lo/la, li/le, ci, vi</td>
+                    <td><span class="badge">26–50</span></td>
+                </tr>
+                <tr>
+                    <td><strong>III. Pronomi Indiretti</strong></td>
+                    <td>mi, ti, gli/le, ci, vi, loro</td>
+                    <td><span class="badge">51–75</span></td>
+                </tr>
+                <tr>
+                    <td><strong>IV. Accordo del Participio</strong></td>
+                    <td>Concordanza con pronome diretto</td>
+                    <td><span class="badge">76–100</span></td>
+                </tr>
+            </tbody>
+        </table>
 
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-                <div style="font-size: 1.3em; font-weight: bold;" id="studentDisplay">Studente: -</div>
+        <button class="start-btn" onclick="startQuiz()">Iniziare la verifica</button>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quizScreen" class="hidden">
+        <div class="quiz-header">
+            <div class="doc-title">Verifica</div>
+            <div class="progress-info">Domanda <span id="currentQ">1</span> di 100</div>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width:1%"></div>
+        </div>
+
+        <div class="quiz-body">
+            <div class="question-meta">
+                <div class="q-number">N° <span id="qNum">1</span></div>
+                <div class="q-category" id="qCategory">Passato Prossimo</div>
             </div>
 
-            <div class="score-label">IL TUO PUNTEGGIO</div>
-            <div class="score-display" id="finalScore">0/50</div>
+            <div class="question-text" id="questionText">Caricamento…</div>
 
-            <div class="results-grid">
-                <div class="result-box">
-                    <span class="number" id="correctCount">0</span>
-                    <span>Corrette</span>
+            <div class="options-grid" id="answersContainer"></div>
+
+            <div class="feedback-box" id="feedback">
+                <div class="feedback-label" id="feedbackLabel">Risposta corretta</div>
+                <div id="feedbackText"></div>
+            </div>
+        </div>
+
+        <div class="quiz-nav">
+            <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" disabled>← Precedente</button>
+            <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()" disabled>Successiva →</button>
+        </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="resultsScreen" class="hidden">
+        <div class="results-header">
+            <div class="results-title">Riepilogo della verifica</div>
+            <div class="results-sub">Passato Prossimo e Pronomi — 100 domande</div>
+        </div>
+
+        <div class="results-body">
+            <div class="student-info-display">
+                <div>
+                    <div class="label">Studente</div>
+                    <div class="value" id="studentDisplay">—</div>
                 </div>
-                <div class="result-box">
-                    <span class="number" id="wrongCount">0</span>
-                    <span>Sbagliate</span>
+                <div style="text-align:right;">
+                    <div class="label">Data</div>
+                    <div class="value" id="dateDisplay">—</div>
                 </div>
-                <div class="result-box">
-                    <span class="number" id="percentage">0%</span>
-                    <span>%</span>
+            </div>
+
+            <div class="score-block">
+                <div class="score-label-sm">Punteggio ottenuto</div>
+                <div>
+                    <span class="score-number" id="finalScore">0</span>
+                    <span class="score-denom">/100</span>
+                </div>
+                <div id="verdict" class="verdict pass">Superato</div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-cell">
+                    <span class="stat-num" id="correctCount">0</span>
+                    <div class="stat-label">Corrette</div>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-num" id="wrongCount">0</span>
+                    <div class="stat-label">Errate</div>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-num" id="percentage">0%</span>
+                    <div class="stat-label">Percentuale</div>
                 </div>
             </div>
 
             <div class="email-section">
-                <h3>📧 Invia i risultati</h3>
-                <p>A:</p>
-                <input type="email" class="email-input" id="emailInput" value="giancarlo.vettori@cpiatv1.edu.it" readonly>
-                <br><br>
-                <button class="send-btn" onclick="sendResults()">📨 INVIA RISULTATI</button>
-                <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
-                    Oppure copia il testo qui sotto:
-                </p>
-                <textarea id="resultsText" style="width: 100%; height: 150px; margin-top: 10px; padding: 10px; border-radius: 10px; border: 2px solid #ddd; font-family: monospace; font-size: 0.9em;" readonly></textarea>
+                <div class="email-section-label">Invio risultati al docente</div>
+                <input type="email" class="acad-email-input" id="emailInput" value="giancarlo.vettori@cpiatv1.edu.it" readonly>
+                <button class="send-btn" onclick="sendResults()">Invia per posta elettronica</button>
+                <div class="copy-section-label">Oppure copiare il testo seguente:</div>
+                <textarea id="resultsText" class="results-textarea" readonly></textarea>
             </div>
         </div>
     </div>
 
-    <script>
-        // DATABASE 50 DOMANDE
-        const questions = [
-            // PASSATO PROSSIMO: ESSERE vs AVERE (1-15)
-            {q: "Ieri Marco ______ andato al cinema.", options: ["è", "ha", "sono", "hanno"], correct: 0, expl: "ANDARE è un verbo di movimento → ESSERE"},
-            {q: "Noi ______ mangiato una pizza ieri sera.", options: ["abbiamo", "siamo", "ho", "è"], correct: 0, expl: "MANGIARE è transitivo → AVERE"},
-            {q: "Tu ______ nato nel 2005, vero?", options: ["sei", "hai", "sono", "hanno"], correct: 0, expl: "NASCERE è un verbo di cambiamento → ESSERE"},
-            {q: "I bambini ______ letto un libro interessante.", options: ["hanno", "sono", "ha", "è"], correct: 0, expl: "LEGGERE è transitivo → AVERE"},
-            {q: "Io ______ rimasto a casa tutto il giorno.", options: ["sono", "ho", "è", "hai"], correct: 0, expl: "RIMANERE è un verbo di stato → ESSERE"},
-            {q: "Voi ______ scritto una lettera a Maria?", options: ["avete", "siete", "hai", "è"], correct: 0, expl: "SCRIVERE è transitivo → AVERE"},
-            {q: "La nonna ______ morta dieci anni fa.", options: ["è", "ha", "sono", "hanno"], correct: 0, expl: "MORIRE è un verbo di cambiamento → ESSERE"},
-            {q: "Luisa ______ dormito bene stanotte.", options: ["ha", "è", "ho", "sono"], correct: 0, expl: "DORMIRE usa AVERE"},
-            {q: "Noi ______ venuti a trovarti ieri.", options: ["siamo", "abbiamo", "ho", "è"], correct: 0, expl: "VENIRE è un verbo di movimento → ESSERE"},
-            {q: "Tu ______ fatto i compiti?", options: ["hai", "sei", "ho", "è"], correct: 0, expl: "FARE è transitivo → AVERE"},
-            {q: "Io ______ diventato un bravo medico.", options: ["sono", "ho", "è", "hai"], correct: 0, expl: "DIVENTARE è un verbo di cambiamento → ESSERE"},
-            {q: "Mia sorella ______ partita per Roma.", options: ["è", "ha", "sono", "hanno"], correct: 0, expl: "PARTIRE è un verbo di movimento → ESSERE"},
-            {q: "Voi ______ stati in vacanza al mare?", options: ["siete", "avete", "hai", "è"], correct: 0, expl: "STARE è un verbo di stato → ESSERE"},
-            {q: "Io e Marco ______ visto quel film.", options: ["abbiamo", "siamo", "ho", "è"], correct: 0, expl: "VEDERE è transitivo → AVERE"},
-            {q: "Tu ______ cresciuto in una piccola città.", options: ["sei", "hai", "sono", "hanno"], correct: 0, expl: "CRESCERE è un verbo di cambiamento → ESSERE"},
+</div>
 
-            // PRONOMI DIRETTI (16-30)
-            {q: "'Hai visto Marco?' 'Sì, ______ ho visto ieri.'", options: ["lo", "gli", "mi", "ti"], correct: 0, expl: "Marco è maschile singolare → LO"},
-            {q: "'Hai comprato le mele?' 'Sì, ______ ho comprate.'", options: ["le", "gli", "lo", "li"], correct: 0, expl: "Le mele è femminile plurale → LE"},
-            {q: "'Mi ami?' 'Sì, ______ amo molto.'", options: ["mi", "ti", "lo", "la"], correct: 1, expl: "Risposta a 'mi ami' → TI"},
-            {q: "'Hai letto i libri?' 'Sì, ______ ho letti tutti.'", options: ["li", "gli", "le", "lo"], correct: 0, expl: "I libri è maschile plurale → LI"},
-            {q: "'Hai visto Maria?' 'Sì, ______ ho vista.'", options: ["la", "lo", "le", "gli"], correct: 0, expl: "Maria è femminile singolare → LA"},
-            {q: "'Ci vediamo domani?' 'Sì, ______ vediamo alle 3.'", options: ["ci", "vi", "ti", "mi"], correct: 0, expl: "Prima persona plurale → CI"},
-            {q: "'Hai fatto la torta?' 'Sì, l'______ fatta.'", options: ["ho", "è", "sono", "hai"], correct: 0, expl: "La torta femminile → L'HO fatta"},
-            {q: "'Hai comprato il pane?' 'Sì, ______ ho comprato.'", options: ["lo", "gli", "le", "li"], correct: 0, expl: "Il pane è maschile singolare → LO"},
-            {q: "'Ci chiami stasera?' 'Sì, ______ chiamo dopo.'", options: ["vi", "ci", "ti", "mi"], correct: 1, expl: "Seconda persona plurale → VI"},
-            {q: "'Hai mangiato gli spaghetti?' 'Sì, ______ ho mangiati.'", options: ["li", "gli", "le", "lo"], correct: 0, expl: "Gli spaghetti è maschile plurale → LI"},
-            {q: "'Hai finito il lavoro?' 'Sì, ______ ho finito.'", options: ["lo", "gli", "le", "li"], correct: 0, expl: "Il lavoro è maschile singolare → LO"},
-            {q: "'Hai visto i bambini?' 'Sì, ______ ho visti.'", options: ["li", "gli", "le", "lo"], correct: 0, expl: "I bambini è maschile plurale → LI"},
-            {q: "'Hai letto la lettera?' 'Sì, ______ ho letta.'", options: ["la", "lo", "le", "li"], correct: 0, expl: "La lettera è femminile singolare → LA"},
-            {q: "'Hai preso le chiavi?' 'Sì, ______ ho prese.'", options: ["le", "li", "gli", "lo"], correct: 0, expl: "Le chiavi è femminile plurale → LE"},
-            {q: "'Ti conosco?' 'Sì, ______ conosciamo.'", options: ["ti", "ci", "lo", "la"], correct: 1, expl: "Risposta a 'ti conosco' → MI"},
+<script>
+const questions = [
+    // ── I. PASSATO PROSSIMO: ESSERE vs AVERE (1-25) ──
+    {q:"Ieri Marco ______ andato al cinema.", cat:"Passato Prossimo", options:["è","ha","sono","hanno"], correct:0, expl:"ANDARE è un verbo di movimento intransitivo → ausiliare ESSERE."},
+    {q:"Noi ______ mangiato una pizza ieri sera.", cat:"Passato Prossimo", options:["abbiamo","siamo","ho","è"], correct:0, expl:"MANGIARE è transitivo → ausiliare AVERE."},
+    {q:"Tu ______ nato nel 2005, vero?", cat:"Passato Prossimo", options:["sei","hai","sono","hanno"], correct:0, expl:"NASCERE esprime un cambiamento di stato → ausiliare ESSERE."},
+    {q:"I bambini ______ letto un libro interessante.", cat:"Passato Prossimo", options:["hanno","sono","ha","è"], correct:0, expl:"LEGGERE è transitivo → ausiliare AVERE."},
+    {q:"Io ______ rimasto a casa tutto il giorno.", cat:"Passato Prossimo", options:["sono","ho","è","hai"], correct:0, expl:"RIMANERE esprime uno stato fisso → ausiliare ESSERE."},
+    {q:"Voi ______ scritto una lettera a Maria?", cat:"Passato Prossimo", options:["avete","siete","hai","è"], correct:0, expl:"SCRIVERE è transitivo → ausiliare AVERE."},
+    {q:"La nonna ______ morta dieci anni fa.", cat:"Passato Prossimo", options:["è","ha","sono","hanno"], correct:0, expl:"MORIRE esprime un cambiamento di stato → ausiliare ESSERE."},
+    {q:"Luisa ______ dormito bene stanotte.", cat:"Passato Prossimo", options:["ha","è","ho","sono"], correct:0, expl:"DORMIRE è intransitivo ma vuole AVERE."},
+    {q:"Noi ______ venuti a trovarti ieri.", cat:"Passato Prossimo", options:["siamo","abbiamo","ho","è"], correct:0, expl:"VENIRE è un verbo di movimento → ausiliare ESSERE."},
+    {q:"Tu ______ fatto i compiti?", cat:"Passato Prossimo", options:["hai","sei","ho","è"], correct:0, expl:"FARE è transitivo → ausiliare AVERE."},
+    {q:"Io ______ diventato un bravo medico.", cat:"Passato Prossimo", options:["sono","ho","è","hai"], correct:0, expl:"DIVENTARE esprime un cambiamento di stato → ausiliare ESSERE."},
+    {q:"Mia sorella ______ partita per Roma.", cat:"Passato Prossimo", options:["è","ha","sono","hanno"], correct:0, expl:"PARTIRE è un verbo di movimento → ausiliare ESSERE."},
+    {q:"Voi ______ stati in vacanza al mare?", cat:"Passato Prossimo", options:["siete","avete","hai","è"], correct:0, expl:"STARE (= trovarsi) → ausiliare ESSERE."},
+    {q:"Io e Marco ______ visto quel film.", cat:"Passato Prossimo", options:["abbiamo","siamo","ho","è"], correct:0, expl:"VEDERE è transitivo → ausiliare AVERE."},
+    {q:"Tu ______ cresciuto in una piccola città.", cat:"Passato Prossimo", options:["sei","hai","sono","hanno"], correct:0, expl:"CRESCERE esprime cambiamento → ausiliare ESSERE."},
+    {q:"I ragazzi ______ usciti molto tardi.", cat:"Passato Prossimo", options:["sono","hanno","è","ha"], correct:0, expl:"USCIRE è un verbo di movimento → ausiliare ESSERE."},
+    {q:"Il professore ______ spiegato la lezione.", cat:"Passato Prossimo", options:["ha","è","ho","sei"], correct:0, expl:"SPIEGARE è transitivo → ausiliare AVERE."},
+    {q:"Loro ______ arrivati tardi alla riunione.", cat:"Passato Prossimo", options:["sono","hanno","è","ha"], correct:0, expl:"ARRIVARE è un verbo di movimento → ausiliare ESSERE."},
+    {q:"Carla ______ telefonato a sua madre.", cat:"Passato Prossimo", options:["ha","è","ho","sei"], correct:0, expl:"TELEFONARE è intransitivo ma regge AVERE."},
+    {q:"Noi ______ entrati dall'ingresso principale.", cat:"Passato Prossimo", options:["siamo","abbiamo","ho","hai"], correct:0, expl:"ENTRARE è un verbo di movimento → ausiliare ESSERE."},
+    {q:"Voi ______ bevuto troppo caffè oggi.", cat:"Passato Prossimo", options:["avete","siete","ho","è"], correct:0, expl:"BERE è transitivo → ausiliare AVERE."},
+    {q:"Il bambino ______ caduto dalla sedia.", cat:"Passato Prossimo", options:["è","ha","sono","hanno"], correct:0, expl:"CADERE esprime movimento/cambiamento → ausiliare ESSERE."},
+    {q:"Tu ______ studiato tutta la notte?", cat:"Passato Prossimo", options:["hai","sei","ho","è"], correct:0, expl:"STUDIARE è transitivo → ausiliare AVERE."},
+    {q:"Mio fratello ______ tornato dal lavoro alle sette.", cat:"Passato Prossimo", options:["è","ha","sono","hanno"], correct:0, expl:"TORNARE è un verbo di movimento → ausiliare ESSERE."},
+    {q:"Io ______ passato tutta la mattina in biblioteca.", cat:"Passato Prossimo", options:["ho","sono","è","hai"], correct:0, expl:"PASSARE (il tempo) è transitivo → ausiliare AVERE."},
 
-            // PRONOMI INDIRETTI (31-40)
-            {q: "'Hai scritto a Marco?' 'Sì, ______ ho scritto.'", options: ["gli", "lo", "le", "mi"], correct: 0, expl: "A Marco (maschile) → GLI"},
-            {q: "'Hai parlato a Maria?' 'Sì, ______ ho parlato.'", options: ["le", "gli", "la", "lo"], correct: 0, expl: "A Maria (femminile) → LE"},
-            {q: "'Mi puoi aiutare?' 'Sì, ______ posso aiutare.'", options: ["mi", "ti", "lo", "la"], correct: 1, expl: "Risposta a 'mi puoi aiutare' → TI"},
-            {q: "'Hai detto la verità ai ragazzi?' 'Sì, ______ ho detto.'", options: ["gli", "lo", "le", "li"], correct: 0, expl: "Ai ragazzi (maschile plurale) → GLI"},
-            {q: "'Ti piace il gelato?' 'Sì, ______ piace molto.'", options: ["mi", "ti", "gli", "le"], correct: 0, expl: "Verbo PIACERE → MI"},
-            {q: "'Ci serve una penna?' 'Sì, ______ serve.'", options: ["ci", "vi", "gli", "le"], correct: 0, expl: "Prima persona plurale → CI"},
-            {q: "'Vi ha chiamato il professore?' 'Sì, ______ ha chiamato.'", options: ["ci", "vi", "ti", "mi"], correct: 1, expl: "Seconda persona plurale → VI"},
-            {q: "'Hai telefonato a Luigi?' 'Sì, ______ ho telefonato.'", options: ["gli", "lo", "le", "la"], correct: 0, expl: "A Luigi (maschile) → GLI"},
-            {q: "'Le hai detto tutto?' (a lei) →", options: ["le", "gli", "la", "lo"], correct: 0, expl: "A lei (femminile) → LE"},
-            {q: "'Gli piace la pizza?' (ai bambini) →", options: ["gli", "le", "lo", "la"], correct: 0, expl: "Ai bambini (maschile plurale) → GLI"},
+    // ── II. PRONOMI DIRETTI (26-50) ──
+    {q:"'Hai visto Marco?' — 'Sì, ______ ho visto ieri.'", cat:"Pronomi Diretti", options:["lo","gli","mi","ti"], correct:0, expl:"Marco è maschile singolare → pronome diretto LO."},
+    {q:"'Hai comprato le mele?' — 'Sì, ______ ho comprate.'", cat:"Pronomi Diretti", options:["le","gli","lo","li"], correct:0, expl:"Le mele è femminile plurale → pronome diretto LE."},
+    {q:"'Mi ami?' — 'Sì, ______ amo molto.'", cat:"Pronomi Diretti", options:["mi","ti","lo","la"], correct:1, expl:"Risposta a 'mi ami': il pronome si inverte → TI."},
+    {q:"'Hai letto i libri?' — 'Sì, ______ ho letti tutti.'", cat:"Pronomi Diretti", options:["li","gli","le","lo"], correct:0, expl:"I libri è maschile plurale → pronome diretto LI."},
+    {q:"'Hai visto Maria?' — 'Sì, ______ ho vista.'", cat:"Pronomi Diretti", options:["la","lo","le","gli"], correct:0, expl:"Maria è femminile singolare → pronome diretto LA."},
+    {q:"'Ci vediamo domani?' — 'Sì, ______ vediamo alle tre.'", cat:"Pronomi Diretti", options:["ci","vi","ti","mi"], correct:0, expl:"Riferimento reciproco alla prima persona plurale → CI."},
+    {q:"'Hai fatto la torta?' — 'Sì, l'______ fatta.'", cat:"Pronomi Diretti", options:["ho","è","sono","hai"], correct:0, expl:"La torta (femminile) + ausiliare avere → L'HO fatta."},
+    {q:"'Hai comprato il pane?' — 'Sì, ______ ho comprato.'", cat:"Pronomi Diretti", options:["lo","gli","le","li"], correct:0, expl:"Il pane è maschile singolare → pronome diretto LO."},
+    {q:"'Ci chiami stasera?' — 'Sì, ______ chiamo dopo.'", cat:"Pronomi Diretti", options:["vi","ci","ti","mi"], correct:0, expl:"Seconda persona plurale → VI."},
+    {q:"'Hai mangiato gli spaghetti?' — 'Sì, ______ ho mangiati.'", cat:"Pronomi Diretti", options:["li","gli","le","lo"], correct:0, expl:"Gli spaghetti è maschile plurale → LI."},
+    {q:"'Hai finito il lavoro?' — 'Sì, ______ ho finito.'", cat:"Pronomi Diretti", options:["lo","gli","le","li"], correct:0, expl:"Il lavoro è maschile singolare → LO."},
+    {q:"'Hai visto i bambini?' — 'Sì, ______ ho visti.'", cat:"Pronomi Diretti", options:["li","gli","le","lo"], correct:0, expl:"I bambini è maschile plurale → LI."},
+    {q:"'Hai letto la lettera?' — 'Sì, ______ ho letta.'", cat:"Pronomi Diretti", options:["la","lo","le","li"], correct:0, expl:"La lettera è femminile singolare → LA."},
+    {q:"'Hai preso le chiavi?' — 'Sì, ______ ho prese.'", cat:"Pronomi Diretti", options:["le","li","gli","lo"], correct:0, expl:"Le chiavi è femminile plurale → LE."},
+    {q:"'Ti conosco.' — 'Sì, ______ conosciamo.'", cat:"Pronomi Diretti", options:["ci","ti","lo","la"], correct:0, expl:"Conoscenza reciproca con riferimento plurale → CI."},
+    {q:"'Hai incontrato le professoresse?' — 'Sì, ______ ho incontrate.'", cat:"Pronomi Diretti", options:["le","li","lo","gli"], correct:0, expl:"Le professoresse è femminile plurale → LE."},
+    {q:"'Aspetti Giorgio?' — 'Sì, ______ aspetto da un'ora.'", cat:"Pronomi Diretti", options:["lo","gli","la","le"], correct:0, expl:"Giorgio è maschile singolare → LO."},
+    {q:"'Conosci Sofia?' — 'Certo, ______ conosco bene.'", cat:"Pronomi Diretti", options:["la","lo","le","gli"], correct:0, expl:"Sofia è femminile singolare → LA."},
+    {q:"'Chiami i colleghi?' — 'Sì, ______ chiamo adesso.'", cat:"Pronomi Diretti", options:["li","gli","le","lo"], correct:0, expl:"I colleghi è maschile plurale → LI."},
+    {q:"'Mangi le verdure?' — 'Di solito sì, ______ mangio volentieri.'", cat:"Pronomi Diretti", options:["le","li","lo","gli"], correct:0, expl:"Le verdure è femminile plurale → LE."},
+    {q:"'Guardi spesso la televisione?' — 'No, non ______ guardo quasi mai.'", cat:"Pronomi Diretti", options:["la","lo","le","li"], correct:0, expl:"La televisione è femminile singolare → LA."},
+    {q:"'Porti sempre il telefono?' — 'Sì, ______ porto sempre con me.'", cat:"Pronomi Diretti", options:["lo","la","li","le"], correct:0, expl:"Il telefono è maschile singolare → LO."},
+    {q:"'Vedi spesso i tuoi amici?' — 'Sì, ______ vedo ogni settimana.'", cat:"Pronomi Diretti", options:["li","gli","le","lo"], correct:0, expl:"I tuoi amici è maschile plurale → LI."},
+    {q:"'Hai preparato le valigie?' — 'Sì, ______ ho preparate.'", cat:"Pronomi Diretti", options:["le","li","lo","gli"], correct:0, expl:"Le valigie è femminile plurale → LE."},
+    {q:"'Hai già pagato il conto?' — 'Sì, ______ ho già pagato.'", cat:"Pronomi Diretti", options:["lo","la","li","le"], correct:0, expl:"Il conto è maschile singolare → LO."},
 
-            // ACCORDO DEL PARTICIPIO (41-50)
-            {q: "'Hai mangiato la pasta?' 'Sì, l'ho mangi______.'", options: ["ata", "ato", "ati", "ate"], correct: 0, expl: "La pasta è femminile singolare → MANGIATA"},
-            {q: "'Hai visto i film?' 'Sì, li ho vist______.'", options: ["i", "o", "a", "e"], correct: 0, expl: "I film è maschile plurale → VISTI"},
-            {q: "'Hai letto il libro?' 'Sì, l'ho lett______.''", options: ["o", "a", "i", "e"], correct: 0, expl: "Il libro è maschile singolare → LETTO"},
-            {q: "'Hai comprato le scarpe?' 'Sì, le ho comprat______.'", options: ["e", "o", "i", "a"], correct: 0, expl: "Le scarpe è femminile plurale → COMPRATE"},
-            {q: "'Hai fatto i compiti?' 'Sì, li ho fat______.''", options: ["ti", "to", "ta", "te"], correct: 0, expl: "I compiti è maschile plurale → FATTI"},
-            {q: "'La lettera? L'ho scrit______.''", options: ["ta", "to", "ti", "te"], correct: 0, expl: "La lettera è femminile singolare → SCRITTA"},
-            {q: "'I biscotti? Li ho mangiat______.''", options: ["i", "o", "a", "e"], correct: 0, expl: "I biscotti è maschile plurale → MANGIATI"},
-            {q: "'La casa? L'ho comprat______.''", options: ["a", "o", "i", "e"], correct: 0, expl: "La casa è femminile singolare → COMPRATA"},
-            {q: "Con i pronomi indiretti, il participio...", options: ["non concorda mai", "concorda sempre", "concorda solo al plurale"], correct: 0, expl: "Con i pronomi indiretti il participio NON concorda!"},
-            {q: "'Gli hai parlato?' - Il participio non cambia perché...", options: ["GLI è indiretto", "è maschile", "è singolare"], correct: 0, expl: "GLI è un pronome indiretto → il participio non concorda!"}
-        ];
+    // ── III. PRONOMI INDIRETTI (51-75) ──
+    {q:"'Hai scritto a Marco?' — 'Sì, ______ ho scritto.'", cat:"Pronomi Indiretti", options:["gli","lo","le","mi"], correct:0, expl:"A Marco (maschile singolare) → pronome indiretto GLI."},
+    {q:"'Hai parlato a Maria?' — 'Sì, ______ ho parlato.'", cat:"Pronomi Indiretti", options:["le","gli","la","lo"], correct:0, expl:"A Maria (femminile singolare) → pronome indiretto LE."},
+    {q:"'Mi puoi aiutare?' — 'Sì, ______ posso aiutare.'", cat:"Pronomi Indiretti", options:["mi","ti","lo","la"], correct:1, expl:"Risposta a 'mi puoi aiutare': il pronome si inverte → TI."},
+    {q:"'Hai detto la verità ai ragazzi?' — 'Sì, ______ ho detto.'", cat:"Pronomi Indiretti", options:["gli","lo","le","li"], correct:0, expl:"Ai ragazzi (maschile plurale) → pronome indiretto GLI."},
+    {q:"'Ti piace il gelato?' — 'Sì, ______ piace molto.'", cat:"Pronomi Indiretti", options:["mi","ti","gli","le"], correct:0, expl:"Con PIACERE: a me (io) → MI piace."},
+    {q:"'Ci serve una penna?' — 'Sì, ______ serve.'", cat:"Pronomi Indiretti", options:["ci","vi","gli","le"], correct:0, expl:"Prima persona plurale → CI serve."},
+    {q:"'Vi ha chiamato il professore?' — 'Sì, ______ ha chiamato.'", cat:"Pronomi Indiretti", options:["ci","vi","ti","mi"], correct:1, expl:"Risposta a 'vi ha chiamato': si inverte → CI."},
+    {q:"'Hai telefonato a Luigi?' — 'Sì, ______ ho telefonato.'", cat:"Pronomi Indiretti", options:["gli","lo","le","la"], correct:0, expl:"A Luigi (maschile singolare) → GLI."},
+    {q:"'Le hai detto tutto?' (a lei)", cat:"Pronomi Indiretti", options:["le","gli","la","lo"], correct:0, expl:"A lei (femminile singolare) → LE."},
+    {q:"'Gli piace la pizza?' (ai bambini)", cat:"Pronomi Indiretti", options:["gli","le","lo","la"], correct:0, expl:"Ai bambini (maschile plurale) → GLI."},
+    {q:"'Hai mandato un messaggio a Silvia?' — 'Sì, ______ ho mandato un messaggio.'", cat:"Pronomi Indiretti", options:["le","gli","la","lo"], correct:0, expl:"A Silvia (femminile singolare) → LE."},
+    {q:"'Mi presti il tuo libro?' — 'Certo, ______ presto volentieri.'", cat:"Pronomi Indiretti", options:["ti","mi","lo","la"], correct:0, expl:"Risposta a 'mi presti': il pronome si inverte → TI."},
+    {q:"'Hai risposto ai clienti?' — 'Sì, ______ ho risposto questa mattina.'", cat:"Pronomi Indiretti", options:["gli","li","le","lo"], correct:0, expl:"Ai clienti (maschile plurale) → GLI."},
+    {q:"'Dai i compiti agli studenti?' — 'Sì, ______ do i compiti ogni giorno.'", cat:"Pronomi Indiretti", options:["gli","li","le","lo"], correct:0, expl:"Agli studenti (maschile plurale) → GLI."},
+    {q:"'Piace a tua madre cucinare?' — 'Sì, ______ piace molto.'", cat:"Pronomi Indiretti", options:["le","gli","mi","ti"], correct:0, expl:"A tua madre (femminile singolare) → LE piace."},
+    {q:"'Hai mostrato le foto a Carlo?' — 'Sì, ______ ho mostrato tutto.'", cat:"Pronomi Indiretti", options:["gli","lo","le","li"], correct:0, expl:"A Carlo (maschile singolare) → GLI."},
+    {q:"'Vi interessa questo argomento?' — 'Sì, ______ interessa molto.'", cat:"Pronomi Indiretti", options:["ci","vi","gli","le"], correct:0, expl:"Risposta a 'vi interessa': si inverte → CI."},
+    {q:"'Hai dato un regalo alle ragazze?' — 'Sì, ______ ho dato un regalo.'", cat:"Pronomi Indiretti", options:["gli","le","li","la"], correct:0, expl:"Alle ragazze (femminile plurale) → in italiano contemporaneo si usa GLI, ma la forma tradizionale è LORO. Qui accettiamo GLI."},
+    {q:"'Mi hai portato il caffè?' — 'Sì, ______ ho portato il caffè.'", cat:"Pronomi Indiretti", options:["ti","mi","lo","la"], correct:0, expl:"Risposta a 'mi hai portato': il pronome si inverte → TI."},
+    {q:"'Ci hai spiegato il programma?' — 'Sì, ______ ho spiegato tutto.'", cat:"Pronomi Indiretti", options:["vi","ci","gli","le"], correct:0, expl:"Risposta a 'ci hai spiegato': si inverte → VI."},
+    {q:"'Conviene a Paolo fare così?' — 'Sì, ______ conviene.'", cat:"Pronomi Indiretti", options:["gli","lo","le","la"], correct:0, expl:"A Paolo (maschile singolare) → GLI conviene."},
+    {q:"'Hai consegnato i documenti alla segreteria?' — 'Sì, ______ ho consegnato tutto.'", cat:"Pronomi Indiretti", options:["gli","le","li","lo"], correct:1, expl:"Alla segreteria (femminile singolare) → LE."},
+    {q:"'Ti serve aiuto?' — 'Sì, ______ serve, grazie.'", cat:"Pronomi Indiretti", options:["mi","ti","ci","vi"], correct:0, expl:"Risposta a 'ti serve': si inverte → MI serve."},
+    {q:"'Gli hai prestato soldi?' (a loro, più persone)", cat:"Pronomi Indiretti", options:["gli","lo","le","li"], correct:0, expl:"A loro (plurale) → in italiano moderno si usa GLI."},
+    {q:"'Piacciono a te gli esercizi di grammatica?' — 'Sì, ______ piacciono.'", cat:"Pronomi Indiretti", options:["mi","ti","ci","gli"], correct:0, expl:"A me (io) → MI piacciono."},
 
-        let currentQuestion = 0;
-        let userAnswers = new Array(50).fill(null);
-        let score = 0;
-        let studentName = '';
-        let studentSurname = '';
+    // ── IV. ACCORDO DEL PARTICIPIO (76-100) ──
+    {q:"'Hai mangiato la pasta?' — 'Sì, l'ho mangi____.'", cat:"Accordo del Participio", options:["ata","ato","ati","ate"], correct:0, expl:"La pasta è femminile singolare → MANGIATA."},
+    {q:"'Hai visto i film?' — 'Sì, li ho vist____.'", cat:"Accordo del Participio", options:["i","o","a","e"], correct:0, expl:"I film è maschile plurale → VISTI."},
+    {q:"'Hai letto il libro?' — 'Sì, l'ho lett____.'", cat:"Accordo del Participio", options:["o","a","i","e"], correct:0, expl:"Il libro è maschile singolare → LETTO."},
+    {q:"'Hai comprato le scarpe?' — 'Sì, le ho comprat____.'", cat:"Accordo del Participio", options:["e","o","i","a"], correct:0, expl:"Le scarpe è femminile plurale → COMPRATE."},
+    {q:"'Hai fatto i compiti?' — 'Sì, li ho fat____.'", cat:"Accordo del Participio", options:["ti","to","ta","te"], correct:0, expl:"I compiti è maschile plurale → FATTI."},
+    {q:"'La lettera? L'ho scrit____.'", cat:"Accordo del Participio", options:["ta","to","ti","te"], correct:0, expl:"La lettera è femminile singolare → SCRITTA."},
+    {q:"'I biscotti? Li ho mangiat____.'", cat:"Accordo del Participio", options:["i","o","a","e"], correct:0, expl:"I biscotti è maschile plurale → MANGIATI."},
+    {q:"'La casa? L'ho comprat____.'", cat:"Accordo del Participio", options:["a","o","i","e"], correct:0, expl:"La casa è femminile singolare → COMPRATA."},
+    {q:"Con i pronomi indiretti, il participio passato...", cat:"Accordo del Participio", options:["non concorda mai","concorda sempre","concorda solo al plurale","concorda al femminile"], correct:0, expl:"Con i pronomi indiretti il participio NON concorda mai."},
+    {q:"'Gli hai parlato?' — Il participio non cambia perché...", cat:"Accordo del Participio", options:["GLI è un pronome indiretto","è un verbo irregolare","è maschile singolare","il soggetto è plurale"], correct:0, expl:"GLI è un pronome indiretto: il participio non concorda con i pronomi indiretti."},
+    {q:"'Hai visto le studentesse?' — 'Sì, le ho vist____.'", cat:"Accordo del Participio", options:["e","o","i","a"], correct:0, expl:"Le studentesse è femminile plurale → VISTE."},
+    {q:"'Hai portato i documenti?' — 'Sì, li ho portat____.'", cat:"Accordo del Participio", options:["i","o","a","e"], correct:0, expl:"I documenti è maschile plurale → PORTATI."},
+    {q:"'Hai chiuso la finestra?' — 'Sì, l'ho chius____.'", cat:"Accordo del Participio", options:["a","o","i","e"], correct:0, expl:"La finestra è femminile singolare → CHIUSA."},
+    {q:"'Hai preso i biglietti?' — 'Sì, li ho pres____.'", cat:"Accordo del Participio", options:["i","o","a","e"], correct:0, expl:"I biglietti è maschile plurale → PRESI."},
+    {q:"'Hai rotto la tazza?' — 'Sì, l'ho rott____.'", cat:"Accordo del Participio", options:["a","o","i","e"], correct:0, expl:"La tazza è femminile singolare → ROTTA."},
+    {q:"'Hai perso le chiavi?' — 'Sì, le ho pers____.'", cat:"Accordo del Participio", options:["e","o","i","a"], correct:0, expl:"Le chiavi è femminile plurale → PERSE."},
+    {q:"'Hai acceso il forno?' — 'Sì, l'ho acces____.'", cat:"Accordo del Participio", options:["o","a","i","e"], correct:0, expl:"Il forno è maschile singolare → ACCESO."},
+    {q:"'Hai tradotto la poesia?' — 'Sì, l'ho tradott____.'", cat:"Accordo del Participio", options:["a","o","i","e"], correct:0, expl:"La poesia è femminile singolare → TRADOTTA."},
+    {q:"'Hai corretto gli esercizi?' — 'Sì, li ho corrett____.'", cat:"Accordo del Participio", options:["i","o","a","e"], correct:0, expl:"Gli esercizi è maschile plurale → CORRETTI."},
+    {q:"'Hai aperto le buste?' — 'Sì, le ho apert____.'", cat:"Accordo del Participio", options:["e","o","i","a"], correct:0, expl:"Le buste è femminile plurale → APERTE."},
+    {q:"'Gli hai scritto?' — Il participio SCRITTO...", cat:"Accordo del Participio", options:["non concorda (GLI è indiretto)","diventa SCRITTA","diventa SCRITTI","diventa SCRITTE"], correct:0, expl:"GLI è pronome indiretto: il participio non concorda e resta SCRITTO."},
+    {q:"'Le ho telefonato.' — Il participio TELEFONATO...", cat:"Accordo del Participio", options:["resta invariato","diventa TELEFONATA","diventa TELEFONATI","diventa TELEFONATE"], correct:0, expl:"LE è pronome indiretto: il participio non concorda."},
+    {q:"'La macchina? L'ho portata dal meccanico.' Quale funzione ha LA?", cat:"Accordo del Participio", options:["Pronome diretto (concorda)","Pronome indiretto (non concorda)","Articolo","Avverbio"], correct:0, expl:"LA è un pronome diretto femminile singolare: il participio concorda → PORTATA."},
+    {q:"'Ho comprato i fiori e li ho messi sul tavolo.' Il participio MESSI concorda con...", cat:"Accordo del Participio", options:["LI (pronome diretto maschile plurale)","LI (pronome indiretto)","il soggetto IO","il complemento oggetto implicito"], correct:0, expl:"LI è pronome diretto maschile plurale → il participio concorda: MESSI."},
+    {q:"'L'ho vista ieri.' La forma corretta del participio è VISTA perché...", cat:"Accordo del Participio", options:["LA/L' è un pronome diretto femminile singolare","LA/L' è un pronome indiretto","il soggetto è femminile","il verbo VEDERE è irregolare"], correct:0, expl:"L' = LA, pronome diretto femminile singolare: il participio concorda → VISTA."},
+];
 
-        function startQuiz() {
-            // Recupera nome e cognome
-            const nameInput = document.getElementById('studentName');
-            const surnameInput = document.getElementById('studentSurname');
-            const nameError = document.getElementById('nameError');
-            const surnameError = document.getElementById('surnameError');
-            
-            let isValid = true;
-            
-            // Validazione nome
-            if (!nameInput.value.trim()) {
-                nameError.classList.add('show');
-                isValid = false;
-            } else {
-                nameError.classList.remove('show');
-                studentName = nameInput.value.trim();
-            }
-            
-            // Validazione cognome
-            if (!surnameInput.value.trim()) {
-                surnameError.classList.add('show');
-                isValid = false;
-            } else {
-                surnameError.classList.remove('show');
-                studentSurname = surnameInput.value.trim();
-            }
-            
-            if (!isValid) return;
+let currentQuestion = 0;
+const TOTAL = 100;
+let userAnswers = new Array(TOTAL).fill(null);
+let score = 0;
+let studentName = '';
+let studentSurname = '';
 
-            console.log("Starting quiz for: " + studentName + " " + studentSurname);
-            document.getElementById('startScreen').classList.add('hidden');
-            document.getElementById('quizScreen').classList.remove('hidden');
-            currentQuestion = 0;
-            userAnswers = new Array(50).fill(null);
-            score = 0;
-            showQuestion();
-        }
+const LETTERS = ['A','B','C','D'];
 
-        function showQuestion() {
-            console.log("Showing question " + currentQuestion);
-            const q = questions[currentQuestion];
+function startQuiz() {
+    const nameInput = document.getElementById('studentName');
+    const surnameInput = document.getElementById('studentSurname');
+    const nameError = document.getElementById('nameError');
+    const surnameError = document.getElementById('surnameError');
+    let valid = true;
 
-            // Aggiorna testo domanda
-            document.getElementById('questionText').textContent = q.q;
-            document.getElementById('currentQ').textContent = currentQuestion + 1;
+    if (!nameInput.value.trim()) { nameError.classList.add('show'); valid = false; }
+    else { nameError.classList.remove('show'); studentName = nameInput.value.trim(); }
 
-            // Aggiorna progress bar
-            const progress = ((currentQuestion + 1) / 50) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
+    if (!surnameInput.value.trim()) { surnameError.classList.add('show'); valid = false; }
+    else { surnameError.classList.remove('show'); studentSurname = surnameInput.value.trim(); }
 
-            // Genera bottoni risposte
-            const container = document.getElementById('answersContainer');
-            container.innerHTML = '';
+    if (!valid) return;
 
-            q.options.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'answer-btn';
-                btn.textContent = opt;
-                btn.onclick = function() { selectAnswer(index); };
-
-                // Se già risposto, mostra lo stato
-                if (userAnswers[currentQuestion] !== null) {
-                    btn.disabled = true;
-                    if (index === q.correct) {
-                        btn.classList.add('correct');
-                    } else if (index === userAnswers[currentQuestion]) {
-                        btn.classList.add('wrong');
-                    }
-                }
-
-                container.appendChild(btn);
-            });
-
-            // Mostra/nascondi feedback
-            const feedback = document.getElementById('feedback');
-            if (userAnswers[currentQuestion] !== null) {
-                feedback.textContent = q.expl;
-                feedback.className = userAnswers[currentQuestion] === q.correct ? 
-                    'feedback-message correct' : 'feedback-message wrong';
-                feedback.classList.remove('hidden');
-            } else {
-                feedback.classList.add('hidden');
-            }
-
-            // Aggiorna bottoni navigazione
-            document.getElementById('prevBtn').disabled = currentQuestion === 0;
-
-            const nextBtn = document.getElementById('nextBtn');
-            nextBtn.disabled = userAnswers[currentQuestion] === null;
-            nextBtn.textContent = currentQuestion === 49 ? 'Vedi Risultati →' : 'Successiva →';
-        }
-
-        function selectAnswer(index) {
-            if (userAnswers[currentQuestion] !== null) return;
-
-            userAnswers[currentQuestion] = index;
-            const q = questions[currentQuestion];
-            const buttons = document.querySelectorAll('.answer-btn');
-
-            buttons.forEach((btn, i) => {
-                btn.disabled = true;
-                if (i === q.correct) {
-                    btn.classList.add('correct');
-                } else if (i === index) {
-                    btn.classList.add('wrong');
-                }
-            });
-
-            // Mostra feedback
-            const feedback = document.getElementById('feedback');
-            feedback.textContent = q.expl;
-            feedback.className = index === q.correct ? 
-                'feedback-message correct' : 'feedback-message wrong';
-            feedback.classList.remove('hidden');
-
-            // Aggiorna punteggio
-            if (index === q.correct) score++;
-
-            // Abilita bottone next
-            document.getElementById('nextBtn').disabled = false;
-        }
-
-        function nextQuestion() {
-            if (currentQuestion === 49) {
-                showResults();
-            } else {
-                currentQuestion++;
-                showQuestion();
-            }
-        }
-
-        function previousQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                showQuestion();
-            }
-        }
-
-        function showResults() {
-            document.getElementById('quizScreen').classList.add('hidden');
-            document.getElementById('resultsScreen').classList.remove('hidden');
-
-            const correct = userAnswers.filter((ans, i) => ans === questions[i].correct).length;
-            const wrong = 50 - correct;
-            const percentage = Math.round((correct / 50) * 100);
-
-            // Mostra nome e cognome nei risultati
-            document.getElementById('studentDisplay').textContent = 'Studente: ' + studentName + ' ' + studentSurname;
-            
-            document.getElementById('finalScore').textContent = correct + '/50';
-            document.getElementById('correctCount').textContent = correct;
-            document.getElementById('wrongCount').textContent = wrong;
-            document.getElementById('percentage').textContent = percentage + '%';
-
-            // Genera testo risultati
-            const resultsText = generateResultsText(correct, wrong, percentage);
-            document.getElementById('resultsText').value = resultsText;
-        }
-
-        function generateResultsText(correct, wrong, percentage) {
-            const date = new Date().toLocaleDateString('it-IT');
-            const time = new Date().toLocaleTimeString('it-IT');
-
-            let text = 'QUIZ PASSATO PROSSIMO E PRONOMI\n';
-            text += '================================\n\n';
-            text += 'DATI STUDENTE:\n';
-            text += 'Nome: ' + studentName + '\n';
-            text += 'Cognome: ' + studentSurname + '\n\n';
-            text += 'Data: ' + date + ' ' + time + '\n';
-            text += '\nRISULTATI:\n';
-            text += 'Risposte corrette: ' + correct + '/50\n';
-            text += 'Risposte sbagliate: ' + wrong + '/50\n';
-            text += 'Percentuale: ' + percentage + '%\n';
-            text += 'Valutazione: ' + (percentage >= 60 ? 'SUPERATO ✅' : 'DA RIPROVARE ❌') + '\n\n';
-
-            text += 'DETTAGLIO RISPOSTE:\n';
-            for (let i = 0; i < 50; i++) {
-                const ans = userAnswers[i];
-                const q = questions[i];
-                const isCorrect = ans === q.correct;
-                text += (i + 1) + '. ' + (isCorrect ? '✓' : '✗') + ' ' + q.q + '\n';
-                text += '   Risposta: ' + q.options[ans] + ' | Corretto: ' + q.options[q.correct] + '\n';
-            }
-
-            return text;
-        }
-
-        function sendResults() {
-            const email = document.getElementById('emailInput').value;
-            const resultsText = document.getElementById('resultsText').value;
-
-            const subject = encodeURIComponent('Risultati Quiz Passato Prossimo e Pronomi - ' + studentName + ' ' + studentSurname);
-            const body = encodeURIComponent(resultsText);
-            const mailtoLink = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
-
-            window.location.href = mailtoLink;
-
-            setTimeout(function() {
-                alert('Se il client email non si è aperto automaticamente,\ncopia il testo dalla casella sottostante e incollalo in una email a:\n' + email);
-            }, 500);
-        }
-    </script><script>
-// Configurazione
-const STORAGE_KEY = 'nefeli_education_results';
-
-// Funzione da chiamare quando lo studente completa il quiz
-function saveQuizResult(studentName, studentEmail, correctCount, totalQuestions, durationMinutes) {
-    const result = {
-        id: Date.now().toString(36) + Math.random().toString(36).substr(2),
-        studentName: studentName || 'Anonimo',
-        studentEmail: studentEmail || '',
-        quizTitle: document.title.replace(' - Quiz', '').replace(' - Portale Didattico', ''),
-        correctAnswers: correctCount,
-        totalQuestions: totalQuestions,
-        percentage: Math.round((correctCount / totalQuestions) * 100),
-        duration: durationMinutes ? durationMinutes + ' min' : '-',
-        date: new Date().toISOString(),
-        userAgent: navigator.userAgent
-    };
-    
-    // Recupera risultati esistenti
-    let results = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    results.push(result);
-    
-    // Salva
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
-    
-    console.log('Risultato salvato:', result);
-    return result;
+    document.getElementById('startScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.remove('hidden');
+    currentQuestion = 0;
+    userAnswers = new Array(TOTAL).fill(null);
+    score = 0;
+    showQuestion();
 }
 
-// Esempio di utilizzo (da adattare alla logica del tuo quiz):
-// saveQuizResult('Mario Rossi', 'mario@email.com', 42, 50, 15);
+function showQuestion() {
+    const q = questions[currentQuestion];
+    document.getElementById('questionText').textContent = q.q;
+    document.getElementById('currentQ').textContent = currentQuestion + 1;
+    document.getElementById('qNum').textContent = currentQuestion + 1;
+    document.getElementById('qCategory').textContent = q.cat;
+
+    const progress = ((currentQuestion + 1) / TOTAL) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+
+    const container = document.getElementById('answersContainer');
+    container.innerHTML = '';
+
+    q.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerHTML = `<span class="opt-letter">${LETTERS[index]}</span><span>${opt}</span>`;
+        btn.onclick = function() { selectAnswer(index); };
+
+        if (userAnswers[currentQuestion] !== null) {
+            btn.disabled = true;
+            if (index === q.correct) btn.classList.add('correct');
+            else if (index === userAnswers[currentQuestion]) btn.classList.add('wrong');
+        }
+        container.appendChild(btn);
+    });
+
+    const fb = document.getElementById('feedback');
+    if (userAnswers[currentQuestion] !== null) {
+        const isCorrect = userAnswers[currentQuestion] === q.correct;
+        fb.className = 'feedback-box ' + (isCorrect ? 'correct' : 'wrong');
+        document.getElementById('feedbackLabel').textContent = isCorrect ? 'Risposta corretta' : 'Risposta errata';
+        document.getElementById('feedbackText').textContent = q.expl;
+    } else {
+        fb.className = 'feedback-box';
+    }
+
+    document.getElementById('prevBtn').disabled = currentQuestion === 0;
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = userAnswers[currentQuestion] === null;
+    nextBtn.textContent = currentQuestion === TOTAL - 1 ? 'Visualizza risultati →' : 'Successiva →';
+}
+
+function selectAnswer(index) {
+    if (userAnswers[currentQuestion] !== null) return;
+    userAnswers[currentQuestion] = index;
+    const q = questions[currentQuestion];
+
+    document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correct) btn.classList.add('correct');
+        else if (i === index) btn.classList.add('wrong');
+    });
+
+    const isCorrect = index === q.correct;
+    if (isCorrect) score++;
+
+    const fb = document.getElementById('feedback');
+    fb.className = 'feedback-box ' + (isCorrect ? 'correct' : 'wrong');
+    document.getElementById('feedbackLabel').textContent = isCorrect ? 'Risposta corretta' : 'Risposta errata';
+    document.getElementById('feedbackText').textContent = q.expl;
+
+    document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion() {
+    if (currentQuestion === TOTAL - 1) showResults();
+    else { currentQuestion++; showQuestion(); }
+}
+
+function previousQuestion() {
+    if (currentQuestion > 0) { currentQuestion--; showQuestion(); }
+}
+
+function showResults() {
+    document.getElementById('quizScreen').classList.add('hidden');
+    document.getElementById('resultsScreen').classList.remove('hidden');
+
+    const correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+    const wrong = TOTAL - correct;
+    const pct = Math.round((correct / TOTAL) * 100);
+    const passed = pct >= 60;
+
+    document.getElementById('studentDisplay').textContent = studentName + ' ' + studentSurname;
+    document.getElementById('dateDisplay').textContent = new Date().toLocaleDateString('it-IT');
+    document.getElementById('finalScore').textContent = correct;
+    document.getElementById('correctCount').textContent = correct;
+    document.getElementById('wrongCount').textContent = wrong;
+    document.getElementById('percentage').textContent = pct + '%';
+
+    const verdict = document.getElementById('verdict');
+    verdict.textContent = passed ? 'SUPERATO' : 'NON SUPERATO';
+    verdict.className = 'verdict ' + (passed ? 'pass' : 'fail');
+
+    document.getElementById('resultsText').value = generateResultsText(correct, wrong, pct);
+
+    // Save to localStorage
+    try {
+        const STORAGE_KEY = 'nefeli_education_results';
+        const result = {
+            id: Date.now().toString(36) + Math.random().toString(36).substr(2),
+            studentName: studentName + ' ' + studentSurname,
+            quizTitle: 'Passato Prossimo e Pronomi — 100 domande',
+            correctAnswers: correct,
+            totalQuestions: TOTAL,
+            percentage: pct,
+            date: new Date().toISOString()
+        };
+        let results = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        results.push(result);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
+    } catch(e) {}
+}
+
+function generateResultsText(correct, wrong, pct) {
+    const date = new Date().toLocaleDateString('it-IT');
+    const time = new Date().toLocaleTimeString('it-IT');
+    let t = 'VERIFICA: PASSATO PROSSIMO E PRONOMI (100 domande)\n';
+    t += '====================================================\n\n';
+    t += 'STUDENTE: ' + studentName + ' ' + studentSurname + '\n';
+    t += 'DATA: ' + date + ' ' + time + '\n\n';
+    t += 'RISULTATI\n';
+    t += 'Risposte corrette: ' + correct + '/100\n';
+    t += 'Risposte errate:   ' + wrong + '/100\n';
+    t += 'Percentuale:       ' + pct + '%\n';
+    t += 'Esito:             ' + (pct >= 60 ? 'SUPERATO' : 'NON SUPERATO') + '\n\n';
+    t += 'DETTAGLIO RISPOSTE\n';
+    for (let i = 0; i < TOTAL; i++) {
+        const ans = userAnswers[i];
+        const q = questions[i];
+        const ok = ans === q.correct;
+        t += (i+1) + '. ' + (ok ? '✓' : '✗') + ' ' + q.q + '\n';
+        t += '   Scelta: ' + q.options[ans] + ' | Corretta: ' + q.options[q.correct] + '\n';
+    }
+    return t;
+}
+
+function sendResults() {
+    const email = document.getElementById('emailInput').value;
+    const text = document.getElementById('resultsText').value;
+    const subject = encodeURIComponent('Verifica Passato Prossimo e Pronomi — ' + studentName + ' ' + studentSurname);
+    const body = encodeURIComponent(text);
+    window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+    setTimeout(() => {
+        alert('Se il client email non si è aperto, copiare il testo dalla casella sottostante e inviarlo a:\n' + email);
+    }, 500);
+}
 </script>
-    
 </body>
 </html>
