@@ -1391,9 +1391,6 @@
             // Genera testo risultati
             const resultsText = generateResultsText(correct, wrong, percentage, evaluation);
             document.getElementById('resultsText').value = resultsText;
-
-            // Salva risultato per admin
-            _saveResult(studentName + ' ' + studentSurname, studentEmail, correct, 10);
         }
 
         function getEvaluation(correct) {
@@ -1496,26 +1493,6 @@
             studentName = '';
             studentSurname = '';
             studentEmail = '';
-        }
-
-        function _saveResult(name, email, correct, total) {
-            try {
-                const STORAGE_KEY = 'nefeli_education_results';
-                const result = {
-                    id: Date.now().toString(36) + Math.random().toString(36).substr(2),
-                    studentName: name || 'Anonimo',
-                    studentEmail: email || '',
-                    quizTitle: 'Test di Comprensione A2 - Italiano per Stranieri',
-                    correctAnswers: correct,
-                    totalQuestions: total,
-                    percentage: Math.round((correct / total) * 100),
-                    duration: 0,
-                    date: new Date().toISOString()
-                };
-                let results = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-                results.push(result);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
-            } catch(e) {}
         }
     </script>
 </body>

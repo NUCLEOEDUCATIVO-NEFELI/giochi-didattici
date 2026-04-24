@@ -1,3 +1,1297 @@
+<!DOCTYPE html>
+<!-- saved from url=(0012)about:srcdoc -->
+<html lang="it"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.13/html-to-image.min.js" integrity="sha512-iZ2ORl595Wx6miw+GuadDet4WQbdSWS3JLMoNfY8cRGoEFy6oT3G9IbcrBeL6AfkgpA51ETt/faX6yLV+/gFJg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+      (function() {
+        const originalConsole = window.console;
+        window.console = {
+          log: (...args) => {
+            originalConsole.log(...args);
+            window.parent.postMessage({ type: 'console', message: args.join(' ') }, '*');
+          },
+          error: (...args) => {
+            originalConsole.error(...args);
+            window.parent.postMessage({ type: 'console', message: 'Error: ' + args.join(' ') }, '*');
+          },
+          warn: (...args) => {
+            originalConsole.warn(...args);
+            window.parent.postMessage({ type: 'console', message: 'Warning: ' + args.join(' ') }, '*');
+          }
+        };
 
-<!-- saved from url=(0011)about:blank -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script>window.__CF$cv$params={r:'9ef2cf0c0a08edab',t:'MTc3NjY3NDA1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);</script><script src="https://a.claude.ai/cdn-cgi/challenge-platform/scripts/jsd/main.js"></script><style id="_goober"> .go1475592160{height:0;}.go1671063245{height:auto;}.go1888806478{display:flex;flex-wrap:wrap;flex-grow:1;}@media (min-width:600px){.go1888806478{flex-grow:initial;min-width:288px;}}.go167266335{background-color:#313131;font-size:0.875rem;line-height:1.43;letter-spacing:0.01071em;color:#fff;align-items:center;padding:6px 16px;border-radius:4px;box-shadow:0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12);}.go3162094071{padding-left:20px;}.go3844575157{background-color:#313131;}.go1725278324{background-color:#43a047;}.go3651055292{background-color:#d32f2f;}.go4215275574{background-color:#ff9800;}.go1930647212{background-color:#2196f3;}.go946087465{display:flex;align-items:center;padding:8px 0;}.go703367398{display:flex;align-items:center;margin-left:auto;padding-left:16px;margin-right:-8px;}.go3963613292{width:100%;position:relative;transform:translateX(0);top:0;right:0;bottom:0;left:0;min-width:288px;}.go1141946668{box-sizing:border-box;display:flex;max-height:100%;position:fixed;z-index:1400;height:auto;width:auto;transition:top 300ms ease 0ms,right 300ms ease 0ms,bottom 300ms ease 0ms,left 300ms ease 0ms,max-width 300ms ease 0ms;pointer-events:none;max-width:calc(100% - 40px);}.go1141946668 .notistack-CollapseWrapper{padding:6px 0px;transition:padding 300ms ease 0ms;}@media (max-width:599.95px){.go1141946668{width:100%;max-width:calc(100% - 32px);}}.go3868796639 .notistack-CollapseWrapper{padding:2px 0px;}.go3118922589{top:14px;flex-direction:column;}.go1453831412{bottom:14px;flex-direction:column-reverse;}.go4027089540{left:20px;}@media (min-width:600px){.go4027089540{align-items:flex-start;}}@media (max-width:599.95px){.go4027089540{left:16px;}}.go2989568495{right:20px;}@media (min-width:600px){.go2989568495{align-items:flex-end;}}@media (max-width:599.95px){.go2989568495{right:16px;}}.go4034260886{left:50%;transform:translateX(-50%);}@media (min-width:600px){.go4034260886{align-items:center;}}</style></head><body></body></html>
+        let requestId = 0;
+        let callbacksMap = new Map();
+        let streamControllers = new Map();
+        
+        window.claude = {
+          complete: (prompt) => {
+            return new Promise((resolve, reject) => {
+              const id = requestId++;
+              callbacksMap.set(id, { resolve, reject });
+              window.parent.postMessage({ type: 'claudeComplete', id, prompt }, '*');
+            });
+          }
+        };
+
+        window.storage = {
+          get: (key, shared = false) => {
+            return new Promise((resolve, reject) => {
+              const id = requestId++;
+              callbacksMap.set(id, { resolve, reject });
+              window.parent.postMessage({ type: 'storageGet', id, key, shared }, '*');
+            });
+          },
+          set: (key, value, shared = false) => {
+            return new Promise((resolve, reject) => {
+              const id = requestId++;
+              callbacksMap.set(id, { resolve, reject });
+              window.parent.postMessage({ type: 'storageSet', id, key, value, shared }, '*');
+            });
+          },
+          delete: (key, shared = false) => {
+            return new Promise((resolve, reject) => {
+              const id = requestId++;
+              callbacksMap.set(id, { resolve, reject });
+              window.parent.postMessage({ type: 'storageDelete', id, key, shared }, '*');
+            });
+          },
+          list: (prefix, shared = false) => {
+            return new Promise((resolve, reject) => {
+              const id = requestId++;
+              callbacksMap.set(id, { resolve, reject });
+              window.parent.postMessage({ type: 'storageList', id, prefix, shared }, '*');
+            });
+          }
+        };
+
+        let pendingBlobs = new Map();
+        URL.createObjectURL = (blob) => {
+          // Store the blob and create an ID and URL for it
+          const blobId = `blob-${Date.now()}-${Math.random()}`;
+          pendingBlobs.set(blobId, blob);
+          return `blob-request://${blobId}`;
+        };
+
+        URL.revokeObjectURL = (url) => {
+          // Remove the blob from our store
+          const blobId = url.replace("blob-request://", "");
+          pendingBlobs.delete(blobId);
+        };
+
+        const getBlobFromURL = (url) => {
+          const blobId = url.replace("blob-request://", "");
+          return pendingBlobs.get(blobId);
+        };
+
+        // Override global fetch with streaming support
+        window.fetch = (url, init = {}) => {
+          return new Promise((resolve, reject) => {
+            const id = requestId++;
+            const channelId = `fetch-${id}-${Date.now()}`;
+            
+            callbacksMap.set(id, { 
+              resolve: (response) => {
+                // Create a ReadableStream for the response body
+                const stream = new ReadableStream({
+                  start(controller) {
+                    streamControllers.set(channelId, controller);
+                  },
+                  cancel() {
+                    streamControllers.delete(channelId);
+                  }
+                });
+                
+                // Create and return the Response with the stream
+                resolve(new Response(stream, {
+                  status: response.status,
+                  statusText: response.statusText,
+                  headers: response.headers
+                }));
+              },
+              reject,
+              channelId
+            });
+            
+            window.parent.postMessage({
+              type: 'proxyFetch',
+              id,
+              url,
+              init,
+              channelId
+            }, '*');
+          });
+        };
+
+        window.addEventListener('message', async (event) => {
+          if (event.data.type === 'takeScreenshot') {
+            const rootElement = document.getElementById('artifacts-component-root-html');
+            if (!rootElement) {
+              window.parent.postMessage({
+                type: 'screenshotError',
+                error: new Error('Root element not found'),
+              }, '*');
+            }
+            const screenshot = await htmlToImage.toPng(rootElement, {
+              imagePlaceholder:
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePDgwX8ACOQDoNsk0PMAAAAASUVORK5CYII=",
+            });
+            window.parent.postMessage({
+              type: 'screenshotData',
+              data: screenshot,
+            }, '*');
+          } else if (event.data.type === 'claudeComplete') {
+            const callback = callbacksMap.get(event.data.id);
+            if (event.data.error) {
+              callback.reject(new Error(event.data.error));
+            } else {
+              callback.resolve(event.data.completion);
+            }
+            callbacksMap.delete(event.data.id);
+          } else if (event.data.type === 'proxyFetchResponse') {
+            const callback = callbacksMap.get(event.data.id);
+            if (event.data.error) {
+              callback.reject(new Error(event.data.error));
+              callbacksMap.delete(event.data.id);
+            } else {
+              // Initial response with headers, status, etc.
+              callback.resolve({
+                status: event.data.status,
+                statusText: event.data.statusText,
+                headers: event.data.headers
+              });
+              // Don't delete the callback yet if streaming
+              if (!event.data.body) {
+                callbacksMap.delete(event.data.id);
+              }
+            }
+          } else if (event.data.type === 'proxyFetchStream') {
+            // Handle streaming data chunks
+            const controller = streamControllers.get(event.data.channelId);
+            if (controller) {
+              if (event.data.error) {
+                controller.error(new Error(event.data.error));
+                streamControllers.delete(event.data.channelId);
+              } else if (event.data.done) {
+                controller.close();
+                streamControllers.delete(event.data.channelId);
+                // Clean up the callback
+                const callback = Array.from(callbacksMap.entries()).find(
+                  ([_, value]) => value.channelId === event.data.channelId
+                );
+                if (callback) {
+                  callbacksMap.delete(callback[0]);
+                }
+              } else if (event.data.chunk) {
+                controller.enqueue(new Uint8Array(event.data.chunk));
+              }
+            }
+          } else if (event.data.type === 'storageGet') {
+            const callback = callbacksMap.get(event.data.id);
+            if (event.data.error) {
+              callback.reject(new Error(event.data.error));
+            } else {
+              callback.resolve(event.data.result);
+            }
+            callbacksMap.delete(event.data.id);
+          } else if (event.data.type === 'storageSet') {
+            const callback = callbacksMap.get(event.data.id);
+            if (event.data.error) {
+              callback.reject(new Error(event.data.error));
+            } else {
+              callback.resolve(event.data.result);
+            }
+            callbacksMap.delete(event.data.id);
+          } else if (event.data.type === 'storageDelete') {
+            const callback = callbacksMap.get(event.data.id);
+            if (event.data.error) {
+              callback.reject(new Error(event.data.error));
+            } else {
+              callback.resolve(event.data.result);
+            }
+            callbacksMap.delete(event.data.id);
+          } else if (event.data.type === 'storageList') {
+            const callback = callbacksMap.get(event.data.id);
+            if (event.data.error) {
+              callback.reject(new Error(event.data.error));
+            } else {
+              callback.resolve(event.data.result);
+            }
+            callbacksMap.delete(event.data.id);
+          }
+        });
+
+        window.addEventListener('click', (event) => {
+          const isEl = event.target instanceof HTMLElement;
+          if (!isEl) return;
+    
+          // find ancestor links
+          const linkEl = event.target.closest("a");
+          if (!linkEl || !linkEl.href) return;
+    
+          event.preventDefault();
+          event.stopImmediatePropagation();
+    
+          if (linkEl.href.startsWith("blob-request:")) {
+            const blob = getBlobFromURL(linkEl.href);
+            if (!blob) return;
+            void blob.arrayBuffer().then((data) => {
+              window.parent.postMessage({
+                type: "downloadFile",
+                filename: linkEl.download,
+                data,
+                mimeType: blob.type || "application/octet-stream",
+              });
+            });
+          } else if (linkEl.href.startsWith("data:")) {
+            const [header, base64Data] = linkEl.href.split(",");
+            const mimeMatch = header.match(/data:([^;]+)/);
+            const mimeType = mimeMatch ? mimeMatch[1] : "application/octet-stream";
+            const binaryString = atob(base64Data);
+            const data = Uint8Array.from(binaryString, (c) =>
+              c.charCodeAt(0),
+            ).buffer;
+            window.parent.postMessage({
+              type: "downloadFile",
+              filename: linkEl.download,
+              data,
+              mimeType,
+            });
+          } else {
+            let linkUrl;
+            try {
+              linkUrl = new URL(linkEl.href);
+            } catch (error) {
+              return;
+            }
+    
+            if (linkUrl.hostname === window.location.hostname) return;
+      
+            window.parent.postMessage({
+              type: 'openExternal',
+              href: linkEl.href,
+            }, '*');
+          }
+      });
+
+        const originalOpen = window.open;
+        window.open = function (url) {
+          window.parent.postMessage({
+            type: "openExternal",
+            href: url,
+          }, "*");
+        };
+
+        window.addEventListener('error', (event) => {
+          window.parent.postMessage({ type: 'console', message: 'Uncaught Error: ' + event.message }, '*');
+        });
+      })();
+    </script>
+  
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passato Prossimo - 1 Minuto Challenge!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700;900&display=swap');
+
+        :root {
+            --ink: #1a1a2e;
+            --ink-light: #4a4a6a;
+            --ink-muted: #8a8aaa;
+            --parchment: #faf8f3;
+            --parchment-dark: #f0ece0;
+            --rule: #c8b89a;
+            --rule-light: #e0d8c8;
+            --accent: #8b1a1a;
+            --accent-dark: #6b0f0f;
+            --success: #1a4a1a;
+            --gold: #b8960c;
+            --gold-light: #f5e6a3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background-color: #1a1a2e;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(139,26,26,0.08) 27px, rgba(139,26,26,0.08) 28px),
+                repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(139,26,26,0.03) 80px, rgba(139,26,26,0.03) 81px);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .start-screen, .end-screen {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(10,10,20,0.92);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000; backdrop-filter: blur(6px);
+        }
+
+        .modal {
+            background: var(--parchment);
+            border: 1px solid var(--rule);
+            border-top: 5px solid var(--accent);
+            padding: 50px 58px;
+            max-width: 640px; width: 92%;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6), 8px 8px 0 rgba(139,26,26,0.15);
+            position: relative;
+        }
+
+        .modal::before {
+            content: ''; position: absolute;
+            top: 14px; left: 0; right: 0; height: 1px;
+            background: var(--rule-light);
+        }
+
+        .modal-icon { font-size: 2.6em; text-align: center; margin-bottom: 8px; }
+
+        .modal h2 {
+            font-family: 'EB Garamond', serif;
+            font-size: 2.5em; font-weight: 700; color: var(--ink);
+            letter-spacing: 0.06em; text-transform: uppercase;
+            text-align: center; margin-bottom: 4px;
+        }
+
+        .modal-sub {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.72em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--accent); text-align: center; margin-bottom: 22px;
+        }
+
+        .modal p {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.12em; color: var(--ink-light);
+            line-height: 1.75; text-align: center; margin-bottom: 22px;
+        }
+
+        .rules-box {
+            background: var(--parchment-dark);
+            border: 1px solid var(--rule);
+            border-left: 4px solid var(--accent);
+            padding: 20px 24px; margin: 18px 0 26px;
+        }
+
+        .rules-box h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.66em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--ink-muted); margin-bottom: 12px;
+        }
+
+        .rules-box ul { list-style: none; padding: 0; }
+
+        .rules-box li {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.04em; color: var(--ink-light);
+            margin: 8px 0; padding-left: 20px;
+            position: relative; line-height: 1.5;
+        }
+
+        .rules-box li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+        .rules-box li strong { color: var(--ink); }
+        .rules-box li em { color: var(--accent); font-style: italic; }
+
+        .start-btn, .restart-btn {
+            display: block; width: 100%;
+            background: var(--accent); color: var(--parchment); border: none;
+            padding: 17px 40px; font-size: 0.82em;
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+            cursor: pointer; transition: background 0.15s;
+        }
+        .start-btn:hover, .restart-btn:hover { background: var(--accent-dark); }
+
+        /* GAME */
+        .game-container {
+            width: 95%; max-width: 840px;
+            background: var(--parchment);
+            border: 1px solid var(--rule); border-top: 5px solid var(--accent);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 6px 6px 0 rgba(139,26,26,0.12);
+            position: relative; padding: 32px 38px 38px;
+        }
+
+        .game-header {
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--rule-light);
+            padding-bottom: 16px; margin-bottom: 20px;
+        }
+
+        .game-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.45em; font-weight: 600; color: var(--ink);
+            letter-spacing: 0.08em; text-transform: uppercase;
+        }
+
+        .game-subtitle {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.68em; font-weight: 600;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--ink-muted); margin-top: 3px;
+        }
+
+        .timer-block { text-align: center; }
+
+        .timer-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.58em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--ink-muted); margin-bottom: 2px;
+        }
+
+        .timer-value {
+            font-family: 'EB Garamond', serif;
+            font-size: 3.8em; font-weight: 700;
+            color: var(--accent); line-height: 1;
+        }
+
+        .timer-value.warning {
+            color: #6b0f0f;
+            animation: timerPulse 0.5s infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .stats-row {
+            display: flex; gap: 10px;
+            margin-bottom: 18px; align-items: stretch;
+        }
+
+        .stat-box {
+            background: var(--parchment-dark);
+            border: 1px solid var(--rule);
+            padding: 10px 18px; flex: 1; text-align: center;
+        }
+
+        .stat-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.58em; font-weight: 700;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--ink-muted); display: block; margin-bottom: 3px;
+        }
+
+        .stat-value {
+            font-family: 'EB Garamond', serif;
+            font-size: 2em; font-weight: 700; color: var(--ink); line-height: 1;
+        }
+
+        .combo-box {
+            background: var(--ink); border: 1px solid var(--ink);
+            padding: 10px 18px; min-width: 120px; text-align: center; display: none;
+        }
+
+        .combo-box.active { display: block; animation: comboAppear 0.3s ease; }
+
+        @keyframes comboAppear {
+            from { transform: scale(0.75); opacity: 0; }
+            to   { transform: scale(1);    opacity: 1; }
+        }
+
+        .combo-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.58em; font-weight: 700;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--gold); display: block; margin-bottom: 3px;
+        }
+
+        .combo-value {
+            font-family: 'EB Garamond', serif;
+            font-size: 2em; font-weight: 700; color: var(--gold-light); line-height: 1;
+        }
+
+        .speed-tag {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.64em; font-weight: 700;
+            letter-spacing: 0.10em; text-transform: uppercase;
+            padding: 10px 14px; border: 1px solid var(--rule);
+            color: var(--ink-muted); background: var(--parchment-dark);
+            white-space: nowrap; display: flex; align-items: center;
+        }
+
+        .streak-bar {
+            width: 100%; height: 3px;
+            background: var(--rule-light); margin-bottom: 18px;
+        }
+
+        .streak-fill {
+            height: 100%; background: var(--accent);
+            width: 0%; transition: width 0.3s ease;
+        }
+
+        .question-card {
+            background: var(--parchment-dark);
+            border: 1px solid var(--rule); border-left: 5px solid var(--accent);
+            padding: 34px 38px; text-align: center; margin-bottom: 22px;
+            min-height: 130px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            animation: cardSlideIn 0.32s ease;
+        }
+
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.64em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--ink-muted); margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-family: 'EB Garamond', serif;
+            font-size: 2em; color: var(--ink);
+            line-height: 1.55; font-style: italic;
+        }
+
+        .question-text .highlight {
+            font-style: normal; font-weight: 700;
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 1px;
+        }
+
+        .buttons-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+        }
+
+        .btn {
+            padding: 28px 20px;
+            font-family: 'EB Garamond', serif;
+            font-size: 1.9em; font-weight: 700;
+            border: 2px solid; cursor: pointer;
+            transition: all 0.12s ease;
+            letter-spacing: 0.06em; text-align: center;
+        }
+
+        .btn-sub {
+            display: block;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.38em; font-weight: 600;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            opacity: 0.65; margin-top: 6px;
+        }
+
+        .btn-vero {
+            background: var(--success); border-color: var(--success); color: var(--parchment);
+        }
+
+        .btn-vero:hover:not(:disabled) {
+            background: #0f3a0f; border-color: #0f3a0f;
+            transform: translateY(-3px); box-shadow: 0 8px 20px rgba(26,74,26,0.40);
+        }
+
+        .btn-falso {
+            background: var(--parchment); border-color: var(--accent); color: var(--accent);
+        }
+
+        .btn-falso:hover:not(:disabled) {
+            background: var(--accent); color: var(--parchment);
+            transform: translateY(-3px); box-shadow: 0 8px 20px rgba(139,26,26,0.40);
+        }
+
+        .btn:active:not(:disabled) { transform: translateY(0) !important; box-shadow: none !important; }
+
+        .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+        .keyboard-hint {
+            display: flex; justify-content: space-between; margin-top: 12px;
+        }
+
+        .key-hint {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.65em; font-weight: 600;
+            letter-spacing: 0.10em; text-transform: uppercase;
+            color: var(--ink-muted); text-align: center; flex: 1;
+        }
+
+        .key-badge {
+            display: inline-block; border: 1px solid var(--rule);
+            background: var(--parchment-dark); padding: 1px 7px;
+            font-family: 'Libre Baskerville', serif; font-size: 0.95em;
+            color: var(--ink); margin-right: 3px;
+        }
+
+        .feedback {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            font-family: 'EB Garamond', serif;
+            font-size: 7em; font-weight: 700;
+            animation: feedbackPop 0.52s ease forwards;
+            pointer-events: none; z-index: 1000;
+        }
+
+        @keyframes feedbackPop {
+            0%   { transform: translate(-50%,-50%) scale(0.1); opacity: 0; }
+            45%  { transform: translate(-50%,-50%) scale(1.2); opacity: 1; }
+            75%  { transform: translate(-50%,-50%) scale(1.0); opacity: 1; }
+            100% { transform: translate(-50%,-50%) scale(1.0); opacity: 0; }
+        }
+
+        .feedback.correct { color: var(--success); }
+        .feedback.wrong   { color: #6b0f0f; }
+
+        .particles {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 999;
+        }
+
+        .particle {
+            position: absolute; width: 7px; height: 7px;
+            animation: particleFall 1s ease-out forwards;
+        }
+
+        @keyframes particleFall {
+            0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(380px) rotate(540deg) scale(0); opacity: 0; }
+        }
+
+        .final-score-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.68em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--ink-muted); text-align: center;
+            margin-top: 24px; margin-bottom: 4px;
+        }
+
+        .final-score {
+            font-family: 'EB Garamond', serif;
+            font-size: 5.5em; font-weight: 700; color: var(--accent);
+            text-align: center; line-height: 1; margin-bottom: 16px;
+        }
+
+        .final-stats {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1em; color: var(--ink-light);
+            text-align: center; line-height: 2; margin-bottom: 26px;
+        }
+
+        hr.divider { border: none; border-top: 1px solid var(--rule); margin: 20px 0; }
+
+        .hidden { display: none !important; }
+    </style>
+<style id="_goober"> .go1475592160{height:0;}.go1671063245{height:auto;}.go1888806478{display:flex;flex-wrap:wrap;flex-grow:1;}@media (min-width:600px){.go1888806478{flex-grow:initial;min-width:288px;}}.go167266335{background-color:#313131;font-size:0.875rem;line-height:1.43;letter-spacing:0.01071em;color:#fff;align-items:center;padding:6px 16px;border-radius:4px;box-shadow:0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12);}.go3162094071{padding-left:20px;}.go3844575157{background-color:#313131;}.go1725278324{background-color:#43a047;}.go3651055292{background-color:#d32f2f;}.go4215275574{background-color:#ff9800;}.go1930647212{background-color:#2196f3;}.go946087465{display:flex;align-items:center;padding:8px 0;}.go703367398{display:flex;align-items:center;margin-left:auto;padding-left:16px;margin-right:-8px;}.go3963613292{width:100%;position:relative;transform:translateX(0);top:0;right:0;bottom:0;left:0;min-width:288px;}.go1141946668{box-sizing:border-box;display:flex;max-height:100%;position:fixed;z-index:1400;height:auto;width:auto;transition:top 300ms ease 0ms,right 300ms ease 0ms,bottom 300ms ease 0ms,left 300ms ease 0ms,max-width 300ms ease 0ms;pointer-events:none;max-width:calc(100% - 40px);}.go1141946668 .notistack-CollapseWrapper{padding:6px 0px;transition:padding 300ms ease 0ms;}@media (max-width:599.95px){.go1141946668{width:100%;max-width:calc(100% - 32px);}}.go3868796639 .notistack-CollapseWrapper{padding:2px 0px;}.go3118922589{top:14px;flex-direction:column;}.go1453831412{bottom:14px;flex-direction:column-reverse;}.go4027089540{left:20px;}@media (min-width:600px){.go4027089540{align-items:flex-start;}}@media (max-width:599.95px){.go4027089540{left:16px;}}.go2989568495{right:20px;}@media (min-width:600px){.go2989568495{align-items:flex-end;}}@media (max-width:599.95px){.go2989568495{right:16px;}}.go4034260886{left:50%;transform:translateX(-50%);}@media (min-width:600px){.go4034260886{align-items:center;}}</style></head>
+<body id="artifacts-component-root-html">
+
+    <!-- START -->
+    <div class="start-screen" id="startScreen">
+        <div class="modal">
+            <div class="modal-icon">⏱</div>
+            <h2>Passato Prossimo</h2>
+            <div class="modal-sub">1 Minuto Challenge</div>
+            <p>Leggi la frase. La forma in <strong>rosso</strong> è corretta?<br>
+               Rispondi <strong>Vero</strong> o <strong>Falso</strong> il più velocemente possibile!</p>
+            <div class="rules-box">
+                <h3>Regole Rapide</h3>
+                <ul>
+                    <li><strong>Ausiliare:</strong> <em>avere</em> o <em>essere</em> + participio passato</li>
+                    <li><strong>Con avere:</strong> participio invariabile — <em>ho mangiato, hai letto, ha capito</em></li>
+                    <li><strong>Con essere:</strong> participio concorda con il soggetto — <em>sono andato/a, siamo partiti/e</em></li>
+                    <li><strong>Participi -are → -ato:</strong> <em>parlato, lavorato, mangiato</em></li>
+                    <li><strong>Participi -ere → -uto / irregolari:</strong> <em>veduto/visto, letto, scritto, preso, perso</em></li>
+                    <li><strong>Participi -ire → -ito / irregolari:</strong> <em>capito, partito, aperto, venuto, uscito</em></li>
+                </ul>
+            </div>
+            <button class="start-btn" onclick="startGame()">Inizia il Gioco →</button>
+        </div>
+    </div>
+
+    <!-- END -->
+    <div class="end-screen hidden" id="endScreen">
+        <div class="modal">
+            <div class="modal-icon">⏰</div>
+            <h2>Tempo Scaduto</h2>
+            <div class="modal-sub">Risultato Finale</div>
+            <hr class="divider">
+            <div class="final-score-label">Risposte Corrette</div>
+            <div class="final-score" id="finalCorrect">0</div>
+            <div class="final-stats" id="finalStats"></div>
+            <button class="restart-btn" onclick="restartGame()">Gioca Ancora →</button>
+        </div>
+    </div>
+
+    <!-- GAME -->
+    <div class="game-container hidden" id="gameContainer">
+        <div class="game-header">
+            <div>
+                <div class="game-title">Passato Prossimo</div>
+                <div class="game-subtitle">La forma evidenziata è corretta? Vero o Falso?</div>
+            </div>
+            <div class="timer-block">
+                <div class="timer-label">Tempo</div>
+                <div class="timer-value" id="mainTimer">60</div>
+            </div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <span class="stat-label">Corrette</span>
+                <span class="stat-value" id="correctCount">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Sbagliate</span>
+                <span class="stat-value" id="wrongCount">0</span>
+            </div>
+            <div class="combo-box" id="comboDisplay">
+                <span class="combo-label">Combo</span>
+                <span class="combo-value">×<span id="comboCount">1</span></span>
+            </div>
+            <div class="speed-tag" id="speedIndicator">— Normale</div>
+        </div>
+
+        <div class="streak-bar"><div class="streak-fill" id="streakFill"></div></div>
+
+        <div class="question-card" id="questionCard">
+            <div class="question-label">La forma evidenziata è corretta?</div>
+            <div class="question-text" id="questionText">Pronti…</div>
+        </div>
+
+        <div class="buttons-container">
+            <button class="btn btn-vero" id="btnVero" onclick="answer(true)">
+                Vero
+                <span class="btn-sub">Tasto V  oppure  ←</span>
+            </button>
+            <button class="btn btn-falso" id="btnFalso" onclick="answer(false)">
+                Falso
+                <span class="btn-sub">Tasto F  oppure  →</span>
+            </button>
+        </div>
+
+        <div class="keyboard-hint">
+            <div class="key-hint"><span class="key-badge">V</span> Vero</div>
+            <div class="key-hint"><span class="key-badge">F</span> Falso</div>
+        </div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+
+    <script>
+        // Ogni item: sentence con {forma} in evidenza, correct = true se la forma è giusta
+        const allQuestions = [
+
+            // ═══ FORME CORRETTE ═══════════════════════════════════════════════
+
+            // avere + -are (participio -ato) — corrette
+            { sentence: "Ieri io {ho parlato} con il direttore.", correct: true },
+            { sentence: "Tu {hai parlato} con Marco ieri sera?", correct: true },
+            { sentence: "Lei {ha parlato} al telefono per un'ora.", correct: true },
+            { sentence: "Noi {abbiamo parlato} di questo ieri.", correct: true },
+            { sentence: "Voi {avete parlato} con il professore.", correct: true },
+            { sentence: "Loro {hanno parlato} alla riunione.", correct: true },
+
+            { sentence: "Stamattina io {ho lavorato} da casa.", correct: true },
+            { sentence: "Tu {hai lavorato} sabato scorso?", correct: true },
+            { sentence: "Lei {ha lavorato} fino a tardi.", correct: true },
+            { sentence: "Noi {abbiamo lavorato} sodo tutto il giorno.", correct: true },
+            { sentence: "Voi {avete lavorato} sullo stesso progetto.", correct: true },
+            { sentence: "Loro {hanno lavorato} tutta la notte.", correct: true },
+
+            { sentence: "Io {ho studiato} tutta la notte.", correct: true },
+            { sentence: "Tu {hai studiato} con me ieri?", correct: true },
+            { sentence: "Lei {ha studiato} medicina.", correct: true },
+            { sentence: "Noi {abbiamo studiato} insieme per l'esame.", correct: true },
+            { sentence: "Loro {hanno studiato} all'estero.", correct: true },
+
+            { sentence: "Io {ho mangiato} al ristorante ieri sera.", correct: true },
+            { sentence: "Tu {hai mangiato} con noi sabato?", correct: true },
+            { sentence: "Lui {ha mangiato} la pizza.", correct: true },
+            { sentence: "Noi {abbiamo mangiato} alle otto.", correct: true },
+            { sentence: "Loro {hanno mangiato} tardi.", correct: true },
+
+            { sentence: "Io {ho cercato} casa in centro.", correct: true },
+            { sentence: "Tu {hai cercato} le chiavi dappertutto.", correct: true },
+            { sentence: "Noi {abbiamo cercato} di arrivare puntuali.", correct: true },
+            { sentence: "Io {ho pagato} il conto.", correct: true },
+            { sentence: "Tu {hai pagato} con la carta?", correct: true },
+            { sentence: "Lui {ha pagato} il biglietto online.", correct: true },
+
+            { sentence: "Io {ho cominciato} il corso lunedì.", correct: true },
+            { sentence: "Il film {è cominciato} alle nove.", correct: true },
+            { sentence: "Tu {hai viaggiato} in Asia l'anno scorso?", correct: true },
+
+            // avere + -ere (participio -uto o irregolare) — corrette
+            { sentence: "Io {ho preso} il treno delle sette.", correct: true },
+            { sentence: "Tu {hai preso} l'ombrello?", correct: true },
+            { sentence: "Lui {ha preso} una decisione.", correct: true },
+            { sentence: "Noi {abbiamo preso} un caffè insieme.", correct: true },
+            { sentence: "Loro {hanno preso} il volo di sera.", correct: true },
+
+            { sentence: "Io {ho scritto} una lettera ieri.", correct: true },
+            { sentence: "Tu {hai scritto} il tuo nome qui?", correct: true },
+            { sentence: "Lei {ha scritto} il rapporto entro venerdì.", correct: true },
+            { sentence: "Noi {abbiamo scritto} un articolo insieme.", correct: true },
+
+            { sentence: "Io {ho letto} quel libro questa settimana.", correct: true },
+            { sentence: "Tu {hai letto} le istruzioni prima?", correct: true },
+            { sentence: "Lui {ha letto} la notizia stamattina.", correct: true },
+
+            { sentence: "Io {ho risposto} alla tua email.", correct: true },
+            { sentence: "Loro {hanno risposto} entro ieri.", correct: true },
+
+            { sentence: "Io {ho visto} quel film.", correct: true },
+            { sentence: "Tu {hai visto} Marco oggi?", correct: true },
+            { sentence: "Loro {hanno visto} tutta la serie.", correct: true },
+
+            { sentence: "Io {ho chiuso} la finestra.", correct: true },
+            { sentence: "Lei {ha chiuso} il negozio.", correct: true },
+
+            { sentence: "Io {ho perso} le chiavi.", correct: true },
+            { sentence: "Tu {hai perso} il treno?", correct: true },
+
+            { sentence: "Io {ho messo} il libro sul tavolo.", correct: true },
+            { sentence: "Lei {ha messo} la giacca.", correct: true },
+
+            { sentence: "Io {ho fatto} i compiti ieri sera.", correct: true },
+            { sentence: "Tu {hai fatto} la spesa?", correct: true },
+            { sentence: "Lui {ha fatto} del suo meglio.", correct: true },
+            { sentence: "Noi {abbiamo fatto} una passeggiata.", correct: true },
+            { sentence: "Loro {hanno fatto} una festa sabato.", correct: true },
+
+            { sentence: "Io {ho detto} la verità.", correct: true },
+            { sentence: "Tu {hai detto} la tua opinione?", correct: true },
+            { sentence: "Lei {ha detto} di no.", correct: true },
+            { sentence: "Loro {hanno detto} la stessa cosa.", correct: true },
+
+            { sentence: "Io {ho bevuto} un caffè.", correct: true },
+            { sentence: "Tu {hai bevuto} tutta l'acqua?", correct: true },
+            { sentence: "Lui {ha bevuto} il caffè al bar.", correct: true },
+            { sentence: "Noi {abbiamo bevuto} un brindisi.", correct: true },
+
+            { sentence: "Io {ho saputo} la risposta.", correct: true },
+            { sentence: "Tu {hai saputo} la notizia?", correct: true },
+
+            { sentence: "Io {ho potuto} venire.", correct: true },
+            { sentence: "Noi {abbiamo potuto} partire presto.", correct: true },
+
+            { sentence: "Io {ho dovuto} lavorare sabato.", correct: true },
+            { sentence: "Tu {hai dovuto} aspettare?", correct: true },
+            { sentence: "Loro {hanno dovuto} partire.", correct: true },
+
+            { sentence: "Io {ho voluto} un caffè.", correct: true },
+            { sentence: "Tu {hai voluto} venire con noi?", correct: true },
+
+            { sentence: "Io {ho avuto} tempo ieri.", correct: true },
+            { sentence: "Tu {hai avuto} bisogno di aiuto.", correct: true },
+            { sentence: "Lui {ha avuto} paura.", correct: true },
+            { sentence: "Noi {abbiamo avuto} una riunione.", correct: true },
+            { sentence: "Loro {hanno avuto} molte domande.", correct: true },
+
+            // essere + verbi di moto/stato — corrette
+            { sentence: "Ieri io {sono andato} al mercato.", correct: true },
+            { sentence: "Tu {sei andato} in vacanza quest'estate?", correct: true },
+            { sentence: "Lei {è andata} dal medico ieri.", correct: true },
+            { sentence: "Noi {siamo andati} al mare.", correct: true },
+            { sentence: "Voi {siete andati} a piedi o in macchina?", correct: true },
+            { sentence: "Loro {sono andati} in Italia l'anno scorso.", correct: true },
+
+            { sentence: "Io {sono venuto} alla festa.", correct: true },
+            { sentence: "Tu {sei venuto} con me?", correct: true },
+            { sentence: "Lui {è venuto} tardi.", correct: true },
+            { sentence: "Noi {siamo venuti} a trovarti.", correct: true },
+            { sentence: "Loro {sono venuti} in macchina.", correct: true },
+
+            { sentence: "Io {sono partito} ieri mattina.", correct: true },
+            { sentence: "Tu {sei partita} con noi?", correct: true },
+            { sentence: "Lei {è partita} alle sei.", correct: true },
+            { sentence: "Noi {siamo partiti} dopo colazione.", correct: true },
+            { sentence: "Loro {sono partiti} la settimana scorsa.", correct: true },
+
+            { sentence: "Io {sono rimasto} a casa.", correct: true },
+            { sentence: "Tu {sei rimasta} con noi?", correct: true },
+            { sentence: "Lui {è rimasto} a dormire.", correct: true },
+            { sentence: "Loro {sono rimasti} fino a domenica.", correct: true },
+
+            { sentence: "Io {sono stato} a Roma.", correct: true },
+            { sentence: "Tu {sei stato} pronto.", correct: true },
+            { sentence: "Lei {è stata} contenta della notizia.", correct: true },
+            { sentence: "Noi {siamo stati} in anticipo.", correct: true },
+            { sentence: "Loro {sono stati} qui tutto il giorno.", correct: true },
+
+            { sentence: "Io {sono uscito} presto.", correct: true },
+            { sentence: "Tu {sei uscita} con loro?", correct: true },
+            { sentence: "Loro {sono usciti} insieme.", correct: true },
+
+            { sentence: "Io {sono entrato} in aula.", correct: true },
+            { sentence: "Lei {è entrata} senza bussare.", correct: true },
+
+            { sentence: "Il treno {è arrivato} in ritardo.", correct: true },
+            { sentence: "Loro {sono arrivati} tardi.", correct: true },
+            { sentence: "Tu {sei arrivata} in orario?", correct: true },
+
+            { sentence: "Io {sono tornato} a casa tardi.", correct: true },
+            { sentence: "Noi {siamo tornati} stanchi.", correct: true },
+            { sentence: "Lei {è tornata} dal lavoro.", correct: true },
+
+            { sentence: "Io {sono caduto} dalla bicicletta.", correct: true },
+            { sentence: "Lei {è caduta} sulle scale.", correct: true },
+
+            { sentence: "Il negozio {è aperto} alle nove.", correct: false },  // presente, non passato
+            // (errore nascosto — sopra è un falso che sembra vero)
+
+            { sentence: "La riunione {è finita} tardi.", correct: true },
+            { sentence: "Il corso {è finito} a giugno.", correct: true },
+            { sentence: "Loro {sono finiti} i biglietti.", correct: true },
+
+            { sentence: "Io {sono nato} a Milano.", correct: true },
+            { sentence: "Tu {sei nata} in Italia?", correct: true },
+
+            { sentence: "Mia nonna {è morta} l'anno scorso.", correct: true },
+            { sentence: "Il fiore {è cresciuto} in fretta.", correct: true },
+
+            // ═══ FORME SBAGLIATE ══════════════════════════════════════════════
+
+            // Ausiliare sbagliato: essere invece di avere
+            { sentence: "Ieri io {sono mangiato} al ristorante.", correct: false },
+            { sentence: "Tu {sei parlato} con Marco ieri sera?", correct: false },
+            { sentence: "Lui {è lavorato} fino a tardi.", correct: false },
+            { sentence: "Noi {siamo preso} il treno.", correct: false },
+            { sentence: "Voi {siete detto} la verità?", correct: false },
+            { sentence: "Loro {sono fatto} i compiti.", correct: false },
+            { sentence: "Io {sono bevuto} un caffè.", correct: false },
+            { sentence: "Tu {sei scritto} una lettera?", correct: false },
+            { sentence: "Lei {è letto} il libro.", correct: false },
+
+            // Ausiliare sbagliato: avere invece di essere
+            { sentence: "Ieri io {ho andato} al mercato.", correct: false },
+            { sentence: "Tu {hai venuto} alla festa?", correct: false },
+            { sentence: "Lui {ha partito} stamattina.", correct: false },
+            { sentence: "Noi {abbiamo stati} in anticipo.", correct: false },
+            { sentence: "Loro {hanno arrivati} tardi.", correct: false },
+            { sentence: "Io {ho uscito} presto.", correct: false },
+            { sentence: "Tu {hai rimasto} a casa?", correct: false },
+            { sentence: "Lei {ha tornata} dal lavoro.", correct: false },
+            { sentence: "Io {ho caduto} dalla bicicletta.", correct: false },
+            { sentence: "Noi {abbiamo partiti} dopo colazione.", correct: false },
+
+            // Participio sbagliato — forma inventata o errata
+            { sentence: "Io {ho parlato} con lui ieri.", correct: true },  // corretta (distractor)
+            { sentence: "Io {ho parlarato} con lui ieri.", correct: false },
+            { sentence: "Tu {hai mangiuto} la pizza?", correct: false },
+            { sentence: "Lui {ha scrivo} una lettera.", correct: false },
+            { sentence: "Noi {abbiamo vedo} quel film.", correct: false },
+            { sentence: "Io {ho leggo} quel libro.", correct: false },
+            { sentence: "Tu {hai rispondo} alla mia email?", correct: false },
+            { sentence: "Lei {ha chiuduto} la finestra.", correct: false },
+            { sentence: "Io {ho perduto} le chiavi.", correct: true },  // corretta (forma letteraria accettata)
+            { sentence: "Io {ho mettuto} il libro sul tavolo.", correct: false },
+            { sentence: "Lui {ha facendo} del suo meglio.", correct: false },
+            { sentence: "Tu {hai dicuto} la verità?", correct: false },
+            { sentence: "Io {ho bevato} un caffè.", correct: false },
+            { sentence: "Noi {abbiamo sapito} la risposta.", correct: false },
+            { sentence: "Loro {hanno potuto} venire.", correct: true },  // corretta (distractor)
+            { sentence: "Io {ho volito} un caffè.", correct: false },
+            { sentence: "Tu {hai avato} bisogno di aiuto.", correct: false },
+
+            // Accordo sbagliato del participio con essere
+            { sentence: "Lei {è andato} dal medico ieri.", correct: false },
+            { sentence: "Noi {siamo andato} al mare.", correct: false },
+            { sentence: "Loro {sono andato} in Italia.", correct: false },
+            { sentence: "Tu {sei venuta} con me? (riferito a un uomo)", correct: false },
+            { sentence: "Loro {sono venuto} in macchina.", correct: false },
+            { sentence: "Noi {siamo partito} dopo colazione.", correct: false },
+            { sentence: "Lei {è rimasto} a dormire.", correct: false },
+            { sentence: "Loro {sono rimasto} fino a domenica.", correct: false },
+            { sentence: "Noi {siamo stati} in anticipo.", correct: true },  // corretta (distractor)
+            { sentence: "Le ragazze {sono stati} qui.", correct: false },
+            { sentence: "Loro {sono arrivato} tardi.", correct: false },
+            { sentence: "Tu {sei tornato} dal lavoro? (riferito a una donna)", correct: false },
+            { sentence: "Le amiche {sono tornato} stanche.", correct: false },
+            { sentence: "Io {sono caduta} dalla bicicletta. (riferito a un uomo)", correct: false },
+            { sentence: "La riunione {è finito} tardi.", correct: false },
+            { sentence: "Loro {sono finito} i biglietti.", correct: false },
+            { sentence: "Tu {sei nata} in Italia?", correct: true },  // corretta (distractor)
+            { sentence: "Io {sono nato} a Milano. (riferito a una donna)", correct: false },
+
+            // Confusione con il presente
+            { sentence: "Ieri io {parlo} con lui.", correct: false },
+            { sentence: "Stamattina loro {mangiano} fuori.", correct: false },
+            { sentence: "Ieri tu {lavori} da casa.", correct: false },
+            { sentence: "La settimana scorsa lei {studia} all'università.", correct: false },
+            { sentence: "Ieri noi {usciamo} presto.", correct: false },
+            { sentence: "L'anno scorso loro {vanno} in Italia.", correct: false },
+            { sentence: "Ieri io {vado} al mercato.", correct: false },
+            { sentence: "Lui {viene} alla festa ieri.", correct: false },
+            { sentence: "Io {faccio} i compiti ieri sera.", correct: false },
+            { sentence: "Io {so} la risposta ieri.", correct: false },
+            { sentence: "Tu {sei} a Roma ieri.", correct: false },
+
+            // Errori di persona nell'ausiliare
+            { sentence: "Io {hai mangiato} la pizza.", correct: false },
+            { sentence: "Tu {ho lavorato} stamattina.", correct: false },
+            { sentence: "Lui {abbiamo visto} il film.", correct: false },
+            { sentence: "Noi {hai detto} la verità.", correct: false },
+            { sentence: "Voi {ha fatto} tardi ieri sera?", correct: false },
+            { sentence: "Loro {ho bevuto} un caffè.", correct: false },
+            { sentence: "Io {siamo andati} al mare.", correct: false },
+            { sentence: "Tu {sono partita} alle sei.", correct: false },
+            { sentence: "Noi {è venuto} a trovarti.", correct: false },
+            { sentence: "Loro {sei rimasto} a casa.", correct: false },
+        ];
+
+        let questions = [];
+        let currentQuestion = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let combo = 0;
+        let maxCombo = 0;
+        let gameTimer;
+        let timeRemaining = 60;
+        let audioContext;
+        let musicInterval;
+        let isMusicPlaying = false;
+        let musicTempo = 1;
+
+        function shuffle(array) {
+            const a = [...array];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        // ── AUDIO ────────────────────────────────────────────────────────────
+        function initAudio() {
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playTone(freq, duration, type = 'sine', vol = 0.15) {
+            if (!audioContext) return;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain); gain.connect(audioContext.destination);
+            osc.frequency.value = freq; osc.type = type;
+            gain.gain.setValueAtTime(vol, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+            osc.start(); osc.stop(audioContext.currentTime + duration);
+        }
+
+        function playDrum(time, intensity = 1) {
+            if (!audioContext) return;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain); gain.connect(audioContext.destination);
+            osc.frequency.setValueAtTime(120, time);
+            osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.12);
+            gain.gain.setValueAtTime(0.25 * intensity, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.12);
+            osc.start(time); osc.stop(time + 0.12);
+        }
+
+        function playHiHat(time) {
+            if (!audioContext) return;
+            const bufferSize = audioContext.sampleRate * 0.05;
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+            const noise = audioContext.createBufferSource();
+            noise.buffer = buffer;
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'highpass'; filter.frequency.value = 6000;
+            const gain = audioContext.createGain();
+            gain.gain.setValueAtTime(0.08, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
+            noise.connect(filter); filter.connect(gain); gain.connect(audioContext.destination);
+            noise.start(time);
+        }
+
+        function playBackgroundMusic() {
+            if (!audioContext || isMusicPlaying) return;
+            isMusicPlaying = true;
+            const beatTime = 0.5 / musicTempo;
+            let noteIndex = 0;
+            const scales = {
+                normal: [261.63, 329.63, 392.00, 493.88],
+                fast:   [293.66, 369.99, 440.00, 523.25],
+                ultra:  [329.63, 415.30, 493.88, 587.33]
+            };
+            let scale = musicTempo > 1.8 ? scales.ultra : musicTempo > 1.3 ? scales.fast : scales.normal;
+
+            function beat() {
+                if (!isMusicPlaying) return;
+                const now = audioContext.currentTime;
+                playDrum(now, 1);
+                setTimeout(() => { if (isMusicPlaying) playHiHat(audioContext.currentTime); }, (beatTime * 500) / 2);
+                playTone(scale[noteIndex % 4], beatTime * 0.75, 'triangle', 0.10);
+                if (musicTempo > 1.2) playTone(scale[(noteIndex + 2) % 4], beatTime * 0.5, 'sine', 0.06);
+                noteIndex++;
+                musicInterval = setTimeout(beat, beatTime * 1000);
+            }
+            beat();
+        }
+
+        function stopMusic() {
+            isMusicPlaying = false;
+            if (musicInterval) clearTimeout(musicInterval);
+        }
+
+        function playCorrectSound() {
+            if (!audioContext) return;
+            playTone(523.25, 0.08, 'sine', 0.18);
+            setTimeout(() => playTone(659.25, 0.10, 'sine', 0.18), 90);
+            setTimeout(() => playTone(783.99, 0.25, 'sine', 0.18), 180);
+        }
+
+        function playWrongSound() {
+            if (!audioContext) return;
+            playTone(220, 0.25, 'sawtooth', 0.18);
+            setTimeout(() => playTone(165, 0.30, 'sawtooth', 0.18), 200);
+        }
+
+        function playComboSound() {
+            if (!audioContext) return;
+            [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+                setTimeout(() => playTone(f, 0.12, 'square', 0.12), i * 70);
+            });
+        }
+
+        function playTickSound() {
+            if (!audioContext) return;
+            playTone(880, 0.04, 'sine', 0.08);
+        }
+
+        // ── GAME ─────────────────────────────────────────────────────────────
+        function startGame() {
+            initAudio();
+            if (audioContext.state === 'suspended') audioContext.resume();
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('gameContainer').classList.remove('hidden');
+            questions = shuffle(allQuestions).slice(0, 80);
+            currentQuestion = 0; correctCount = 0; wrongCount = 0;
+            combo = 0; maxCombo = 0; timeRemaining = 60; musicTempo = 1;
+            updateDisplay(); startTimer(); playBackgroundMusic(); showQuestion();
+        }
+
+        function startTimer() {
+            const timerEl = document.getElementById('mainTimer');
+            gameTimer = setInterval(() => {
+                timeRemaining--;
+                timerEl.textContent = timeRemaining;
+                if (timeRemaining <= 10) { timerEl.classList.add('warning'); playTickSound(); }
+                if (timeRemaining <= 0) endGame();
+            }, 1000);
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= questions.length) {
+                questions = shuffle(allQuestions).slice(0, 80);
+                currentQuestion = 0;
+            }
+            const q = questions[currentQuestion];
+            document.getElementById('questionText').innerHTML =
+                q.sentence.replace(/\{([^}]+)\}/, '<span class="highlight">$1</span>');
+            const card = document.getElementById('questionCard');
+            card.style.animation = 'none';
+            setTimeout(() => { card.style.animation = 'cardSlideIn 0.32s ease'; }, 10);
+            document.getElementById('btnVero').disabled = false;
+            document.getElementById('btnFalso').disabled = false;
+        }
+
+        function answer(userSaysTrue) {
+            const q = questions[currentQuestion];
+            const isCorrect = userSaysTrue === q.correct;
+            document.getElementById('btnVero').disabled = true;
+            document.getElementById('btnFalso').disabled = true;
+
+            if (isCorrect) {
+                correctCount++; combo++;
+                if (combo > maxCombo) maxCombo = combo;
+                if (combo > 0 && combo % 3 === 0) {
+                    musicTempo = Math.min(musicTempo + 0.25, 2.5);
+                    stopMusic(); playBackgroundMusic();
+                    playComboSound(); createParticles();
+                } else { playCorrectSound(); }
+                showFeedback(true);
+            } else {
+                wrongCount++; combo = 0; musicTempo = 1;
+                stopMusic(); playBackgroundMusic();
+                playWrongSound(); showFeedback(false);
+            }
+            updateDisplay(); updateComboDisplay();
+            setTimeout(() => { currentQuestion++; showQuestion(); }, 380);
+        }
+
+        function showFeedback(isCorrect) {
+            const fb = document.createElement('div');
+            fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+            fb.textContent = isCorrect ? '✓' : '✗';
+            document.body.appendChild(fb);
+            setTimeout(() => fb.remove(), 520);
+        }
+
+        function updateDisplay() {
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('wrongCount').textContent = wrongCount;
+            document.getElementById('streakFill').style.width = Math.min((combo / 10) * 100, 100) + '%';
+            const speedEl = document.getElementById('speedIndicator');
+            if (musicTempo >= 2)        { speedEl.textContent = '🔥 Ultra Veloce'; speedEl.style.color = '#8b1a1a'; }
+            else if (musicTempo >= 1.5) { speedEl.textContent = '⚡ Molto Rapido'; speedEl.style.color = '#b8600c'; }
+            else if (musicTempo >= 1.25){ speedEl.textContent = '▲ Rapido';        speedEl.style.color = '#6b6b20'; }
+            else                        { speedEl.textContent = '— Normale';        speedEl.style.color = '#8a8aaa'; }
+        }
+
+        function updateComboDisplay() {
+            const box = document.getElementById('comboDisplay');
+            document.getElementById('comboCount').textContent = combo;
+            if (combo > 1) box.classList.add('active'); else box.classList.remove('active');
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 24; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = '40%';
+                p.style.animationDelay = Math.random() * 0.3 + 's';
+                p.style.background = Math.random() > 0.5 ? '#b8960c' : '#8b1a1a';
+                p.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 1100);
+            }
+        }
+
+        function endGame() {
+            clearInterval(gameTimer); stopMusic();
+            document.getElementById('gameContainer').classList.add('hidden');
+            document.getElementById('endScreen').classList.remove('hidden');
+            document.getElementById('finalCorrect').textContent = correctCount;
+            const total = correctCount + wrongCount;
+            const pct = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+            document.getElementById('finalStats').innerHTML =
+                `Risposte date: ${total}<br>Errate: ${wrongCount}<br>Percentuale: ${pct}%<br>Combo massima: ${maxCombo}`;
+            if (audioContext) {
+                [261.63, 329.63, 392.00, 523.25, 659.25, 783.99].forEach((f, i) => {
+                    setTimeout(() => playTone(f, 0.5, 'sine', 0.15), i * 130);
+                });
+            }
+        }
+
+        function restartGame() {
+            document.getElementById('endScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+            document.getElementById('mainTimer').classList.remove('warning');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('gameContainer').classList.contains('hidden')) return;
+            if (document.getElementById('btnVero').disabled) return;
+            const k = e.key.toLowerCase();
+            if (k === 'v' || k === '1' || k === 'arrowleft') { e.preventDefault(); answer(true); }
+            else if (k === 'f' || k === '2' || k === 'arrowright') { e.preventDefault(); answer(false); }
+        });
+    </script>
+
+
+</body></html>
