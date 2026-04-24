@@ -639,6 +639,9 @@
         evalBox.className = 'evaluation-box' + (evaluation.sufficient ? ' sufficient' : ' insufficient');
 
         document.getElementById('resultsText').value = generateResultsText(correct, wrong, percentage, evaluation);
+
+        // Salva risultato per admin
+        _saveResult(studentName + ' ' + studentSurname, studentEmail, correct, 100);
     }
 
     function getEvaluation(percentage) {
@@ -712,6 +715,26 @@
         studentName = '';
         studentSurname = '';
         studentEmail = '';
+    }
+
+    function _saveResult(name, email, correct, total) {
+        try {
+            const STORAGE_KEY = 'nefeli_education_results';
+            const result = {
+                id: Date.now().toString(36) + Math.random().toString(36).substr(2),
+                studentName: name || 'Anonimo',
+                studentEmail: email || '',
+                quizTitle: 'Verbi Riflessivi e Reciproci - Quiz A1/A2',
+                correctAnswers: correct,
+                totalQuestions: total,
+                percentage: Math.round((correct / total) * 100),
+                duration: 0,
+                date: new Date().toISOString()
+            };
+            let results = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            results.push(result);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
+        } catch(e) {}
     }
 </script>
 </body>

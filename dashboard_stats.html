@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Statistiche | Portale Didattico</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap');
+
+        :root {
+            --primary: #1e3a5f;
+            --primary-light: #2c5282;
+            --secondary: #8b4513;
+            --accent: #c9a227;
+            --bg-light: #f7f9fc;
+            --bg-white: #ffffff;
+            --text-dark: #1a202c;
+            --text-medium: #4a5568;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --success: #48bb78;
+            --danger: #e53e3e;
+            --warning: #ed8936;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-top {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-section { display: flex; align-items: center; gap: 15px; }
+        .logo-icon {
+            width: 44px; height: 44px; background: var(--accent);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+        }
+        .logo-text h1 {
+            font-family: 'Merriweather', serif; font-size: 1.4em; font-weight: 700; margin-bottom: 2px;
+        }
+        .logo-text p { font-size: 0.8em; opacity: 0.9; font-weight: 300; }
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+        .btn {
+            padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;
+            font-family: 'Source Sans Pro', sans-serif; font-size: 0.9em; font-weight: 600;
+            transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary {
+            background: var(--accent); color: var(--primary);
+        }
+        .btn-primary:hover {
+            background: #b8941f; transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(201,162,39,0.3);
+        }
+        .btn-outline {
+            background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-outline:hover { background: rgba(255,255,255,0.25); }
+        .btn-sm { padding: 6px 14px; font-size: 0.8em; }
+
+        /* Config Alert */
+        .config-alert {
+            background: #fff5f5; border-left: 4px solid var(--danger);
+            padding: 15px 25px; color: #742a2a; font-size: 0.9em;
+            display: none; align-items: center; gap: 10px;
+        }
+        .config-alert.show { display: flex; }
+
+        /* Main */
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 30px 40px; }
+
+        /* Filters */
+        .filters-bar {
+            background: var(--bg-white); border-radius: 12px; padding: 20px 25px;
+            margin-bottom: 25px; box-shadow: var(--shadow); border: 1px solid var(--border);
+            display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end;
+        }
+        .filter-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 180px; }
+        .filter-group label { font-size: 0.8em; font-weight: 700; color: var(--text-medium); text-transform: uppercase; letter-spacing: 0.5px; }
+        .filter-group input, .filter-group select {
+            padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px;
+            font-family: 'Source Sans Pro', sans-serif; font-size: 0.95em; color: var(--text-dark);
+            transition: border-color 0.3s;
+        }
+        .filter-group input:focus, .filter-group select:focus {
+            outline: none; border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(30,58,95,0.08);
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px; margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: var(--bg-white); border-radius: 12px; padding: 25px;
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+            position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .kpi-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .kpi-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+        }
+        .kpi-card.blue::before { background: linear-gradient(90deg, var(--primary), var(--primary-light)); }
+        .kpi-card.gold::before { background: linear-gradient(90deg, var(--accent), #d4af37); }
+        .kpi-card.green::before { background: linear-gradient(90deg, var(--success), #38a169); }
+        .kpi-card.orange::before { background: linear-gradient(90deg, var(--warning), #dd6b20); }
+
+        .kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .kpi-title { font-size: 0.85em; color: var(--text-light); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .kpi-icon { font-size: 24px; opacity: 0.8; }
+        .kpi-value {
+            font-family: 'Merriweather', serif; font-size: 2.2em; font-weight: 700;
+            color: var(--primary); margin-bottom: 5px; line-height: 1;
+        }
+        .kpi-sub { font-size: 0.85em; color: var(--text-medium); }
+        .kpi-trend {
+            display: inline-flex; align-items: center; gap: 4px; font-size: 0.8em;
+            font-weight: 700; padding: 3px 8px; border-radius: 4px; margin-left: 8px;
+        }
+        .trend-up { background: #c6f6d5; color: #22543d; }
+        .trend-down { background: #fed7d7; color: #742a2a; }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px; margin-bottom: 30px;
+        }
+        .chart-card {
+            background: var(--bg-white); border-radius: 12px; padding: 25px;
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+        }
+        .chart-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);
+        }
+        .chart-title { font-family: 'Merriweather', serif; font-size: 1.1em; color: var(--primary); font-weight: 700; }
+        .chart-container { position: relative; height: 300px; }
+        .chart-container.large { height: 350px; }
+
+        /* Table Section */
+        .table-section {
+            background: var(--bg-white); border-radius: 12px; padding: 25px;
+            box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 30px;
+        }
+        .table-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; flex-wrap: wrap; gap: 15px;
+        }
+        .table-title { font-family: 'Merriweather', serif; font-size: 1.2em; color: var(--primary); font-weight: 700; }
+        .table-meta { font-size: 0.85em; color: var(--text-light); }
+
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+        .data-table th {
+            background: var(--bg-light); color: var(--text-medium); font-weight: 700;
+            text-align: left; padding: 12px 15px; border-bottom: 2px solid var(--border);
+            text-transform: uppercase; font-size: 0.75em; letter-spacing: 0.5px;
+        }
+        .data-table td { padding: 12px 15px; border-bottom: 1px solid var(--border); color: var(--text-dark); }
+        .data-table tr:hover td { background: #f7fafc; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .badge-inline {
+            display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.75em;
+            font-weight: 700; text-transform: uppercase;
+        }
+        .badge-new { background: #c6f6d5; color: #22543d; }
+        .badge-return { background: #bee3f8; color: #2a4365; }
+
+        /* Pagination */
+        .pagination {
+            display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 20px;
+        }
+        .page-btn {
+            padding: 8px 14px; border: 1px solid var(--border); background: white;
+            border-radius: 6px; cursor: pointer; font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.85em; color: var(--text-medium); transition: all 0.2s;
+        }
+        .page-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .page-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Loading */
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 10000; gap: 15px;
+        }
+        .spinner {
+            width: 50px; height: 50px; border: 4px solid var(--border);
+            border-top-color: var(--primary); border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { color: var(--text-medium); font-size: 1em; font-weight: 600; }
+
+        /* Empty State */
+        .empty-state { text-align: center; padding: 40px; color: var(--text-light); }
+        .empty-state-icon { font-size: 48px; margin-bottom: 15px; opacity: 0.5; }
+
+        /* Footer */
+        .footer {
+            background: var(--primary); color: white; padding: 25px 40px; margin-top: 40px;
+            text-align: center; font-size: 0.85em; opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-top { padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .main-container { padding: 20px; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .filters-bar { flex-direction: column; }
+            .data-table { font-size: 0.8em; }
+            .data-table th, .data-table td { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Caricamento statistiche...</div>
+</div>
+
+<!-- Config Alert -->
+<div id="configAlert" class="config-alert">
+    <span>⚠️</span>
+    <span>Configura <strong>BIN_ID</strong> e <strong>API_KEY</strong> nel codice JavaScript per attivare il tracking.</span>
+</div>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-top">
+        <div class="logo-section">
+            <div class="logo-icon">📊</div>
+            <div class="logo-text">
+                <h1>Dashboard Statistiche</h1>
+                <p>Monitoraggio accessi e utenti — Portale Didattico</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-outline btn-sm" onclick="location.href='index.html'">🏠 Torna al Portale</button>
+            <button class="btn btn-primary btn-sm" onclick="exportCSV()">📥 Esporta CSV</button>
+            <button class="btn btn-outline btn-sm" onclick="refreshData()">🔄 Aggiorna</button>
+        </div>
+    </div>
+</header>
+
+<main class="main-container">
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <div class="filter-group">
+            <label>Da data</label>
+            <input type="date" id="filterFrom">
+        </div>
+        <div class="filter-group">
+            <label>A data</label>
+            <input type="date" id="filterTo">
+        </div>
+        <div class="filter-group">
+            <label>Visualizza</label>
+            <select id="filterRange" onchange="applyPresetRange()">
+                <option value="all">Tutto il periodo</option>
+                <option value="today">Oggi</option>
+                <option value="week">Ultimi 7 giorni</option>
+                <option value="month">Ultimi 30 giorni</option>
+            </select>
+        </div>
+        <div class="filter-group" style="flex:0; min-width:auto;">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary" onclick="applyFilters()" style="height:42px;">Applica Filtri</button>
+        </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+        <div class="kpi-card blue">
+            <div class="kpi-header">
+                <span class="kpi-title">Utenti Unici Totali</span>
+                <span class="kpi-icon">👥</span>
+            </div>
+            <div class="kpi-value" id="kpiUsers">—</div>
+            <div class="kpi-sub">Dispositivi distinti registrati</div>
+        </div>
+        <div class="kpi-card green">
+            <div class="kpi-header">
+                <span class="kpi-title">Visite Totali</span>
+                <span class="kpi-icon">📈</span>
+            </div>
+            <div class="kpi-value" id="kpiVisits">—</div>
+            <div class="kpi-sub">Accessi cumulativi al portale</div>
+        </div>
+        <div class="kpi-card gold">
+            <div class="kpi-header">
+                <span class="kpi-title">Visite Oggi</span>
+                <span class="kpi-icon">📅</span>
+            </div>
+            <div class="kpi-value" id="kpiToday">—</div>
+            <div class="kpi-sub" id="kpiTodaySub">—</div>
+        </div>
+        <div class="kpi-card orange">
+            <div class="kpi-header">
+                <span class="kpi-title">Attivi 24h</span>
+                <span class="kpi-icon">🔴</span>
+            </div>
+            <div class="kpi-value" id="kpiActive">—</div>
+            <div class="kpi-sub">Utenti con sessione recente</div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">📊 Andamento Visite</span>
+                <span class="table-meta" id="chartVisitsMeta">ultimi 30 giorni</span>
+            </div>
+            <div class="chart-container large">
+                <canvas id="visitsChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">🕐 Distribuzione Oraria</span>
+                <span class="table-meta">media visite per fascia oraria</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="hoursChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">📱 Tipologia Utenti</span>
+                <span class="table-meta">nuovi vs. ricorrenti</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="usersChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">📆 Visite per Giorno della Settimana</span>
+                <span class="table-meta">distribuzione settimanale</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="weekdayChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Table -->
+    <div class="table-section">
+        <div class="table-header">
+            <div>
+                <div class="table-title">📝 Cronologia Accessi</div>
+                <div class="table-meta" id="tableMeta">Mostra gli ultimi 100 accessi registrati</div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <input type="text" id="searchTable" placeholder="Cerca utente..." 
+                       style="padding:8px 12px; border:2px solid var(--border); border-radius:8px; font-family:'Source Sans Pro'; font-size:0.9em;"
+                       onkeyup="renderTable()">
+                <select id="rowsPerPage" onchange="renderTable()" style="padding:8px; border:2px solid var(--border); border-radius:8px;">
+                    <option value="10">10 righe</option>
+                    <option value="25">25 righe</option>
+                    <option value="50">50 righe</option>
+                </select>
+            </div>
+        </div>
+        <div style="overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Data e Ora</th>
+                        <th>ID Utente</th>
+                        <th>Tipo</th>
+                        <th>Pagina</th>
+                        <th>Dispositivo</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">📭</div><p>Nessun dato disponibile</p></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+</main>
+
+<footer class="footer">
+    Dashboard Statistiche — Portale Didattico Grammatica Italiana &nbsp;|&nbsp; Dati aggiornati: <span id="lastUpdate">—</span>
+</footer>
+
+<script>
+// ==================== CONFIGURAZIONE JSONBIN ====================
+const JSONBIN_CONFIG = {
+    BIN_ID: '69ebca0936566621a8eabdc7',           // <-- SOSTITUISCI con il tuo Bin ID
+    API_KEY: '$2a$10$mZ.qMlZMju3bJxDm7vY69u31zv0HwAPxAqBfdfa.Wn25oUJQ76coa',    // <-- SOSTITUISCI con la tua Master Key
+    BASE_URL: 'https://api.jsonbin.io/v3/b'
+};
+
+// ==================== STATO GLOBALE ====================
+let globalData = null;
+let filteredHistory = [];
+let currentPage = 1;
+let charts = {};
+
+// ==================== UTILITY ====================
+function formatDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleString('it-IT', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+function formatDateShort(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleDateString('it-IT', { day:'2-digit', month:'2-digit' });
+}
+function getDayName(iso) {
+    const days = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
+    return days[new Date(iso).getDay()];
+}
+function getHour(iso) { return new Date(iso).getHours(); }
+function isSameDay(a, b) { return a.split('T')[0] === b.split('T')[0]; }
+function parseDateInput(val) { return val ? new Date(val + 'T00:00:00') : null; }
+
+function showLoading(show) {
+    document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+}
+
+function checkConfig() {
+    const ok = JSONBIN_CONFIG.BIN_ID && !JSONBIN_CONFIG.BIN_ID.includes('TUO');
+    document.getElementById('configAlert').classList.toggle('show', !ok);
+    return ok;
+}
+
+// ==================== FETCH DATA ====================
+async function fetchStats() {
+    if (!checkConfig()) return null;
+    try {
+        const res = await fetch(`${JSONBIN_CONFIG.BASE_URL}/${JSONBIN_CONFIG.BIN_ID}/latest`, {
+            headers: { 'X-Master-Key': JSONBIN_CONFIG.API_KEY, 'X-Bin-Meta': 'false' }
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+    } catch (e) {
+        console.error(e);
+        alert('Errore caricamento dati da JSONBin. Verifica configurazione e connessione.');
+        return null;
+    }
+}
+
+// ==================== FILTRI ====================
+function applyPresetRange() {
+    const range = document.getElementById('filterRange').value;
+    const today = new Date();
+    const from = document.getElementById('filterFrom');
+    const to = document.getElementById('filterTo');
+    if (range === 'all') { from.value = ''; to.value = ''; }
+    else if (range === 'today') {
+        const s = today.toISOString().split('T')[0];
+        from.value = s; to.value = s;
+    } else if (range === 'week') {
+        const d = new Date(today); d.setDate(d.getDate()-6);
+        from.value = d.toISOString().split('T')[0];
+        to.value = today.toISOString().split('T')[0];
+    } else if (range === 'month') {
+        const d = new Date(today); d.setDate(d.getDate()-29);
+        from.value = d.toISOString().split('T')[0];
+        to.value = today.toISOString().split('T')[0];
+    }
+    applyFilters();
+}
+
+function applyFilters() {
+    if (!globalData) return;
+    const fromVal = document.getElementById('filterFrom').value;
+    const toVal = document.getElementById('filterTo').value;
+    const from = fromVal ? new Date(fromVal + 'T00:00:00').getTime() : 0;
+    const to = toVal ? new Date(toVal + 'T23:59:59').getTime() : Infinity;
+
+    filteredHistory = (globalData.visits.history || []).filter(h => {
+        const t = new Date(h.timestamp).getTime();
+        return t >= from && t <= to;
+    });
+
+    updateKPIs(fromVal, toVal);
+    renderCharts();
+    renderTable();
+}
+
+// ==================== KPI ====================
+function updateKPIs(fromVal, toVal) {
+    const stats = globalData;
+    const today = new Date().toISOString().split('T')[0];
+    const isAll = !fromVal && !toVal;
+
+    // Utenti unici totali (sempre globale)
+    document.getElementById('kpiUsers').textContent = (stats.users.totalUnique || 0).toLocaleString('it-IT');
+
+    // Visite totali nel range
+    let visitsCount = filteredHistory.length;
+    if (isAll) visitsCount = stats.visits.total || 0;
+    document.getElementById('kpiVisits').textContent = visitsCount.toLocaleString('it-IT');
+
+    // Visite oggi
+    const todayVisits = isAll ? (stats.visits.today || 0) :
+        filteredHistory.filter(h => h.timestamp && h.timestamp.startsWith(today)).length;
+    document.getElementById('kpiToday').textContent = todayVisits.toLocaleString('it-IT');
+    document.getElementById('kpiTodaySub').textContent = isAll ? 'dall'inizio del tracking' : 'nel periodo selezionato';
+
+    // Attivi 24h (globale)
+    const oneDayAgo = new Date(Date.now() - 86400000).toISOString();
+    const active24 = (stats.users.list || []).filter(u => u.lastSeen > oneDayAgo).length;
+    document.getElementById('kpiActive').textContent = active24.toLocaleString('it-IT');
+
+    document.getElementById('lastUpdate').textContent = formatDate(stats.updatedAt);
+}
+
+// ==================== CHARTS ====================
+function destroyCharts() {
+    Object.values(charts).forEach(c => c && c.destroy());
+    charts = {};
+}
+
+function renderCharts() {
+    destroyCharts();
+    const history = filteredHistory.length ? filteredHistory : (globalData.visits.history || []);
+    const isFiltered = filteredHistory.length > 0;
+
+    // 1. Andamento visite (per giorno)
+    const dayMap = {};
+    history.forEach(h => {
+        const d = h.timestamp ? h.timestamp.split('T')[0] : 'unknown';
+        dayMap[d] = (dayMap[d] || 0) + 1;
+    });
+    const sortedDays = Object.keys(dayMap).sort();
+    // Se troppi giorni, raggruppa per settimana o mostra ultimi 30
+    let labels = sortedDays.map(d => {
+        const [y,m,day] = d.split('-');
+        return `${day}/${m}`;
+    });
+    let data = sortedDays.map(d => dayMap[d]);
+    if (labels.length > 30) {
+        labels = labels.slice(-30);
+        data = data.slice(-30);
+    }
+
+    const ctx1 = document.getElementById('visitsChart').getContext('2d');
+    charts.visits = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Visite',
+                data: data,
+                borderColor: '#1e3a5f',
+                backgroundColor: 'rgba(30,58,95,0.08)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: '#c9a227',
+                pointBorderColor: '#1e3a5f',
+                pointBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+    document.getElementById('chartVisitsMeta').textContent = isFiltered ? 'periodo filtrato' : (labels.length + ' giorni');
+
+    // 2. Distribuzione oraria
+    const hours = new Array(24).fill(0);
+    history.forEach(h => { const hr = getHour(h.timestamp); if (hr >= 0) hours[hr]++; });
+    const ctx2 = document.getElementById('hoursChart').getContext('2d');
+    charts.hours = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: hours.map((_,i) => `${i.toString().padStart(2,'0')}:00`),
+            datasets: [{
+                label: 'Visite',
+                data: hours,
+                backgroundColor: '#2c5282',
+                borderRadius: 4,
+                hoverBackgroundColor: '#c9a227'
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } }, x: { grid: { display: false }, ticks: { maxTicksLimit: 12 } } }
+        }
+    });
+
+    // 3. Tipologia utenti (nuovi vs ricorrenti nel periodo)
+    const seenInPeriod = new Set(history.map(h => h.userId));
+    let newUsers = 0, returning = 0;
+    seenInPeriod.forEach(uid => {
+        const user = (globalData.users.list || []).find(u => u.id === uid);
+        if (user && user.visitsCount <= 1) newUsers++;
+        else returning++;
+    });
+    if (!seenInPeriod.size) { newUsers = 0; returning = 0; }
+    const ctx3 = document.getElementById('usersChart').getContext('2d');
+    charts.users = new Chart(ctx3, {
+        type: 'doughnut',
+        data: {
+            labels: ['Nuovi', 'Ricorrenti'],
+            datasets: [{
+                data: [newUsers, returning],
+                backgroundColor: ['#48bb78', '#c9a227'],
+                borderWidth: 0,
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { padding: 20, font: { family: 'Source Sans Pro' } } }
+            },
+            cutout: '60%'
+        }
+    });
+
+    // 4. Giorni della settimana
+    const weekdays = [0,0,0,0,0,0,0]; // dom-sab
+    history.forEach(h => { const d = new Date(h.timestamp).getDay(); weekdays[d]++; });
+    const ctx4 = document.getElementById('weekdayChart').getContext('2d');
+    charts.weekday = new Chart(ctx4, {
+        type: 'bar',
+        data: {
+            labels: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
+            datasets: [{
+                label: 'Visite',
+                data: weekdays,
+                backgroundColor: '#1e3a5f',
+                borderRadius: 4,
+                hoverBackgroundColor: '#2c5282'
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } }, x: { grid: { display: false } } }
+        }
+    });
+}
+
+// ==================== TABLE ====================
+function renderTable() {
+    const tbody = document.getElementById('historyTableBody');
+    const search = document.getElementById('searchTable').value.toLowerCase();
+    const perPage = parseInt(document.getElementById('rowsPerPage').value);
+
+    let rows = [...filteredHistory].reverse(); // più recenti prima
+    if (search) {
+        rows = rows.filter(r => (r.userId || '').toLowerCase().includes(search));
+    }
+
+    const total = rows.length;
+    const totalPages = Math.max(1, Math.ceil(total / perPage));
+    if (currentPage > totalPages) currentPage = totalPages;
+    const start = (currentPage - 1) * perPage;
+    const pageRows = rows.slice(start, start + perPage);
+
+    if (!pageRows.length) {
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">📭</div><p>Nessun risultato</p></div></td></tr>`;
+        renderPagination(0, 0);
+        return;
+    }
+
+    tbody.innerHTML = pageRows.map((row, idx) => {
+        const user = (globalData.users.list || []).find(u => u.id === row.userId);
+        const isNew = user && user.visitsCount <= 1;
+        const device = (row.userAgent || '').split(' ')[0] || '—';
+        return `<tr>
+            <td>${start + idx + 1}</td>
+            <td>${formatDate(row.timestamp)}</td>
+            <td><code style="background:#f7fafc;padding:2px 6px;border-radius:4px;font-size:0.85em;">${(row.userId || '').substring(0, 20)}...</code></td>
+            <td><span class="badge-inline ${isNew ? 'badge-new' : 'badge-return'}">${isNew ? 'Nuovo' : 'Ricorrente'}</span></td>
+            <td>${row.page || '/'}</td>
+            <td style="color:var(--text-light);font-size:0.85em;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${row.userAgent || ''}">${device}</td>
+        </tr>`;
+    }).join('');
+
+    renderPagination(totalPages, total);
+}
+
+function renderPagination(totalPages, totalItems) {
+    const el = document.getElementById('pagination');
+    if (totalPages <= 1) { el.innerHTML = `<span style="color:var(--text-light);font-size:0.85em;">${totalItems} record totali</span>`; return; }
+
+    let html = `<span style="color:var(--text-light);font-size:0.85em;margin-right:10px;">Pagina ${currentPage} di ${totalPages} (${totalItems} record)</span>`;
+    html += `<button class="page-btn" onclick="changePage(-1)" ${currentPage===1?'disabled':''}>← Prec</button>`;
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            html += `<span style="color:var(--text-light);">…</span>`;
+        }
+    }
+    html += `<button class="page-btn" onclick="changePage(1)" ${currentPage===totalPages?'disabled':''}>Succ →</button>`;
+    el.innerHTML = html;
+}
+
+function changePage(delta) { currentPage += delta; renderTable(); }
+function goPage(n) { currentPage = n; renderTable(); }
+
+// ==================== EXPORT CSV ====================
+function exportCSV() {
+    if (!globalData) return;
+    const rows = [...filteredHistory].reverse();
+    if (!rows.length) { alert('Nessun dato da esportare'); return; }
+
+    const headers = ['Data/Ora','ID Utente','Visite Utente','Tipo','Pagina','User Agent'];
+    const csv = [headers.join(';')].concat(rows.map(r => {
+        const u = (globalData.users.list || []).find(x => x.id === r.userId);
+        return [
+            r.timestamp || '',
+            r.userId || '',
+            u ? u.visitsCount : 0,
+            u && u.visitsCount <= 1 ? 'Nuovo' : 'Ricorrente',
+            r.page || '',
+            `"${(r.userAgent || '').replace(/"/g,'""')}"`
+        ].join(';');
+    })).join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `statistiche_portale_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// ==================== INIT ====================
+async function refreshData() {
+    showLoading(true);
+    globalData = await fetchStats();
+    showLoading(false);
+    if (globalData) {
+        applyFilters();
+    }
+}
+
+// Avvio
+document.addEventListener('DOMContentLoaded', () => {
+    // Imposta default range "ultimi 7 giorni"
+    const today = new Date();
+    const weekAgo = new Date(today); weekAgo.setDate(weekAgo.getDate() - 6);
+    document.getElementById('filterFrom').value = weekAgo.toISOString().split('T')[0];
+    document.getElementById('filterTo').value = today.toISOString().split('T')[0];
+    document.getElementById('filterRange').value = 'week';
+
+    refreshData();
+
+    // Auto-refresh ogni 60 secondi
+    setInterval(() => {
+        if (checkConfig()) refreshData();
+    }, 60000);
+});
+</script>
+
+</body>
+</html>

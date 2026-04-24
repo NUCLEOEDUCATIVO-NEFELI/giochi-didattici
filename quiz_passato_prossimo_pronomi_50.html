@@ -1057,10 +1057,12 @@ function showResults() {
         const result = {
             id: Date.now().toString(36) + Math.random().toString(36).substr(2),
             studentName: studentName + ' ' + studentSurname,
+            studentEmail: document.getElementById('emailInput') ? document.getElementById('emailInput').value : '',
             quizTitle: 'Passato Prossimo e Pronomi — 100 domande',
             correctAnswers: correct,
             totalQuestions: TOTAL,
             percentage: pct,
+            duration: 0,
             date: new Date().toISOString()
         };
         let results = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');

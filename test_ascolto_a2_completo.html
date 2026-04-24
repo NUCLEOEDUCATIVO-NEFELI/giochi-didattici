@@ -1621,6 +1621,9 @@
 
             document.getElementById('resultsText').value = generateResultsText(score, wrong, percentage, evaluation);
 
+            // Salva risultato per admin
+            _saveResult(studentName + ' ' + studentSurname, studentEmail, score, 50);
+
             // Scroll in cima
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1702,6 +1705,26 @@
             userAnswers = new Array(50).fill(null);
 
             updateProgressBar();
+        }
+
+        function _saveResult(name, email, correct, total) {
+            try {
+                const STORAGE_KEY = 'nefeli_education_results';
+                const result = {
+                    id: Date.now().toString(36) + Math.random().toString(36).substr(2),
+                    studentName: name || 'Anonimo',
+                    studentEmail: email || '',
+                    quizTitle: 'Test di Ascolto Italiano - Livello A2',
+                    correctAnswers: correct,
+                    totalQuestions: total,
+                    percentage: Math.round((correct / total) * 100),
+                    duration: 0,
+                    date: new Date().toISOString()
+                };
+                let results = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                results.push(result);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
+            } catch(e) {}
         }
     </script>
 </body>

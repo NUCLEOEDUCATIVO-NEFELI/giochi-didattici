@@ -738,6 +738,8 @@
 
             const resultsText = generateResultsText(correct, wrong, percentage);
             document.getElementById('resultsText').value = resultsText;
+
+            saveQuizResult(studentName + ' ' + studentSurname, document.getElementById('emailInput').value, correct, totalQuestions, 0);
         }
 
         function generateResultsText(correct, wrong, percentage) {

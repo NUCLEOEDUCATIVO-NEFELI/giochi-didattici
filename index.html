@@ -652,21 +652,25 @@
 <!-- Login Overlay -->
     <div id="loginOverlay" class="login-overlay">
         <div class="login-container">
-            <div class="login-icon">🔐</div>
-            <h2>Accedi al Portale</h2>
-            <p class="subtitle">PORTALE ACCADEMICO PER L'APPRENDIMENTO DELLA LINGUA ITALIANA - GAMING - ESERCIZI - TEST DI COMPRENSIONE</p>
-            
+            <div class="login-icon">👤</div>
+            <h2>Benvenuto nel Portale</h2>
+            <p class="subtitle">Inserisci i tuoi dati per accedere agli esercizi e ai quiz</p>
+
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="username">Nome Utente</label>
-                    <input type="text" id="username" name="username" placeholder="Inserisci il tuo nome" required>
+                    <label for="userNome">Nome</label>
+                    <input type="text" id="userNome" name="nome" placeholder="Inserisci il tuo nome" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Inserisci la password" required>
+                    <label for="userCognome">Cognome</label>
+                    <input type="text" id="userCognome" name="cognome" placeholder="Inserisci il tuo cognome" required>
                 </div>
-                <button type="submit" class="login-btn">Accedi</button>
-                <div id="loginError" class="login-error">Credenziali non valide. Riprova.</div>
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" name="email" placeholder="Inserisci la tua email" required>
+                </div>
+                <button type="submit" class="login-btn">Accedi al Portale</button>
+                <div id="loginError" class="login-error">Compila tutti i campi correttamente.</div>
             </form>
         </div>
     </div>
@@ -684,6 +688,8 @@
                 <a href="#esercizi">Esercizi</a>
                 <a href="#quiz">Quiz</a>
                 <a href="#risorse">Risorse</a>
+                <a href="dashboard_stats.html">📊 Statistiche</a>
+                <a href="admin.html">🎓 Admin</a>
                 <a href="#contatti">Contatti</a>
             </nav>
             <div class="user-info" id="userInfo" style="display: none;">
@@ -1293,21 +1299,7 @@
     
     <!-- Login System JavaScript -->
     <script>
-        // Database utenti predefiniti (username: password)
-        const validUsers = {
-            'admin': 'admin2024',
-            'studente1': 'italiano123',
-            'studente2': 'lingua2024',
-            'prof': 'docente2024',
-            'maria': 'maria123',
-            'luca': 'luca456',
-            'giulia': 'giulia789',
-            'marco': 'marco2024',
-            'anna': 'anna567',
-            'paolo': 'paolo890'
-        };
-
-        // Gestione Login System
+        // Gestione Login/Registrazione con Nome, Cognome, Email
         document.addEventListener('DOMContentLoaded', function() {
             const loginOverlay = document.getElementById('loginOverlay');
             const loginForm = document.getElementById('loginForm');
@@ -1325,26 +1317,39 @@
             // Gestione submit form
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                const username = document.getElementById('username').value.trim().toLowerCase();
-                const password = document.getElementById('password').value;
+                const nome = document.getElementById('userNome').value.trim();
+                const cognome = document.getElementById('userCognome').value.trim();
+                const email = document.getElementById('userEmail').value.trim().toLowerCase();
 
-                // Verifica credenziali
-                if (validUsers[username] && validUsers[username] === password) {
-                    // Salva sessione
-                    localStorage.setItem('portaleUser', username);
-                    localStorage.setItem('portaleLoginTime', new Date().toISOString());
-                    localStorage.setItem('portaleRole', username === 'admin' ? 'admin' : 'studente');
-                    showMainContent(username);
-                    loginError.classList.remove('show');
-                } else {
-                    loginError.textContent = 'Username o password non validi. Riprova.';
+                // Validazione
+                if (!nome || !cognome || !email) {
+                    loginError.textContent = 'Compila tutti i campi.';
                     loginError.classList.add('show');
-                    // Shake effect sul form
-                    loginForm.style.animation = 'shake 0.5s';
-                    setTimeout(() => {
-                        loginForm.style.animation = '';
-                    }, 500);
+                    shakeForm();
+                    return;
                 }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    loginError.textContent = 'Inserisci un indirizzo email valido.';
+                    loginError.classList.add('show');
+                    shakeForm();
+                    return;
+                }
+
+                // Salva dati utente
+                const userData = {
+                    nome: nome,
+                    cognome: cognome,
+                    email: email,
+                    fullName: nome + ' ' + cognome,
+                    loginTime: new Date().toISOString()
+                };
+
+                localStorage.setItem('portaleUser', JSON.stringify(userData));
+                localStorage.setItem('portaleLoginTime', userData.loginTime);
+                localStorage.setItem('portaleRole', 'studente');
+
+                loginError.classList.remove('show');
+                showMainContent(userData);
             });
 
             // Logout
@@ -1355,15 +1360,31 @@
                 location.reload();
             });
 
-            function showMainContent(username) {
+            function showMainContent(userData) {
+                let displayName;
+                if (typeof userData === 'string') {
+                    try {
+                        const parsed = JSON.parse(userData);
+                        displayName = parsed.fullName || parsed.nome || 'Utente';
+                    } catch(e) {
+                        displayName = userData;
+                    }
+                } else {
+                    displayName = userData.fullName || userData.nome || 'Utente';
+                }
                 loginOverlay.classList.add('hidden');
                 userInfo.style.display = 'flex';
-                userName.textContent = '👤 ' + username;
+                userName.textContent = '👤 ' + displayName;
                 document.body.style.overflow = 'auto';
+            }
+
+            function shakeForm() {
+                loginForm.style.animation = 'shake 0.5s';
+                setTimeout(() => { loginForm.style.animation = ''; }, 500);
             }
         });
     </script>
-    
+
     <style>
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -1371,5 +1392,140 @@
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
     </style>
+
+<!-- ==================== JSONBIN TRACKING SYSTEM ==================== -->
+<script>
+const JSONBIN_CONFIG = {
+    BIN_ID: '69ebca0936566621a8eabdc7',
+    API_KEY: '$2a$10$mZ.qMlZMju3bJxDm7vY69u31zv0HwAPxAqBfdfa.Wn25oUJQ76coa',
+    BASE_URL: 'https://api.jsonbin.io/v3/b'
+};
+
+function getTrackingUserId() {
+    let uid = localStorage.getItem('portale_user_id');
+    if (!uid) {
+        uid = 'usr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('portale_user_id', uid);
+    }
+    return uid;
+}
+
+function getToday() {
+    return new Date().toISOString().split('T')[0];
+}
+
+async function getBinData() {
+    try {
+        const res = await fetch(`${JSONBIN_CONFIG.BASE_URL}/${JSONBIN_CONFIG.BIN_ID}/latest`, {
+            headers: { 'X-Master-Key': JSONBIN_CONFIG.API_KEY, 'X-Bin-Meta': 'false' }
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+    } catch (e) {
+        console.error('[Tracking] Errore lettura:', e);
+        return null;
+    }
+}
+
+async function updateBinData(data) {
+    try {
+        const res = await fetch(`${JSONBIN_CONFIG.BASE_URL}/${JSONBIN_CONFIG.BIN_ID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': JSONBIN_CONFIG.API_KEY
+            },
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+    } catch (e) {
+        console.error('[Tracking] Errore scrittura:', e);
+        return null;
+    }
+}
+
+async function trackVisit() {
+    const userId = getTrackingUserId();
+    const today = getToday();
+    const now = new Date().toISOString();
+
+    const lastTrack = sessionStorage.getItem('last_track');
+    const thirtyMinAgo = Date.now() - (30 * 60 * 1000);
+
+    if (lastTrack && parseInt(lastTrack) > thirtyMinAgo) {
+        updateOnlineStatus(userId);
+        return;
+    }
+    sessionStorage.setItem('last_track', Date.now().toString());
+
+    let stats = await getBinData();
+    if (!stats) return;
+
+    if (!stats.visits) stats.visits = { total: 0, today: 0, lastDate: '', history: [] };
+    if (!stats.users) stats.users = { totalUnique: 0, activeToday: 0, list: [] };
+    if (!stats.results) stats.results = [];
+
+    if (stats.visits.lastDate !== today) {
+        stats.visits.today = 0;
+        stats.users.activeToday = 0;
+        stats.visits.lastDate = today;
+    }
+
+    stats.visits.total++;
+    stats.visits.today++;
+
+    const existingUser = stats.users.list.find(u => u.id === userId);
+    if (!existingUser) {
+        stats.users.totalUnique++;
+        stats.users.list.push({
+            id: userId,
+            firstSeen: now,
+            visitsCount: 1,
+            lastSeen: now
+        });
+    } else {
+        existingUser.visitsCount++;
+        existingUser.lastSeen = now;
+    }
+
+    const oneDayAgo = new Date(Date.now() - 86400000).toISOString();
+    stats.users.activeToday = stats.users.list.filter(u => u.lastSeen > oneDayAgo).length;
+
+    stats.visits.history.push({
+        timestamp: now,
+        userId: userId,
+        userAgent: navigator.userAgent.substring(0, 100),
+        page: window.location.pathname
+    });
+    if (stats.visits.history.length > 100) {
+        stats.visits.history = stats.visits.history.slice(-100);
+    }
+
+    stats.updatedAt = now;
+    await updateBinData(stats);
+}
+
+async function updateOnlineStatus(userId) {
+    let stats = await getBinData();
+    if (!stats) return;
+    const user = stats.users.list.find(u => u.id === userId);
+    if (user) {
+        user.lastSeen = new Date().toISOString();
+        stats.updatedAt = new Date().toISOString();
+        await updateBinData(stats);
+    }
+}
+
+// Avvia tracking quando la pagina è pronta
+document.addEventListener('DOMContentLoaded', function() {
+    trackVisit();
+    setInterval(() => {
+        const uid = getTrackingUserId();
+        updateOnlineStatus(uid);
+    }, 5 * 60 * 1000);
+});
+</script>
+<!-- ==================== FINE TRACKING SYSTEM ==================== -->
 </body>
 </html>

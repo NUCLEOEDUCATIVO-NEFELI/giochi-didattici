@@ -514,6 +514,8 @@ const questions = [
             document.getElementById('wrongCount').textContent = wrong;
             document.getElementById('percentage').textContent = percentage + '%';
             document.getElementById('resultsText').value = generateResultsText(correct, wrong, percentage);
+
+            saveQuizResult(studentName + ' ' + studentSurname, document.getElementById('emailInput').value, correct, totalQuestions, 0);
         }
 
         function generateResultsText(correct, wrong, percentage) {
