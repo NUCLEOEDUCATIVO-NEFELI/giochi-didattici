@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Condizionale Presente — Vero o Falso?</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700;900&display=swap');
+:root{--ink:#1a1a2e;--ink-light:#4a4a6a;--ink-muted:#8a8aaa;--parchment:#faf8f3;--parchment-dark:#f0ece0;--rule:#c8b89a;--rule-light:#e0d8c8;--accent:#8b1a1a;--accent-dark:#6b0f0f;--success:#1a4a1a;--gold:#b8960c;--gold-light:#f5e6a3;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background-color:#1a1a2e;background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(139,26,26,.08) 27px,rgba(139,26,26,.08) 28px),repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(139,26,26,.03) 80px,rgba(139,26,26,.03) 81px);min-height:100vh;display:flex;justify-content:center;align-items:center;overflow:hidden}
+.start-screen,.end-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,20,.92);display:flex;justify-content:center;align-items:center;z-index:2000;backdrop-filter:blur(6px)}
+.modal{background:var(--parchment);border:1px solid var(--rule);border-top:5px solid var(--accent);padding:50px 58px;max-width:680px;width:92%;box-shadow:0 30px 80px rgba(0,0,0,.6),8px 8px 0 rgba(139,26,26,.15);position:relative}
+.modal::before{content:'';position:absolute;top:14px;left:0;right:0;height:1px;background:var(--rule-light)}
+.modal-icon{font-size:2.6em;text-align:center;margin-bottom:8px}
+.modal h2{font-family:'EB Garamond',serif;font-size:2.5em;font-weight:700;color:var(--ink);letter-spacing:.06em;text-transform:uppercase;text-align:center;margin-bottom:4px}
+.modal-sub{font-family:'Source Sans 3',sans-serif;font-size:.72em;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);text-align:center;margin-bottom:22px}
+.modal p{font-family:'EB Garamond',serif;font-size:1.12em;color:var(--ink-light);line-height:1.75;text-align:center;margin-bottom:22px}
+.rules-box{background:var(--parchment-dark);border:1px solid var(--rule);border-left:4px solid var(--accent);padding:20px 24px;margin:18px 0 26px}
+.rules-box h3{font-family:'Source Sans 3',sans-serif;font-size:.66em;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:12px}
+.rules-box ul{list-style:none;padding:0}
+.rules-box li{font-family:'EB Garamond',serif;font-size:1.04em;color:var(--ink-light);margin:8px 0;padding-left:20px;position:relative;line-height:1.5}
+.rules-box li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.rules-box li strong{color:var(--ink)}
+.rules-box li em{color:var(--accent);font-style:italic}
+.start-btn,.restart-btn{display:block;width:100%;background:var(--accent);color:var(--parchment);border:none;padding:17px 40px;font-size:.82em;font-family:'Source Sans 3',sans-serif;font-weight:700;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .15s}
+.start-btn:hover,.restart-btn:hover{background:var(--accent-dark)}
+.game-container{width:95%;max-width:840px;background:var(--parchment);border:1px solid var(--rule);border-top:5px solid var(--accent);box-shadow:0 20px 60px rgba(0,0,0,.5),6px 6px 0 rgba(139,26,26,.12);position:relative;padding:32px 38px 38px}
+.game-header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule-light);padding-bottom:16px;margin-bottom:20px}
+.game-title{font-family:'EB Garamond',serif;font-size:1.45em;font-weight:600;color:var(--ink);letter-spacing:.08em;text-transform:uppercase}
+.game-subtitle{font-family:'Source Sans 3',sans-serif;font-size:.68em;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-top:3px}
+.timer-block{text-align:center}
+.timer-label{font-family:'Source Sans 3',sans-serif;font-size:.58em;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:2px}
+.timer-value{font-family:'EB Garamond',serif;font-size:3.8em;font-weight:700;color:var(--accent);line-height:1}
+.timer-value.warning{color:#6b0f0f;animation:timerPulse .5s infinite}
+@keyframes timerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.stats-row{display:flex;gap:10px;margin-bottom:18px;align-items:stretch}
+.stat-box{background:var(--parchment-dark);border:1px solid var(--rule);padding:10px 18px;flex:1;text-align:center}
+.stat-label{font-family:'Source Sans 3',sans-serif;font-size:.58em;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);display:block;margin-bottom:3px}
+.stat-value{font-family:'EB Garamond',serif;font-size:2em;font-weight:700;color:var(--ink);line-height:1}
+.combo-box{background:var(--ink);border:1px solid var(--ink);padding:10px 18px;min-width:120px;text-align:center;display:none}
+.combo-box.active{display:block;animation:comboAppear .3s ease}
+@keyframes comboAppear{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+.combo-label{font-family:'Source Sans 3',sans-serif;font-size:.58em;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px}
+.combo-value{font-family:'EB Garamond',serif;font-size:2em;font-weight:700;color:var(--gold-light);line-height:1}
+.speed-tag{font-family:'Source Sans 3',sans-serif;font-size:.64em;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:10px 14px;border:1px solid var(--rule);color:var(--ink-muted);background:var(--parchment-dark);white-space:nowrap;display:flex;align-items:center}
+.streak-bar{width:100%;height:3px;background:var(--rule-light);margin-bottom:18px}
+.streak-fill{height:100%;background:var(--accent);width:0%;transition:width .3s ease}
+.question-card{background:var(--parchment-dark);border:1px solid var(--rule);border-left:5px solid var(--accent);padding:34px 38px;text-align:center;margin-bottom:22px;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:cardSlideIn .32s ease}
+@keyframes cardSlideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.question-label{font-family:'Source Sans 3',sans-serif;font-size:.64em;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:12px}
+.question-text{font-family:'EB Garamond',serif;font-size:1.9em;color:var(--ink);line-height:1.55;font-style:italic}
+.question-text .highlight{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:1px}
+.buttons-container{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn{padding:26px 14px;font-family:'EB Garamond',serif;font-size:1.6em;font-weight:700;border:2px solid;cursor:pointer;transition:all .12s ease;letter-spacing:.04em;text-align:center;line-height:1.3}
+.btn-sub{display:block;font-family:'Source Sans 3',sans-serif;font-size:.42em;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.65;margin-top:5px}
+.btn-correct{background:var(--success);border-color:var(--success);color:var(--parchment)}
+.btn-correct:hover:not(:disabled){background:#0f3a0f;border-color:#0f3a0f;transform:translateY(-3px);box-shadow:0 8px 20px rgba(26,74,26,.4)}
+.btn-wrong1{background:var(--parchment);border-color:var(--accent);color:var(--accent)}
+.btn-wrong1:hover:not(:disabled){background:var(--accent);color:var(--parchment);transform:translateY(-3px);box-shadow:0 8px 20px rgba(139,26,26,.4)}
+.btn:active:not(:disabled){transform:translateY(0)!important;box-shadow:none!important}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.keyboard-hint{display:flex;justify-content:space-between;margin-top:12px}
+.key-hint{font-family:'Source Sans 3',sans-serif;font-size:.58em;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);text-align:center;flex:1}
+.key-badge{display:inline-block;border:1px solid var(--rule);background:var(--parchment-dark);padding:1px 6px;font-family:'Libre Baskerville',serif;font-size:.9em;color:var(--ink);margin-right:2px}
+.feedback{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'EB Garamond',serif;font-size:7em;font-weight:700;animation:feedbackPop .52s ease forwards;pointer-events:none;z-index:1000}
+@keyframes feedbackPop{0%{transform:translate(-50%,-50%) scale(.1);opacity:0}45%{transform:translate(-50%,-50%) scale(1.2);opacity:1}75%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+.feedback.correct{color:var(--success)}
+.feedback.wrong{color:#6b0f0f}
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
+.particle{position:absolute;width:7px;height:7px;animation:particleFall 1s ease-out forwards}
+@keyframes particleFall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(380px) rotate(540deg) scale(0);opacity:0}}
+.final-score-label{font-family:'Source Sans 3',sans-serif;font-size:.68em;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);text-align:center;margin-top:24px;margin-bottom:4px}
+.final-score{font-family:'EB Garamond',serif;font-size:5.5em;font-weight:700;color:var(--accent);text-align:center;line-height:1;margin-bottom:16px}
+.final-stats{font-family:'EB Garamond',serif;font-size:1.1em;color:var(--ink-light);text-align:center;line-height:2;margin-bottom:26px}
+hr.divider{border:none;border-top:1px solid var(--rule);margin:20px 0}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="start-screen" id="startScreen">
+<div class="modal">
+<div class="modal-icon">🎯</div>
+<h2>Condizionale Presente</h2>
+<div class="modal-sub">Vero o Falso?</div>
+<p>La forma evidenziata è il <strong>condizionale presente</strong> corretto?<br>Rispondi il più velocemente possibile!</p>
+<div class="rules-box">
+<h3>Regole Rapide — Condizionale Presente</h3>
+<ul>
+<li><strong>-are / -ere:</strong> <em>-erei, -eresti, -erebbe, -eremmo, -ereste, -erebbero</em></li>
+<li><strong>-ire:</strong> <em>-irei, -iresti, -irebbe, -iremmo, -ireste, -irebbero</em></li>
+<li><strong>-care / -gare:</strong> mantengono il suono duro: <em>cercherei, pagherei</em></li>
+<li><strong>-ciare / -giare:</strong> perdono la <em>i</em>: <em>comincerei, mangerei</em></li>
+<li><strong>Irregolari:</strong> <em>sarei, avrei, andrei, verrei, farei, direi, potrei, dovrei, vorrei, berrei, rimarrei, saprei, starei, darei</em></li>
+</ul>
+</div>
+<button class="start-btn" onclick="startGame()">Inizia il Gioco →</button>
+</div>
+</div>
+
+<div class="end-screen hidden" id="endScreen">
+<div class="modal">
+<div class="modal-icon">⏰</div>
+<h2>Tempo Scaduto</h2>
+<div class="modal-sub">Risultato Finale</div>
+<hr class="divider">
+<div class="final-score-label">Risposte Corrette</div>
+<div class="final-score" id="finalCorrect">0</div>
+<div class="final-stats" id="finalStats"></div>
+<button class="restart-btn" onclick="restartGame()">Gioca Ancora →</button>
+</div>
+</div>
+
+<div class="game-container hidden" id="gameContainer">
+<div class="game-header">
+<div>
+<div class="game-title">Condizionale Presente</div>
+<div class="game-subtitle">La forma evidenziata è corretta?</div>
+</div>
+<div class="timer-block">
+<div class="timer-label">Tempo</div>
+<div class="timer-value" id="mainTimer">60</div>
+</div>
+</div>
+<div class="stats-row">
+<div class="stat-box"><span class="stat-label">Corrette</span><span class="stat-value" id="correctCount">0</span></div>
+<div class="stat-box"><span class="stat-label">Sbagliate</span><span class="stat-value" id="wrongCount">0</span></div>
+<div class="combo-box" id="comboDisplay"><span class="combo-label">Combo</span><span class="combo-value">×<span id="comboCount">1</span></span></div>
+<div class="speed-tag" id="speedIndicator">— Normale</div>
+</div>
+<div class="streak-bar"><div class="streak-fill" id="streakFill"></div></div>
+<div class="question-card" id="questionCard">
+<div class="question-label">La forma evidenziata è il condizionale presente corretto?</div>
+<div class="question-text" id="questionText">Pronti…</div>
+</div>
+<div class="buttons-container">
+<button class="btn btn-correct" id="btnVero" onclick="answer(true)">Vero<span class="btn-sub">Tasto V / ←</span></button>
+<button class="btn btn-wrong1" id="btnFalso" onclick="answer(false)">Falso<span class="btn-sub">Tasto F / →</span></button>
+</div>
+<div class="keyboard-hint">
+<div class="key-hint"><span class="key-badge">V</span> Vero</div>
+<div class="key-hint"><span class="key-badge">F</span> Falso</div>
+</div>
+</div>
+
+<div class="particles" id="particles"></div>
+
+<script>
+// VERO = forma condizionale corretta
+// FALSO = forma sbagliata (errore comune, indicativo, futuro, ortografia errata)
+const allQuestions = [
+// ===== VERO =====
+{sentence:"Io {parlerei} volentieri con il direttore.",isTrue:true},
+{sentence:"Tu {parleresti} italiano se potessi.",isTrue:true},
+{sentence:"Lei {parlerebbe} con più calma.",isTrue:true},
+{sentence:"Noi {parleremmo} di questo domani.",isTrue:true},
+{sentence:"Voi {parlereste} più forte?",isTrue:true},
+{sentence:"Loro {parlerebbero} alla riunione.",isTrue:true},
+{sentence:"Io {lavorerei} da casa volentieri.",isTrue:true},
+{sentence:"Tu {lavoreresti} il sabato?",isTrue:true},
+{sentence:"Lei {lavorerebbe} in un'azienda internazionale.",isTrue:true},
+{sentence:"Noi {lavoreremmo} sodo per raggiungere l'obiettivo.",isTrue:true},
+{sentence:"Voi {lavorereste} sullo stesso progetto.",isTrue:true},
+{sentence:"Loro {lavorerebbero} fino a tardi.",isTrue:true},
+{sentence:"Io {studierei} tutta la notte.",isTrue:true},
+{sentence:"Tu {studieresti} con me?",isTrue:true},
+{sentence:"Lei {studierebbe} medicina.",isTrue:true},
+{sentence:"Noi {studeremmo} insieme per l'esame.",isTrue:true},
+{sentence:"Voi {studiereste} di più il prossimo anno.",isTrue:true},
+{sentence:"Loro {studierebbero} all'estero.",isTrue:true},
+{sentence:"Io {cercherei} un nuovo lavoro.",isTrue:true},
+{sentence:"Tu {cercheresti} casa in centro.",isTrue:true},
+{sentence:"Noi {cercheremmo} di arrivare puntuali.",isTrue:true},
+{sentence:"Io {pagherei} il conto.",isTrue:true},
+{sentence:"Tu {pagheresti} con la carta.",isTrue:true},
+{sentence:"Lui {pagherebbe} il biglietto online.",isTrue:true},
+{sentence:"Io {comincerei} il corso lunedì.",isTrue:true},
+{sentence:"Tu {cominceresti} a studiare presto.",isTrue:true},
+{sentence:"Il film {comincerebbe} alle nove.",isTrue:true},
+{sentence:"Io {mangerei} al ristorante domani.",isTrue:true},
+{sentence:"Tu {mangeresti} con noi stasera?",isTrue:true},
+{sentence:"Lui {mangerebbe} la pizza più tardi.",isTrue:true},
+{sentence:"Noi {mangeremmo} alle otto.",isTrue:true},
+{sentence:"Lei {viaggerebbe} per lavoro.",isTrue:true},
+{sentence:"Io {prenderei} il treno delle sette.",isTrue:true},
+{sentence:"Tu {prenderesti} l'ombrello?",isTrue:true},
+{sentence:"Lui {prenderebbe} una decisione domani.",isTrue:true},
+{sentence:"Noi {prenderemmo} un caffè insieme.",isTrue:true},
+{sentence:"Voi {prendereste} il bus o la metro?",isTrue:true},
+{sentence:"Loro {prenderebbero} il volo di sera.",isTrue:true},
+{sentence:"Io {scriverei} una lettera domani.",isTrue:true},
+{sentence:"Tu {scriveresti} il tuo nome qui?",isTrue:true},
+{sentence:"Lei {scriverebbe} il rapporto entro venerdì.",isTrue:true},
+{sentence:"Noi {scriveremmo} un articolo insieme.",isTrue:true},
+{sentence:"Voi {scrivereste} più chiaramente.",isTrue:true},
+{sentence:"Loro {scriverebbero} presto.",isTrue:true},
+{sentence:"Io {leggerei} quel libro questa settimana.",isTrue:true},
+{sentence:"Tu {leggeresti} le istruzioni prima?",isTrue:true},
+{sentence:"Lui {leggerebbe} la notizia domani.",isTrue:true},
+{sentence:"Noi {leggeremmo} insieme.",isTrue:true},
+{sentence:"Voi {leggereste} questo testo.",isTrue:true},
+{sentence:"Loro {leggerebbero} volentieri.",isTrue:true},
+{sentence:"Io {risponderei} alla tua email più tardi.",isTrue:true},
+{sentence:"Tu {risponderesti} presto?",isTrue:true},
+{sentence:"Lui {risponderebbe} entro domani.",isTrue:true},
+{sentence:"Noi {risponderemmo} tutti.",isTrue:true},
+{sentence:"Voi {rispondereste} sinceramente.",isTrue:true},
+{sentence:"Loro {risponderebbero} in serata.",isTrue:true},
+{sentence:"Io {partirei} domani mattina.",isTrue:true},
+{sentence:"Tu {partiresti} con noi?",isTrue:true},
+{sentence:"Lei {partirebbe} alle sei.",isTrue:true},
+{sentence:"Noi {partiremmo} dopo colazione.",isTrue:true},
+{sentence:"Voi {partireste} in anticipo.",isTrue:true},
+{sentence:"Loro {partirebbero} la settimana prossima.",isTrue:true},
+{sentence:"Io {finirei} il lavoro entro stasera.",isTrue:true},
+{sentence:"Tu {finiresti} prima di me.",isTrue:true},
+{sentence:"Lui {finirebbe} il corso a giugno.",isTrue:true},
+{sentence:"Noi {finiremmo} presto.",isTrue:true},
+{sentence:"Voi {finireste} in tempo?",isTrue:true},
+{sentence:"Loro {finirebbero} il progetto domani.",isTrue:true},
+{sentence:"Io {capirei} tutto alla fine.",isTrue:true},
+{sentence:"Tu {capiresti} quando sarai più grande.",isTrue:true},
+{sentence:"Lui {capirebbe} la lezione.",isTrue:true},
+{sentence:"Noi {capiremmo} insieme.",isTrue:true},
+{sentence:"Voi {capireste} il problema.",isTrue:true},
+{sentence:"Loro {capirebbero} alla fine.",isTrue:true},
+{sentence:"Io {sarei} felice di aiutarti.",isTrue:true},
+{sentence:"Tu {saresti} pronto?",isTrue:true},
+{sentence:"Lei {sarebbe} contenta della notizia.",isTrue:true},
+{sentence:"Noi {saremmo} in anticipo.",isTrue:true},
+{sentence:"Voi {sareste} stanchi dopo il viaggio.",isTrue:true},
+{sentence:"Loro {sarebbero} qui alle tre.",isTrue:true},
+{sentence:"Io {avrei} tempo domani.",isTrue:true},
+{sentence:"Tu {avresti} bisogno di aiuto.",isTrue:true},
+{sentence:"Lui {avrebbe} paura del dentista.",isTrue:true},
+{sentence:"Noi {avremmo} una riunione alle dieci.",isTrue:true},
+{sentence:"Voi {avreste} le risposte domani.",isTrue:true},
+{sentence:"Loro {avrebbero} molte domande.",isTrue:true},
+{sentence:"Io {andrei} al mercato volentieri.",isTrue:true},
+{sentence:"Tu {andresti} in vacanza quest'estate?",isTrue:true},
+{sentence:"Lei {andrebbe} dal medico domani.",isTrue:true},
+{sentence:"Noi {andremmo} al mare il fine settimana.",isTrue:true},
+{sentence:"Voi {andreste} a piedi o in macchina?",isTrue:true},
+{sentence:"Loro {andrebbero} in Italia l'anno prossimo.",isTrue:true},
+{sentence:"Io {verrei} alla festa volentieri.",isTrue:true},
+{sentence:"Tu {verresti} con me?",isTrue:true},
+{sentence:"Lui {verrebbe} tardi.",isTrue:true},
+{sentence:"Noi {verremmo} a trovarti domani.",isTrue:true},
+{sentence:"Voi {verreste} anche voi?",isTrue:true},
+{sentence:"Loro {verrebbero} in macchina.",isTrue:true},
+{sentence:"Io {farei} i compiti stasera.",isTrue:true},
+{sentence:"Tu {faresti} la spesa domani.",isTrue:true},
+{sentence:"Lui {farebbe} del suo meglio.",isTrue:true},
+{sentence:"Noi {faremmo} una passeggiata.",isTrue:true},
+{sentence:"Voi {fareste} tardi stasera?",isTrue:true},
+{sentence:"Loro {farebbero} una festa sabato.",isTrue:true},
+{sentence:"Io {direi} la verità.",isTrue:true},
+{sentence:"Tu {diresti} la tua opinione?",isTrue:true},
+{sentence:"Lei {direbbe} di no.",isTrue:true},
+{sentence:"Noi {diremmo} la stessa cosa.",isTrue:true},
+{sentence:"Voi {direste} chiaramente.",isTrue:true},
+{sentence:"Loro {direbbero} la verità.",isTrue:true},
+{sentence:"Io {potrei} venire domani.",isTrue:true},
+{sentence:"Tu {potresti} uscire dopo cena.",isTrue:true},
+{sentence:"Lui {potrebbe} aiutarti.",isTrue:true},
+{sentence:"Noi {potremmo} partire presto.",isTrue:true},
+{sentence:"Voi {potreste} finire in tempo.",isTrue:true},
+{sentence:"Loro {potrebbero} venire.",isTrue:true},
+{sentence:"Io {dovrei} lavorare sabato.",isTrue:true},
+{sentence:"Tu {dovresti} studiare di più.",isTrue:true},
+{sentence:"Lei {dovrebbe} aspettare.",isTrue:true},
+{sentence:"Noi {dovremmo} decidere presto.",isTrue:true},
+{sentence:"Voi {dovreste} partire domani.",isTrue:true},
+{sentence:"Loro {dovrebbero} partire.",isTrue:true},
+{sentence:"Io {vorrei} un caffè.",isTrue:true},
+{sentence:"Tu {vorresti} venire con noi?",isTrue:true},
+{sentence:"Lui {vorrebbe} sapere tutto.",isTrue:true},
+{sentence:"Noi {vorremmo} una spiegazione.",isTrue:true},
+{sentence:"Voi {vorreste} partire presto.",isTrue:true},
+{sentence:"Loro {vorrebbero} aiutare.",isTrue:true},
+{sentence:"Io {berrei} un succo di frutta.",isTrue:true},
+{sentence:"Tu {berresti} qualcosa?",isTrue:true},
+{sentence:"Lui {berrebbe} il caffè al bar.",isTrue:true},
+{sentence:"Noi {berremmo} un brindisi.",isTrue:true},
+{sentence:"Voi {berreste} acqua.",isTrue:true},
+{sentence:"Loro {berrebbero} vino.",isTrue:true},
+{sentence:"Io {rimarrei} a casa.",isTrue:true},
+{sentence:"Tu {rimarresti} con noi?",isTrue:true},
+{sentence:"Lui {rimarrebbe} a dormire.",isTrue:true},
+{sentence:"Noi {rimarremmo} fino a domenica.",isTrue:true},
+{sentence:"Voi {rimarreste} qui.",isTrue:true},
+{sentence:"Loro {rimarrebbero} fino a tardi.",isTrue:true},
+{sentence:"Io {saprei} la risposta domani.",isTrue:true},
+{sentence:"Tu {sapresti} come comportarti.",isTrue:true},
+{sentence:"Lei {saprebbe} cosa fare.",isTrue:true},
+{sentence:"Noi {sapremmo} tutto.",isTrue:true},
+{sentence:"Voi {sapreste} la verità.",isTrue:true},
+{sentence:"Loro {saprebbero} già tutto.",isTrue:true},
+{sentence:"Io {starei} bene, non preoccuparti.",isTrue:true},
+{sentence:"Tu {staresti} a casa oggi?",isTrue:true},
+{sentence:"Noi {staremmo} attenti.",isTrue:true},
+{sentence:"Voi {stareste} zitti.",isTrue:true},
+{sentence:"Loro {starebbero} seduti.",isTrue:true},
+{sentence:"Io {darei} una risposta entro domani.",isTrue:true},
+{sentence:"Tu {daresti} il libro a Marco.",isTrue:true},
+{sentence:"Lei {darebbe} un esame difficile.",isTrue:true},
+{sentence:"Noi {daremmo} il meglio.",isTrue:true},
+{sentence:"Voi {dareste} tutto.",isTrue:true},
+{sentence:"Loro {darebbero} una spiegazione.",isTrue:true},
+
+// ===== FALSO — Errori comuni =====
+// Errori ortografici -care/-gare
+{sentence:"Io {cercarei} un nuovo lavoro.",isTrue:false,explanation:"cercare → cercherei (si aggiunge la h per mantenere il suono duro)"},
+{sentence:"Tu {cercaresti} casa in centro.",isTrue:false,explanation:"cercare → cercheresti"},
+{sentence:"Noi {cercaremmo} di arrivare puntuali.",isTrue:false,explanation:"cercare → cercheremmo"},
+{sentence:"Io {pagarei} il conto.",isTrue:false,explanation:"pagare → pagherei (si aggiunge la h)"},
+{sentence:"Tu {pagaresti} con la carta.",isTrue:false,explanation:"pagare → pagheresti"},
+{sentence:"Lui {pagarebbe} il biglietto online.",isTrue:false,explanation:"pagare → pagherebbe"},
+// Errori ortografici -ciare/-giare
+{sentence:"Io {cominciarei} il corso lunedì.",isTrue:false,explanation:"cominciare → comincerei (si perde la i)"},
+{sentence:"Tu {cominciaresti} a studiare presto.",isTrue:false,explanation:"cominciare → cominceresti"},
+{sentence:"Il film {cominciarebbe} alle nove.",isTrue:false,explanation:"cominciare → comincerebbe"},
+{sentence:"Io {mangiarei} al ristorante domani.",isTrue:false,explanation:"mangiare → mangerei (si perde la i)"},
+{sentence:"Tu {mangiaresti} con noi stasera?",isTrue:false,explanation:"mangiare → mangeresti"},
+{sentence:"Lui {mangiarebbe} la pizza più tardi.",isTrue:false,explanation:"mangiare → mangerebbe"},
+{sentence:"Noi {mangiaremmo} alle otto.",isTrue:false,explanation:"mangiare → mangeremmo"},
+// Errori di desinenza (mettere -arei invece di -erei/-irei)
+{sentence:"Io {parlarei} volentieri con il direttore.",isTrue:false,explanation:"parlare → parlerei (desinenza -erei, non -arei)"},
+{sentence:"Tu {parlaresti} italiano se potessi.",isTrue:false,explanation:"parlare → parleresti"},
+{sentence:"Lei {parlarebbe} con più calma.",isTrue:false,explanation:"parlare → parlerebbe"},
+{sentence:"Noi {parlaremmo} di questo domani.",isTrue:false,explanation:"parlare → parleremmo"},
+{sentence:"Voi {parlareste} più forte?",isTrue:false,explanation:"parlare → parlereste"},
+{sentence:"Loro {parlarebbero} alla riunione.",isTrue:false,explanation:"parlare → parlerebbero"},
+{sentence:"Io {lavorarei} da casa volentieri.",isTrue:false,explanation:"lavorare → lavorerei"},
+{sentence:"Tu {lavoraresti} il sabato?",isTrue:false,explanation:"lavorare → lavoreresti"},
+{sentence:"Lei {lavorarebbe} in un'azienda internazionale.",isTrue:false,explanation:"lavorare → lavorerebbe"},
+{sentence:"Noi {lavoraremmo} sodo per raggiungere l'obiettivo.",isTrue:false,explanation:"lavorare → lavoreremmo"},
+{sentence:"Voi {lavorareste} sullo stesso progetto.",isTrue:false,explanation:"lavorare → lavorereste"},
+{sentence:"Loro {lavorarebbero} fino a tardi.",isTrue:false,explanation:"lavorare → lavorerebbero"},
+{sentence:"Io {studiarei} tutta la notte.",isTrue:false,explanation:"studiare → studierei"},
+{sentence:"Tu {studiaresti} con me?",isTrue:false,explanation:"studiare → studieresti"},
+{sentence:"Lei {studiarebbe} medicina.",isTrue:false,explanation:"studiare → studierebbe"},
+{sentence:"Noi {studiaremmo} insieme per l'esame.",isTrue:false,explanation:"studiare → studeremmo"},
+{sentence:"Voi {studiareste} di più il prossimo anno.",isTrue:false,explanation:"studiare → studiereste"},
+{sentence:"Loro {studiarebbero} all'estero.",isTrue:false,explanation:"studiare → studierebbero"},
+// Errori con -ire (mettere -erei invece di -irei)
+{sentence:"Io {partierei} domani mattina.",isTrue:false,explanation:"partire → partirei (desinenza -irei)"},
+{sentence:"Tu {partieresti} con noi?",isTrue:false,explanation:"partire → partiresti"},
+{sentence:"Lei {partierebbe} alle sei.",isTrue:false,explanation:"partire → partirebbe"},
+{sentence:"Noi {partieremmo} dopo colazione.",isTrue:false,explanation:"partire → partiremmo"},
+{sentence:"Voi {partiereste} in anticipo.",isTrue:false,explanation:"partire → partireste"},
+{sentence:"Loro {partierebbero} la settimana prossima.",isTrue:false,explanation:"partire → partirebbero"},
+{sentence:"Io {finieremmo} presto.",isTrue:false,explanation:"finire → finiremmo"},
+{sentence:"Tu {finieremmo} prima di me.",isTrue:false,explanation:"finire → finiresti"},
+{sentence:"Lui {finieremmo} il corso a giugno.",isTrue:false,explanation:"finire → finirebbe"},
+{sentence:"Noi {finieremmo} presto.",isTrue:false,explanation:"finire → finiremmo"},
+{sentence:"Voi {finieremmo} in tempo?",isTrue:false,explanation:"finire → finireste"},
+{sentence:"Loro {finieremmo} il progetto domani.",isTrue:false,explanation:"finire → finirebbero"},
+{sentence:"Io {capieremmo} tutto alla fine.",isTrue:false,explanation:"capire → capirei"},
+{sentence:"Tu {capieremmo} quando sarai più grande.",isTrue:false,explanation:"capire → capiresti"},
+{sentence:"Lui {capieremmo} la lezione.",isTrue:false,explanation:"capire → capirebbe"},
+{sentence:"Noi {capieremmo} insieme.",isTrue:false,explanation:"capire → capiremmo"},
+{sentence:"Voi {capieremmo} il problema.",isTrue:false,explanation:"capire → capireste"},
+{sentence:"Loro {capieremmo} alla fine.",isTrue:false,explanation:"capire → capirebbero"},
+// Errori irregolari (forme regolarizzate sbagliate)
+{sentence:"Io {esserei} felice di aiutarti.",isTrue:false,explanation:"essere → sarei (irregolare)"},
+{sentence:"Tu {essersti} pronto?",isTrue:false,explanation:"essere → saresti"},
+{sentence:"Lei {esserrebbe} contenta della notizia.",isTrue:false,explanation:"essere → sarebbe"},
+{sentence:"Noi {esserremmo} in anticipo.",isTrue:false,explanation:"essere → saremmo"},
+{sentence:"Voi {esserreste} stanchi dopo il viaggio.",isTrue:false,explanation:"essere → sareste"},
+{sentence:"Loro {esserrebbero} qui alle tre.",isTrue:false,explanation:"essere → sarebbero"},
+{sentence:"Io {averei} tempo domani.",isTrue:false,explanation:"avere → avrei (irregolare)"},
+{sentence:"Tu {aversti} bisogno di aiuto.",isTrue:false,explanation:"avere → avresti"},
+{sentence:"Lui {averrebbe} paura del dentista.",isTrue:false,explanation:"avere → avrebbe"},
+{sentence:"Noi {averremmo} una riunione alle dieci.",isTrue:false,explanation:"avere → avremmo"},
+{sentence:"Voi {averreste} le risposte domani.",isTrue:false,explanation:"avere → avreste"},
+{sentence:"Loro {averrebbero} molte domande.",isTrue:false,explanation:"avere → avrebbero"},
+{sentence:"Io {andarei} al mercato volentieri.",isTrue:false,explanation:"andare → andrei (irregolare)"},
+{sentence:"Tu {andarsti} in vacanza quest'estate?",isTrue:false,explanation:"andare → andresti"},
+{sentence:"Lei {andarebbe} dal medico domani.",isTrue:false,explanation:"andare → andrebbe"},
+{sentence:"Noi {andaremmo} al mare il fine settimana.",isTrue:false,explanation:"andare → andremmo"},
+{sentence:"Voi {andareste} a piedi o in macchina?",isTrue:false,explanation:"andare → andreste"},
+{sentence:"Loro {andarebbero} in Italia l'anno prossimo.",isTrue:false,explanation:"andare → andrebbero"},
+{sentence:"Io {venirei} alla festa volentieri.",isTrue:false,explanation:"venire → verrei (irregolare)"},
+{sentence:"Tu {venirresti} con me?",isTrue:false,explanation:"venire → verresti"},
+{sentence:"Lui {venirrebbe} tardi.",isTrue:false,explanation:"venire → verrebbe"},
+{sentence:"Noi {venirremmo} a trovarti domani.",isTrue:false,explanation:"venire → verremmo"},
+{sentence:"Voi {venirreste} anche voi?",isTrue:false,explanation:"venire → verreste"},
+{sentence:"Loro {venirrebbero} in macchina.",isTrue:false,explanation:"venire → verrebbero"},
+{sentence:"Io {farei} i compiti stasera.",isTrue:true},
+{sentence:"Io {farei} i compiti stasera.",isTrue:true},
+{sentence:"Io {farei} i compiti stasera.",isTrue:true},
+{sentence:"Io {faccerei} i compiti stasera.",isTrue:false,explanation:"fare → farei (irregolare, non faccerei)"},
+{sentence:"Tu {faceresti} la spesa domani.",isTrue:false,explanation:"fare → faresti"},
+{sentence:"Lui {facerebbe} del suo meglio.",isTrue:false,explanation:"fare → farebbe"},
+{sentence:"Noi {faceremmo} una passeggiata.",isTrue:false,explanation:"fare → faremmo"},
+{sentence:"Voi {facereste} tardi stasera?",isTrue:false,explanation:"fare → fareste"},
+{sentence:"Loro {facerebbero} una festa sabato.",isTrue:false,explanation:"fare → farebbero"},
+{sentence:"Io {direi} la verità.",isTrue:true},
+{sentence:"Io {dicerei} la verità.",isTrue:false,explanation:"dire → direi (irregolare, non dicerei)"},
+{sentence:"Tu {diceresti} la tua opinione?",isTrue:false,explanation:"dire → diresti"},
+{sentence:"Lei {dicerebbe} di no.",isTrue:false,explanation:"dire → direbbe"},
+{sentence:"Noi {diceremmo} la stessa cosa.",isTrue:false,explanation:"dire → diremmo"},
+{sentence:"Voi {dicereste} chiaramente.",isTrue:false,explanation:"dire → direste"},
+{sentence:"Loro {dicerebbero} la verità.",isTrue:false,explanation:"dire → direbbero"},
+{sentence:"Io {poterei} venire domani.",isTrue:false,explanation:"potere → potrei (irregolare)"},
+{sentence:"Tu {poteresti} uscire dopo cena.",isTrue:false,explanation:"potere → potresti"},
+{sentence:"Lui {poterebbe} aiutarti.",isTrue:false,explanation:"potere → potrebbe"},
+{sentence:"Noi {poteremmo} partire presto.",isTrue:false,explanation:"potere → potremmo"},
+{sentence:"Voi {potereste} finire in tempo.",isTrue:false,explanation:"potere → potreste"},
+{sentence:"Loro {poterebbero} venire.",isTrue:false,explanation:"potere → potrebbero"},
+{sentence:"Io {doverebbi} lavorare sabato.",isTrue:false,explanation:"dovere → dovrei (irregolare)"},
+{sentence:"Tu {doveresti} studiare di più.",isTrue:false,explanation:"dovere → dovresti"},
+{sentence:"Lei {doverebbi} aspettare.",isTrue:false,explanation:"dovere → dovrebbe"},
+{sentence:"Noi {doveremmo} decidere presto.",isTrue:false,explanation:"dovere → dovremmo"},
+{sentence:"Voi {doverebbi} partire domani.",isTrue:false,explanation:"dovere → dovreste"},
+{sentence:"Loro {doverebbi} partire.",isTrue:false,explanation:"dovere → dovrebbero"},
+{sentence:"Io {volerei} un caffè.",isTrue:false,explanation:"volere → vorrei (irregolare)"},
+{sentence:"Tu {voleresti} venire con noi?",isTrue:false,explanation:"volere → vorresti"},
+{sentence:"Lui {volerebbe} sapere tutto.",isTrue:false,explanation:"volere → vorrebbe"},
+{sentence:"Noi {voleremmo} una spiegazione.",isTrue:false,explanation:"volere → vorremmo"},
+{sentence:"Voi {volereste} partire presto.",isTrue:false,explanation:"volere → vorreste"},
+{sentence:"Loro {volerebbero} aiutare.",isTrue:false,explanation:"volere → vorrebbero"},
+{sentence:"Io {berei} un succo di frutta.",isTrue:false,explanation:"bere → berrei (irregolare, raddoppia la r)"},
+{sentence:"Tu {beresti} qualcosa?",isTrue:false,explanation:"bere → berresti"},
+{sentence:"Lui {berebbe} il caffè al bar.",isTrue:false,explanation:"bere → berrebbe"},
+{sentence:"Noi {beremmo} un brindisi.",isTrue:false,explanation:"bere → berremmo"},
+{sentence:"Voi {bereste} acqua.",isTrue:false,explanation:"bere → berreste"},
+{sentence:"Loro {berebbero} vino.",isTrue:false,explanation:"bere → berrebbero"},
+{sentence:"Io {rimanerei} a casa.",isTrue:false,explanation:"rimanere → rimarrei (irregolare, tronca)"},
+{sentence:"Tu {rimaneresti} con noi?",isTrue:false,explanation:"rimanere → rimarresti"},
+{sentence:"Lui {rimanerebbe} a dormire.",isTrue:false,explanation:"rimanere → rimarrebbe"},
+{sentence:"Noi {rimaneremmo} fino a domenica.",isTrue:false,explanation:"rimanere → rimarremmo"},
+{sentence:"Voi {rimanereste} qui.",isTrue:false,explanation:"rimanere → rimarreste"},
+{sentence:"Loro {rimanerebbero} fino a tardi.",isTrue:false,explanation:"rimanere → rimarrebbero"},
+{sentence:"Io {saperei} la risposta domani.",isTrue:false,explanation:"sapere → saprei (irregolare, tronca)"},
+{sentence:"Tu {sapersti} come comportarti.",isTrue:false,explanation:"sapere → sapresti"},
+{sentence:"Lei {saperebbe} cosa fare.",isTrue:false,explanation:"sapere → saprebbe"},
+{sentence:"Noi {saperemmo} tutto.",isTrue:false,explanation:"sapere → sapremmo"},
+{sentence:"Voi {sapereste} la verità.",isTrue:false,explanation:"sapere → sapreste"},
+{sentence:"Loro {saperebbero} già tutto.",isTrue:false,explanation:"sapere → saprebbero"},
+{sentence:"Io {starei} bene, non preoccuparti.",isTrue:true},
+{sentence:"Io {starerei} bene, non preoccuparti.",isTrue:false,explanation:"stare → starei (regolare, non starerei)"},
+{sentence:"Tu {stareresti} a casa oggi?",isTrue:false,explanation:"stare → staresti"},
+{sentence:"Noi {stareremmo} attenti.",isTrue:false,explanation:"stare → staremmo"},
+{sentence:"Voi {starereste} zitti.",isTrue:false,explanation:"stare → stareste"},
+{sentence:"Loro {starerebbero} seduti.",isTrue:false,explanation:"stare → starebbero"},
+{sentence:"Io {darei} una risposta entro domani.",isTrue:true},
+{sentence:"Io {darerei} una risposta entro domani.",isTrue:false,explanation:"dare → darei (regolare, non darerei)"},
+{sentence:"Tu {dareresti} il libro a Marco.",isTrue:false,explanation:"dare → daresti"},
+{sentence:"Lei {darerebbe} un esame difficile.",isTrue:false,explanation:"dare → darebbe"},
+{sentence:"Noi {dareremmo} il meglio.",isTrue:false,explanation:"dare → daremmo"},
+{sentence:"Voi {darereste} tutto.",isTrue:false,explanation:"dare → dareste"},
+{sentence:"Loro {darerebbero} una spiegazione.",isTrue:false,explanation:"dare → darebbero"},
+// Forme indicative presentate come condizionale
+{sentence:"Io {parlo} volentieri con il direttore.",isTrue:false,explanation:"parlo = indicativo presente, non condizionale"},
+{sentence:"Tu {parli} italiano se potessi.",isTrue:false,explanation:"parli = indicativo presente"},
+{sentence:"Lei {parla} con più calma.",isTrue:false,explanation:"parla = indicativo presente"},
+{sentence:"Noi {parliamo} di questo domani.",isTrue:false,explanation:"parliamo = indicativo presente"},
+{sentence:"Voi {parlate} più forte?",isTrue:false,explanation:"parlate = indicativo presente"},
+{sentence:"Loro {parlano} alla riunione.",isTrue:false,explanation:"parlano = indicativo presente"},
+{sentence:"Io {studio} tutta la notte.",isTrue:false,explanation:"studio = indicativo presente"},
+{sentence:"Tu {studi} con me?",isTrue:false,explanation:"studi = indicativo presente"},
+{sentence:"Lei {studia} medicina.",isTrue:false,explanation:"studia = indicativo presente"},
+{sentence:"Noi {studiamo} insieme per l'esame.",isTrue:false,explanation:"studiamo = indicativo presente"},
+{sentence:"Io {cerco} un nuovo lavoro.",isTrue:false,explanation:"cerco = indicativo presente"},
+{sentence:"Tu {cerchi} casa in centro.",isTrue:false,explanation:"cerchi = indicativo presente"},
+{sentence:"Io {pago} il conto.",isTrue:false,explanation:"pago = indicativo presente"},
+{sentence:"Tu {paghi} con la carta.",isTrue:false,explanation:"paghi = indicativo presente"},
+{sentence:"Io {comincio} il corso lunedì.",isTrue:false,explanation:"comincio = indicativo presente"},
+{sentence:"Tu {cominci} a studiare presto.",isTrue:false,explanation:"cominci = indicativo presente"},
+{sentence:"Io {mangio} al ristorante domani.",isTrue:false,explanation:"mangio = indicativo presente"},
+{sentence:"Tu {mangi} con noi stasera?",isTrue:false,explanation:"mangi = indicativo presente"},
+{sentence:"Io {prendo} il treno delle sette.",isTrue:false,explanation:"prendo = indicativo presente"},
+{sentence:"Tu {prendi} l'ombrello?",isTrue:false,explanation:"prendi = indicativo presente"},
+{sentence:"Io {scrivo} una lettera domani.",isTrue:false,explanation:"scrivo = indicativo presente"},
+{sentence:"Tu {scrivi} il tuo nome qui?",isTrue:false,explanation:"scrivi = indicativo presente"},
+{sentence:"Io {leggo} quel libro questa settimana.",isTrue:false,explanation:"leggo = indicativo presente"},
+{sentence:"Tu {leggi} le istruzioni prima?",isTrue:false,explanation:"leggi = indicativo presente"},
+{sentence:"Io {rispondo} alla tua email più tardi.",isTrue:false,explanation:"rispondo = indicativo presente"},
+{sentence:"Tu {rispondi} presto?",isTrue:false,explanation:"rispondi = indicativo presente"},
+{sentence:"Io {parto} domani mattina.",isTrue:false,explanation:"parto = indicativo presente"},
+{sentence:"Tu {parti} con noi?",isTrue:false,explanation:"parti = indicativo presente"},
+{sentence:"Io {finisco} il lavoro entro stasera.",isTrue:false,explanation:"finisco = indicativo presente"},
+{sentence:"Tu {finisci} prima di me.",isTrue:false,explanation:"finisci = indicativo presente"},
+{sentence:"Io {capisco} tutto alla fine.",isTrue:false,explanation:"capisco = indicativo presente"},
+{sentence:"Tu {capisci} quando sarai più grande.",isTrue:false,explanation:"capisci = indicativo presente"},
+{sentence:"Io {sono} felice di aiutarti.",isTrue:false,explanation:"sono = indicativo presente di essere"},
+{sentence:"Tu {sei} pronto?",isTrue:false,explanation:"sei = indicativo presente di essere"},
+{sentence:"Lei {è} contenta della notizia.",isTrue:false,explanation:"è = indicativo presente di essere"},
+{sentence:"Noi {siamo} in anticipo.",isTrue:false,explanation:"siamo = indicativo presente di essere"},
+{sentence:"Voi {siete} stanchi dopo il viaggio.",isTrue:false,explanation:"siete = indicativo presente di essere"},
+{sentence:"Loro {sono} qui alle tre.",isTrue:false,explanation:"sono = indicativo presente di essere"},
+{sentence:"Io {ho} tempo domani.",isTrue:false,explanation:"ho = indicativo presente di avere"},
+{sentence:"Tu {hai} bisogno di aiuto.",isTrue:false,explanation:"hai = indicativo presente di avere"},
+{sentence:"Lui {ha} paura del dentista.",isTrue:false,explanation:"ha = indicativo presente di avere"},
+{sentence:"Noi {abbiamo} una riunione alle dieci.",isTrue:false,explanation:"abbiamo = indicativo presente di avere"},
+{sentence:"Voi {avete} le risposte domani.",isTrue:false,explanation:"avete = indicativo presente di avere"},
+{sentence:"Loro {hanno} molte domande.",isTrue:false,explanation:"hanno = indicativo presente di avere"},
+{sentence:"Io {vado} al mercato volentieri.",isTrue:false,explanation:"vado = indicativo presente di andare"},
+{sentence:"Tu {vai} in vacanza quest'estate?",isTrue:false,explanation:"vai = indicativo presente di andare"},
+{sentence:"Lei {va} dal medico domani.",isTrue:false,explanation:"va = indicativo presente di andare"},
+{sentence:"Noi {andiamo} al mare il fine settimana.",isTrue:false,explanation:"andiamo = indicativo presente di andare"},
+{sentence:"Voi {andate} a piedi o in macchina?",isTrue:false,explanation:"andate = indicativo presente di andare"},
+{sentence:"Loro {vanno} in Italia l'anno prossimo.",isTrue:false,explanation:"vanno = indicativo presente di andare"},
+{sentence:"Io {vengo} alla festa volentieri.",isTrue:false,explanation:"vengo = indicativo presente di venire"},
+{sentence:"Tu {vieni} con me?",isTrue:false,explanation:"vieni = indicativo presente di venire"},
+{sentence:"Lui {viene} tardi.",isTrue:false,explanation:"viene = indicativo presente di venire"},
+{sentence:"Noi {veniamo} a trovarti domani.",isTrue:false,explanation:"veniamo = indicativo presente di venire"},
+{sentence:"Voi {venite} anche voi?",isTrue:false,explanation:"venite = indicativo presente di venire"},
+{sentence:"Loro {vengono} in macchina.",isTrue:false,explanation:"vengono = indicativo presente di venire"},
+{sentence:"Io {faccio} i compiti stasera.",isTrue:false,explanation:"faccio = indicativo presente di fare"},
+{sentence:"Tu {fai} la spesa domani.",isTrue:false,explanation:"fai = indicativo presente di fare"},
+{sentence:"Lui {fa} del suo meglio.",isTrue:false,explanation:"fa = indicativo presente di fare"},
+{sentence:"Noi {facciamo} una passeggiata.",isTrue:false,explanation:"facciamo = indicativo presente di fare"},
+{sentence:"Voi {fate} tardi stasera?",isTrue:false,explanation:"fate = indicativo presente di fare"},
+{sentence:"Loro {fanno} una festa sabato.",isTrue:false,explanation:"fanno = indicativo presente di fare"},
+{sentence:"Io {dico} la verità.",isTrue:false,explanation:"dico = indicativo presente di dire"},
+{sentence:"Tu {dici} la tua opinione?",isTrue:false,explanation:"dici = indicativo presente di dire"},
+{sentence:"Lei {dice} di no.",isTrue:false,explanation:"dice = indicativo presente di dire"},
+{sentence:"Noi {diciamo} la stessa cosa.",isTrue:false,explanation:"diciamo = indicativo presente di dire"},
+{sentence:"Voi {dite} chiaramente.",isTrue:false,explanation:"dite = indicativo presente di dire"},
+{sentence:"Loro {dicono} la verità.",isTrue:false,explanation:"dicono = indicativo presente di dire"},
+{sentence:"Io {posso} venire domani.",isTrue:false,explanation:"posso = indicativo presente di potere"},
+{sentence:"Tu {puoi} uscire dopo cena.",isTrue:false,explanation:"puoi = indicativo presente di potere"},
+{sentence:"Lui {può} aiutarti.",isTrue:false,explanation:"può = indicativo presente di potere"},
+{sentence:"Noi {possiamo} partire presto.",isTrue:false,explanation:"possiamo = indicativo presente di potere"},
+{sentence:"Voi {potete} finire in tempo.",isTrue:false,explanation:"potete = indicativo presente di potere"},
+{sentence:"Loro {possono} venire.",isTrue:false,explanation:"possono = indicativo presente di potere"},
+{sentence:"Io {devo} lavorare sabato.",isTrue:false,explanation:"devo = indicativo presente di dovere"},
+{sentence:"Tu {devi} studiare di più.",isTrue:false,explanation:"devi = indicativo presente di dovere"},
+{sentence:"Lei {deve} aspettare.",isTrue:false,explanation:"deve = indicativo presente di dovere"},
+{sentence:"Noi {dobbiamo} decidere presto.",isTrue:false,explanation:"dobbiamo = indicativo presente di dovere"},
+{sentence:"Voi {dovete} partire domani.",isTrue:false,explanation:"dovete = indicativo presente di dovere"},
+{sentence:"Loro {devono} partire.",isTrue:false,explanation:"devono = indicativo presente di dovere"},
+{sentence:"Io {voglio} un caffè.",isTrue:false,explanation:"voglio = indicativo presente di volere"},
+{sentence:"Tu {vuoi} venire con noi?",isTrue:false,explanation:"vuoi = indicativo presente di volere"},
+{sentence:"Lui {vuole} sapere tutto.",isTrue:false,explanation:"vuole = indicativo presente di volere"},
+{sentence:"Noi {vogliamo} una spiegazione.",isTrue:false,explanation:"vogliamo = indicativo presente di volere"},
+{sentence:"Voi {volete} partire presto.",isTrue:false,explanation:"volete = indicativo presente di volere"},
+{sentence:"Loro {vogliono} aiutare.",isTrue:false,explanation:"vogliono = indicativo presente di volere"},
+{sentence:"Io {bevo} un succo di frutta.",isTrue:false,explanation:"bevo = indicativo presente di bere"},
+{sentence:"Tu {bevi} qualcosa?",isTrue:false,explanation:"bevi = indicativo presente di bere"},
+{sentence:"Lui {beve} il caffè al bar.",isTrue:false,explanation:"beve = indicativo presente di bere"},
+{sentence:"Noi {beviamo} un brindisi.",isTrue:false,explanation:"beviamo = indicativo presente di bere"},
+{sentence:"Voi {bevete} acqua.",isTrue:false,explanation:"bevete = indicativo presente di bere"},
+{sentence:"Loro {bevono} vino.",isTrue:false,explanation:"bevono = indicativo presente di bere"},
+{sentence:"Io {rimango} a casa.",isTrue:false,explanation:"rimango = indicativo presente di rimanere"},
+{sentence:"Tu {rimani} con noi?",isTrue:false,explanation:"rimani = indicativo presente di rimanere"},
+{sentence:"Lui {rimane} a dormire.",isTrue:false,explanation:"rimane = indicativo presente di rimanere"},
+{sentence:"Noi {rimaniamo} fino a domenica.",isTrue:false,explanation:"rimaniamo = indicativo presente di rimanere"},
+{sentence:"Voi {rimanete} qui.",isTrue:false,explanation:"rimanete = indicativo presente di rimanere"},
+{sentence:"Loro {rimangono} fino a tardi.",isTrue:false,explanation:"rimangono = indicativo presente di rimanere"},
+{sentence:"Io {so} la risposta domani.",isTrue:false,explanation:"so = indicativo presente di sapere"},
+{sentence:"Tu {sai} come comportarti.",isTrue:false,explanation:"sai = indicativo presente di sapere"},
+{sentence:"Lei {sa} cosa fare.",isTrue:false,explanation:"sa = indicativo presente di sapere"},
+{sentence:"Noi {sappiamo} tutto.",isTrue:false,explanation:"sappiamo = indicativo presente di sapere"},
+{sentence:"Voi {sapete} la verità.",isTrue:false,explanation:"sapete = indicativo presente di sapere"},
+{sentence:"Loro {sanno} già tutto.",isTrue:false,explanation:"sanno = indicativo presente di sapere"},
+{sentence:"Io {sto} bene, non preoccuparti.",isTrue:false,explanation:"sto = indicativo presente di stare"},
+{sentence:"Tu {stai} a casa oggi?",isTrue:false,explanation:"stai = indicativo presente di stare"},
+{sentence:"Noi {stiamo} attenti.",isTrue:false,explanation:"stiamo = indicativo presente di stare"},
+{sentence:"Voi {state} zitti.",isTrue:false,explanation:"state = indicativo presente di stare"},
+{sentence:"Loro {stanno} seduti.",isTrue:false,explanation:"stanno = indicativo presente di stare"},
+{sentence:"Io {do} una risposta entro domani.",isTrue:false,explanation:"do = indicativo presente di dare"},
+{sentence:"Tu {dai} il libro a Marco.",isTrue:false,explanation:"dai = indicativo presente di dare"},
+{sentence:"Lei {dà} un esame difficile.",isTrue:false,explanation:"dà = indicativo presente di dare"},
+{sentence:"Noi {diamo} il meglio.",isTrue:false,explanation:"diamo = indicativo presente di dare"},
+{sentence:"Voi {date} tutto.",isTrue:false,explanation:"date = indicativo presente di dare"},
+{sentence:"Loro {danno} una spiegazione.",isTrue:false,explanation:"danno = indicativo presente di dare"},
+// Forme futuro presentate come condizionale
+{sentence:"Io {parlerò} volentieri con il direttore.",isTrue:false,explanation:"parlerò = futuro semplice, non condizionale"},
+{sentence:"Tu {parlerai} italiano se potessi.",isTrue:false,explanation:"parlerai = futuro semplice"},
+{sentence:"Lei {parlerà} con più calma.",isTrue:false,explanation:"parlerà = futuro semplice"},
+{sentence:"Noi {parleremo} di questo domani.",isTrue:false,explanation:"parleremo = futuro semplice"},
+{sentence:"Voi {parlerete} più forte?",isTrue:false,explanation:"parlerete = futuro semplice"},
+{sentence:"Loro {parleranno} alla riunione.",isTrue:false,explanation:"parleranno = futuro semplice"},
+{sentence:"Io {prenderò} il treno delle sette.",isTrue:false,explanation:"prenderò = futuro semplice"},
+{sentence:"Tu {prenderai} l'ombrello?",isTrue:false,explanation:"prenderai = futuro semplice"},
+{sentence:"Lui {prenderà} una decisione domani.",isTrue:false,explanation:"prenderà = futuro semplice"},
+{sentence:"Noi {prenderemo} un caffè insieme.",isTrue:false,explanation:"prenderemo = futuro semplice"},
+{sentence:"Voi {prenderete} il bus o la metro?",isTrue:false,explanation:"prenderete = futuro semplice"},
+{sentence:"Loro {prenderanno} il volo di sera.",isTrue:false,explanation:"prenderanno = futuro semplice"},
+{sentence:"Io {partirò} domani mattina.",isTrue:false,explanation:"partirò = futuro semplice"},
+{sentence:"Tu {partirai} con noi?",isTrue:false,explanation:"partirai = futuro semplice"},
+{sentence:"Lei {partirà} alle sei.",isTrue:false,explanation:"partirà = futuro semplice"},
+{sentence:"Noi {partiremo} dopo colazione.",isTrue:false,explanation:"partiremo = futuro semplice"},
+{sentence:"Voi {partirete} in anticipo.",isTrue:false,explanation:"partirete = futuro semplice"},
+{sentence:"Loro {partiranno} la settimana prossima.",isTrue:false,explanation:"partiranno = futuro semplice"},
+{sentence:"Io {finirò} il lavoro entro stasera.",isTrue:false,explanation:"finirò = futuro semplice"},
+{sentence:"Tu {finirai} prima di me.",isTrue:false,explanation:"finirai = futuro semplice"},
+{sentence:"Lui {finirà} il corso a giugno.",isTrue:false,explanation:"finirà = futuro semplice"},
+{sentence:"Noi {finiremo} presto.",isTrue:false,explanation:"finiremo = futuro semplice"},
+{sentence:"Voi {finirete} in tempo?",isTrue:false,explanation:"finirete = futuro semplice"},
+{sentence:"Loro {finiranno} il progetto domani.",isTrue:false,explanation:"finiranno = futuro semplice"},
+{sentence:"Io {sarò} felice di aiutarti.",isTrue:false,explanation:"sarò = futuro semplice di essere"},
+{sentence:"Tu {sarai} pronto?",isTrue:false,explanation:"sarai = futuro semplice di essere"},
+{sentence:"Lei {sarà} contenta della notizia.",isTrue:false,explanation:"sarà = futuro semplice di essere"},
+{sentence:"Noi {saremo} in anticipo.",isTrue:false,explanation:"saremo = futuro semplice di essere"},
+{sentence:"Voi {sarete} stanchi dopo il viaggio.",isTrue:false,explanation:"sarete = futuro semplice di essere"},
+{sentence:"Loro {saranno} qui alle tre.",isTrue:false,explanation:"saranno = futuro semplice di essere"},
+{sentence:"Io {avrò} tempo domani.",isTrue:false,explanation:"avrò = futuro semplice di avere"},
+{sentence:"Tu {avrai} bisogno di aiuto.",isTrue:false,explanation:"avrai = futuro semplice di avere"},
+{sentence:"Lui {avrà} paura del dentista.",isTrue:false,explanation:"avrà = futuro semplice di avere"},
+{sentence:"Noi {avremo} una riunione alle dieci.",isTrue:false,explanation:"avremo = futuro semplice di avere"},
+{sentence:"Voi {avrete} le risposte domani.",isTrue:false,explanation:"avrete = futuro semplice di avere"},
+{sentence:"Loro {avranno} molte domande.",isTrue:false,explanation:"avranno = futuro semplice di avere"},
+{sentence:"Io {andrò} al mercato volentieri.",isTrue:false,explanation:"andrò = futuro semplice di andare"},
+{sentence:"Tu {andrai} in vacanza quest'estate?",isTrue:false,explanation:"andrai = futuro semplice di andare"},
+{sentence:"Lei {andrà} dal medico domani.",isTrue:false,explanation:"andrà = futuro semplice di andare"},
+{sentence:"Noi {andremo} al mare il fine settimana.",isTrue:false,explanation:"andremo = futuro semplice di andare"},
+{sentence:"Voi {andrete} a piedi o in macchina?",isTrue:false,explanation:"andrete = futuro semplice di andare"},
+{sentence:"Loro {andranno} in Italia l'anno prossimo.",isTrue:false,explanation:"andranno = futuro semplice di andare"},
+{sentence:"Io {verrò} alla festa volentieri.",isTrue:false,explanation:"verrò = futuro semplice di venire"},
+{sentence:"Tu {verrai} con me?",isTrue:false,explanation:"verrai = futuro semplice di venire"},
+{sentence:"Lui {verrà} tardi.",isTrue:false,explanation:"verrà = futuro semplice di venire"},
+{sentence:"Noi {verremo} a trovarti domani.",isTrue:false,explanation:"verremo = futuro semplice di venire"},
+{sentence:"Voi {verrete} anche voi?",isTrue:false,explanation:"verrete = futuro semplice di venire"},
+{sentence:"Loro {verranno} in macchina.",isTrue:false,explanation:"verranno = futuro semplice di venire"},
+{sentence:"Io {farò} i compiti stasera.",isTrue:false,explanation:"farò = futuro semplice di fare"},
+{sentence:"Tu {farai} la spesa domani.",isTrue:false,explanation:"farai = futuro semplice di fare"},
+{sentence:"Lui {farà} del suo meglio.",isTrue:false,explanation:"farà = futuro semplice di fare"},
+{sentence:"Noi {faremo} una passeggiata.",isTrue:false,explanation:"faremo = futuro semplice di fare"},
+{sentence:"Voi {farete} tardi stasera?",isTrue:false,explanation:"farete = futuro semplice di fare"},
+{sentence:"Loro {faranno} una festa sabato.",isTrue:false,explanation:"faranno = futuro semplice di fare"},
+{sentence:"Io {dirò} la verità.",isTrue:false,explanation:"dirò = futuro semplice di dire"},
+{sentence:"Tu {dirai} la tua opinione?",isTrue:false,explanation:"dirai = futuro semplice di dire"},
+{sentence:"Lei {dirà} di no.",isTrue:false,explanation:"dirà = futuro semplice di dire"},
+{sentence:"Noi {diremo} la stessa cosa.",isTrue:false,explanation:"diremo = futuro semplice di dire"},
+{sentence:"Voi {direte} chiaramente.",isTrue:false,explanation:"direte = futuro semplice di dire"},
+{sentence:"Loro {diranno} la verità.",isTrue:false,explanation:"diranno = futuro semplice di dire"},
+{sentence:"Io {potrò} venire domani.",isTrue:false,explanation:"potrò = futuro semplice di potere"},
+{sentence:"Tu {potrai} uscire dopo cena.",isTrue:false,explanation:"potrai = futuro semplice di potere"},
+{sentence:"Lui {potrà} aiutarti.",isTrue:false,explanation:"potrà = futuro semplice di potere"},
+{sentence:"Noi {potremo} partire presto.",isTrue:false,explanation:"potremo = futuro semplice di potere"},
+{sentence:"Voi {potrete} finire in tempo.",isTrue:false,explanation:"potrete = futuro semplice di potere"},
+{sentence:"Loro {potranno} venire.",isTrue:false,explanation:"potranno = futuro semplice di potere"},
+{sentence:"Io {dovrò} lavorare sabato.",isTrue:false,explanation:"dovrò = futuro semplice di dovere"},
+{sentence:"Tu {dovrai} studiare di più.",isTrue:false,explanation:"dovrai = futuro semplice di dovere"},
+{sentence:"Lei {dovrà} aspettare.",isTrue:false,explanation:"dovrà = futuro semplice di dovere"},
+{sentence:"Noi {dovremo} decidere presto.",isTrue:false,explanation:"dovremo = futuro semplice di dovere"},
+{sentence:"Voi {dovrete} partire domani.",isTrue:false,explanation:"dovrete = futuro semplice di dovere"},
+{sentence:"Loro {dovranno} partire.",isTrue:false,explanation:"dovranno = futuro semplice di dovere"},
+{sentence:"Io {vorrò} un caffè.",isTrue:false,explanation:"vorrò = futuro semplice di volere"},
+{sentence:"Tu {vorrai} venire con noi?",isTrue:false,explanation:"vorrai = futuro semplice di volere"},
+{sentence:"Lui {vorrà} sapere tutto.",isTrue:false,explanation:"vorrà = futuro semplice di volere"},
+{sentence:"Noi {vorremo} una spiegazione.",isTrue:false,explanation:"vorremo = futuro semplice di volere"},
+{sentence:"Voi {vorrete} partire presto.",isTrue:false,explanation:"vorrete = futuro semplice di volere"},
+{sentence:"Loro {vorranno} aiutare.",isTrue:false,explanation:"vorranno = futuro semplice di volere"},
+{sentence:"Io {berrò} un succo di frutta.",isTrue:false,explanation:"berrò = futuro semplice di bere"},
+{sentence:"Tu {berrai} qualcosa?",isTrue:false,explanation:"berrai = futuro semplice di bere"},
+{sentence:"Lui {berrà} il caffè al bar.",isTrue:false,explanation:"berrà = futuro semplice di bere"},
+{sentence:"Noi {berremo} un brindisi.",isTrue:false,explanation:"berremo = futuro semplice di bere"},
+{sentence:"Voi {berrete} acqua.",isTrue:false,explanation:"berrete = futuro semplice di bere"},
+{sentence:"Loro {berranno} vino.",isTrue:false,explanation:"berranno = futuro semplice di bere"},
+{sentence:"Io {rimarrò} a casa.",isTrue:false,explanation:"rimarrò = futuro semplice di rimanere"},
+{sentence:"Tu {rimarrai} con noi?",isTrue:false,explanation:"rimarrai = futuro semplice di rimanere"},
+{sentence:"Lui {rimarrà} a dormire.",isTrue:false,explanation:"rimarrà = futuro semplice di rimanere"},
+{sentence:"Noi {rimarremo} fino a domenica.",isTrue:false,explanation:"rimarremo = futuro semplice di rimanere"},
+{sentence:"Voi {rimarrete} qui.",isTrue:false,explanation:"rimarrete = futuro semplice di rimanere"},
+{sentence:"Loro {rimarranno} fino a tardi.",isTrue:false,explanation:"rimarranno = futuro semplice di rimanere"},
+{sentence:"Io {saprò} la risposta domani.",isTrue:false,explanation:"saprò = futuro semplice di sapere"},
+{sentence:"Tu {saprai} come comportarti.",isTrue:false,explanation:"saprai = futuro semplice di sapere"},
+{sentence:"Lei {saprà} cosa fare.",isTrue:false,explanation:"saprà = futuro semplice di sapere"},
+{sentence:"Noi {sapremo} tutto.",isTrue:false,explanation:"sapremo = futuro semplice di sapere"},
+{sentence:"Voi {saprete} la verità.",isTrue:false,explanation:"saprete = futuro semplice di sapere"},
+{sentence:"Loro {sapranno} già tutto.",isTrue:false,explanation:"sapranno = futuro semplice di sapere"},
+{sentence:"Io {starò} bene, non preoccuparti.",isTrue:false,explanation:"starò = futuro semplice di stare"},
+{sentence:"Tu {starai} a casa oggi?",isTrue:false,explanation:"starai = futuro semplice di stare"},
+{sentence:"Noi {staremo} attenti.",isTrue:false,explanation:"staremo = futuro semplice di stare"},
+{sentence:"Voi {starete} zitti.",isTrue:false,explanation:"starete = futuro semplice di stare"},
+{sentence:"Loro {staranno} seduti.",isTrue:false,explanation:"staranno = futuro semplice di stare"},
+{sentence:"Io {darò} una risposta entro domani.",isTrue:false,explanation:"darò = futuro semplice di dare"},
+{sentence:"Tu {darai} il libro a Marco.",isTrue:false,explanation:"darai = futuro semplice di dare"},
+{sentence:"Lei {darà} un esame difficile.",isTrue:false,explanation:"darà = futuro semplice di dare"},
+{sentence:"Noi {daremo} il meglio.",isTrue:false,explanation:"daremo = futuro semplice di dare"},
+{sentence:"Voi {darete} tutto.",isTrue:false,explanation:"darete = futuro semplice di dare"},
+{sentence:"Loro {daranno} una spiegazione.",isTrue:false,explanation:"daranno = futuro semplice di dare"},
+];
+
+let currentQuestion = null;
+let timerInterval = null;
+let timeLeft = 60;
+let correctCount = 0;
+let wrongCount = 0;
+let combo = 0;
+let maxCombo = 0;
+let questionQueue = [];
+let isPlaying = false;
+let isTransitioning = false;
+let lastWrongExplanations = [];
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function formatQuestion(sentence) {
+    return sentence.replace(/\{([^}]+)\}/g, '<span class="highlight">$1</span>');
+}
+
+function startGame() {
+    document.getElementById('startScreen').classList.add('hidden');
+    document.getElementById('endScreen').classList.add('hidden');
+    document.getElementById('gameContainer').classList.remove('hidden');
+
+    timeLeft = 60;
+    correctCount = 0;
+    wrongCount = 0;
+    combo = 0;
+    maxCombo = 0;
+    isTransitioning = false;
+    lastWrongExplanations = [];
+    questionQueue = [...allQuestions];
+    shuffleArray(questionQueue);
+    isPlaying = true;
+
+    updateStats();
+    loadQuestion();
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('mainTimer').textContent = timeLeft;
+        if (timeLeft <= 10) {
+            document.getElementById('mainTimer').classList.add('warning');
+        } else {
+            document.getElementById('mainTimer').classList.remove('warning');
+        }
+        if (timeLeft <= 0) {
+            endGame();
+        }
+    }, 1000);
+}
+
+function restartGame() {
+    startGame();
+}
+
+function loadQuestion() {
+    if (questionQueue.length === 0) {
+        questionQueue = [...allQuestions];
+        shuffleArray(questionQueue);
+    }
+    currentQuestion = questionQueue.pop();
+    isTransitioning = false;
+
+    document.getElementById('questionText').innerHTML = formatQuestion(currentQuestion.sentence);
+
+    document.getElementById('btnVero').disabled = false;
+    document.getElementById('btnFalso').disabled = false;
+
+    const card = document.getElementById('questionCard');
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    card.style.animation = 'cardSlideIn .32s ease';
+}
+
+function answer(userSaysTrue) {
+    if (!isPlaying || isTransitioning) return;
+    isTransitioning = true;
+
+    const isCorrect = userSaysTrue === currentQuestion.isTrue;
+
+    document.getElementById('btnVero').disabled = true;
+    document.getElementById('btnFalso').disabled = true;
+
+    if (isCorrect) {
+        correctCount++;
+        combo++;
+        if (combo > maxCombo) maxCombo = combo;
+        showFeedback('correct', '✓');
+        createParticles();
+    } else {
+        wrongCount++;
+        combo = 0;
+        showFeedback('wrong', '✗');
+        if (currentQuestion.explanation) {
+            lastWrongExplanations.push(currentQuestion.explanation);
+            if (lastWrongExplanations.length > 5) lastWrongExplanations.shift();
+        }
+    }
+
+    updateStats();
+
+    setTimeout(() => {
+        if (isPlaying) loadQuestion();
+    }, 550);
+}
+
+function showFeedback(type, symbol) {
+    const fb = document.createElement('div');
+    fb.className = 'feedback ' + type;
+    fb.textContent = symbol;
+    document.body.appendChild(fb);
+    setTimeout(() => fb.remove(), 600);
+}
+
+function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 12; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = (50 + (Math.random() - 0.5) * 40) + '%';
+        p.style.top = '40%';
+        p.style.background = ['#8b1a1a', '#b8960c', '#1a4a1a'][Math.floor(Math.random() * 3)];
+        p.style.animationDelay = (Math.random() * 0.2) + 's';
+        container.appendChild(p);
+        setTimeout(() => p.remove(), 1000);
+    }
+}
+
+function updateStats() {
+    document.getElementById('correctCount').textContent = correctCount;
+    document.getElementById('wrongCount').textContent = wrongCount;
+
+    const comboDisplay = document.getElementById('comboDisplay');
+    if (combo >= 3) {
+        comboDisplay.classList.add('active');
+        document.getElementById('comboCount').textContent = combo;
+    } else {
+        comboDisplay.classList.remove('active');
+    }
+
+    const speedEl = document.getElementById('speedIndicator');
+    if (combo >= 10) speedEl.textContent = '🔥 INCREDIBILE';
+    else if (combo >= 7) speedEl.textContent = '⚡ FOLLE';
+    else if (combo >= 5) speedEl.textContent = '🔥 BRUTALE';
+    else if (combo >= 3) speedEl.textContent = '✦ OTTIMO';
+    else speedEl.textContent = '— Normale';
+
+    document.getElementById('streakFill').style.width = Math.min((combo / 10) * 100, 100) + '%';
+}
+
+function endGame() {
+    isPlaying = false;
+    clearInterval(timerInterval);
+    document.getElementById('gameContainer').classList.add('hidden');
+    document.getElementById('endScreen').classList.remove('hidden');
+    document.getElementById('finalCorrect').textContent = correctCount;
+
+    const total = correctCount + wrongCount;
+    const accuracy = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+    let comment = '';
+    if (accuracy >= 90) comment = 'Eccellente! Padroneggi il condizionale!';
+    else if (accuracy >= 70) comment = 'Ottimo lavoro! Quasi perfetto.';
+    else if (accuracy >= 50) comment = 'Buon risultato, ma puoi migliorare.';
+    else comment = 'Continua a esercitarti sul condizionale!';
+
+    let explHtml = '';
+    if (lastWrongExplanations.length > 0) {
+        explHtml = '<br><br><strong style="color:var(--accent)">Errori da rivedere:</strong><br>' +
+            lastWrongExplanations.map(e => '• ' + e).join('<br>');
+    }
+
+    document.getElementById('finalStats').innerHTML =
+        `Sbagliate: ${wrongCount}<br>` +
+        `Precisione: ${accuracy}%<br>` +
+        `Combo massima: ${maxCombo}<br>` +
+        `<em>${comment}</em>` + explHtml;
+}
+
+document.addEventListener('keydown', (e) => {
+    if (!isPlaying || isTransitioning) return;
+    const key = e.key.toLowerCase();
+    if (key === 'v' || key === 'arrowleft') answer(true);
+    else if (key === 'f' || key === 'arrowright') answer(false);
+});
+</script>
+</body>
+</html>
