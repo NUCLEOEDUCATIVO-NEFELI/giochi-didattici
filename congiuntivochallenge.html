@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congiuntivo Presente - 1 Minuto Challenge!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700;900&display=swap');
+        :root {
+            --ink: #1a1a2e; --ink-light: #4a4a6a; --ink-muted: #8a8aaa;
+            --parchment: #faf8f3; --parchment-dark: #f0ece0;
+            --rule: #c8b89a; --rule-light: #e0d8c8;
+            --accent: #8b1a1a; --accent-dark: #6b0f0f;
+            --success: #1a4a1a; --gold: #b8960c; --gold-light: #f5e6a3;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background-color: #1a1a2e;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(139,26,26,0.08) 27px, rgba(139,26,26,0.08) 28px),
+                repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(139,26,26,0.03) 80px, rgba(139,26,26,0.03) 81px);
+            min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden;
+        }
+        .start-screen, .end-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10,10,20,0.92); display: flex; justify-content: center; align-items: center;
+            z-index: 2000; backdrop-filter: blur(6px);
+        }
+        .modal {
+            background: var(--parchment); border: 1px solid var(--rule); border-top: 5px solid var(--accent);
+            padding: 50px 58px; max-width: 680px; width: 92%;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6), 8px 8px 0 rgba(139,26,26,0.15); position: relative;
+        }
+        .modal::before { content: ''; position: absolute; top: 14px; left: 0; right: 0; height: 1px; background: var(--rule-light); }
+        .modal-icon { font-size: 2.6em; text-align: center; margin-bottom: 8px; }
+        .modal h2 {
+            font-family: 'EB Garamond', serif; font-size: 2.5em; font-weight: 700; color: var(--ink);
+            letter-spacing: 0.06em; text-transform: uppercase; text-align: center; margin-bottom: 4px;
+        }
+        .modal-sub {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.72em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); text-align: center; margin-bottom: 22px;
+        }
+        .modal p {
+            font-family: 'EB Garamond', serif; font-size: 1.12em; color: var(--ink-light);
+            line-height: 1.75; text-align: center; margin-bottom: 22px;
+        }
+        .rules-box {
+            background: var(--parchment-dark); border: 1px solid var(--rule); border-left: 4px solid var(--accent);
+            padding: 20px 24px; margin: 18px 0 26px;
+        }
+        .rules-box h3 {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.66em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 12px;
+        }
+        .rules-box ul { list-style: none; padding: 0; }
+        .rules-box li {
+            font-family: 'EB Garamond', serif; font-size: 1.04em; color: var(--ink-light);
+            margin: 8px 0; padding-left: 20px; position: relative; line-height: 1.5;
+        }
+        .rules-box li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+        .rules-box li strong { color: var(--ink); }
+        .rules-box li em { color: var(--accent); font-style: italic; }
+        .start-btn, .restart-btn {
+            display: block; width: 100%; background: var(--accent); color: var(--parchment); border: none;
+            padding: 17px 40px; font-size: 0.82em; font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer; transition: background 0.15s;
+        }
+        .start-btn:hover, .restart-btn:hover { background: var(--accent-dark); }
+        .game-container {
+            width: 95%; max-width: 840px; background: var(--parchment);
+            border: 1px solid var(--rule); border-top: 5px solid var(--accent);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 6px 6px 0 rgba(139,26,26,0.12);
+            position: relative; padding: 32px 38px 38px;
+        }
+        .game-header {
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--rule-light); padding-bottom: 16px; margin-bottom: 20px;
+        }
+        .game-title {
+            font-family: 'EB Garamond', serif; font-size: 1.45em; font-weight: 600; color: var(--ink);
+            letter-spacing: 0.08em; text-transform: uppercase;
+        }
+        .game-subtitle {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.68em; font-weight: 600;
+            letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); margin-top: 3px;
+        }
+        .timer-block { text-align: center; }
+        .timer-label {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.58em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 2px;
+        }
+        .timer-value {
+            font-family: 'EB Garamond', serif; font-size: 3.8em; font-weight: 700; color: var(--accent); line-height: 1;
+        }
+        .timer-value.warning { color: #6b0f0f; animation: timerPulse 0.5s infinite; }
+        @keyframes timerPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+        .stats-row { display: flex; gap: 10px; margin-bottom: 18px; align-items: stretch; }
+        .stat-box {
+            background: var(--parchment-dark); border: 1px solid var(--rule);
+            padding: 10px 18px; flex: 1; text-align: center;
+        }
+        .stat-label {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.58em; font-weight: 700;
+            letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); display: block; margin-bottom: 3px;
+        }
+        .stat-value { font-family: 'EB Garamond', serif; font-size: 2em; font-weight: 700; color: var(--ink); line-height: 1; }
+        .combo-box {
+            background: var(--ink); border: 1px solid var(--ink);
+            padding: 10px 18px; min-width: 120px; text-align: center; display: none;
+        }
+        .combo-box.active { display: block; animation: comboAppear 0.3s ease; }
+        @keyframes comboAppear { from{transform:scale(0.75);opacity:0} to{transform:scale(1);opacity:1} }
+        .combo-label {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.58em; font-weight: 700;
+            letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 3px;
+        }
+        .combo-value { font-family: 'EB Garamond', serif; font-size: 2em; font-weight: 700; color: var(--gold-light); line-height: 1; }
+        .speed-tag {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.64em; font-weight: 700;
+            letter-spacing: 0.10em; text-transform: uppercase; padding: 10px 14px; border: 1px solid var(--rule);
+            color: var(--ink-muted); background: var(--parchment-dark); white-space: nowrap; display: flex; align-items: center;
+        }
+        .streak-bar { width: 100%; height: 3px; background: var(--rule-light); margin-bottom: 18px; }
+        .streak-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s ease; }
+        .question-card {
+            background: var(--parchment-dark); border: 1px solid var(--rule); border-left: 5px solid var(--accent);
+            padding: 34px 38px; text-align: center; margin-bottom: 22px; min-height: 130px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            animation: cardSlideIn 0.32s ease;
+        }
+        @keyframes cardSlideIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+        .question-label {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.64em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 12px;
+        }
+        .question-text {
+            font-family: 'EB Garamond', serif; font-size: 2em; color: var(--ink); line-height: 1.55; font-style: italic;
+        }
+        .question-text .highlight {
+            font-style: normal; font-weight: 700; color: var(--accent);
+            border-bottom: 2px solid var(--accent); padding-bottom: 1px;
+        }
+        .buttons-container { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .btn {
+            padding: 28px 20px; font-family: 'EB Garamond', serif; font-size: 1.9em; font-weight: 700;
+            border: 2px solid; cursor: pointer; transition: all 0.12s ease;
+            letter-spacing: 0.06em; text-align: center;
+        }
+        .btn-sub {
+            display: block; font-family: 'Source Sans 3', sans-serif; font-size: 0.38em; font-weight: 600;
+            letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.65; margin-top: 6px;
+        }
+        .btn-vero { background: var(--success); border-color: var(--success); color: var(--parchment); }
+        .btn-vero:hover:not(:disabled) { background: #0f3a0f; border-color: #0f3a0f; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(26,74,26,0.40); }
+        .btn-falso { background: var(--parchment); border-color: var(--accent); color: var(--accent); }
+        .btn-falso:hover:not(:disabled) { background: var(--accent); color: var(--parchment); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(139,26,26,0.40); }
+        .btn:active:not(:disabled) { transform: translateY(0) !important; box-shadow: none !important; }
+        .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+        .keyboard-hint { display: flex; justify-content: space-between; margin-top: 12px; }
+        .key-hint {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.65em; font-weight: 600;
+            letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-muted); text-align: center; flex: 1;
+        }
+        .key-badge {
+            display: inline-block; border: 1px solid var(--rule); background: var(--parchment-dark);
+            padding: 1px 7px; font-family: 'Libre Baskerville', serif; font-size: 0.95em; color: var(--ink); margin-right: 3px;
+        }
+        .feedback {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            font-family: 'EB Garamond', serif; font-size: 7em; font-weight: 700;
+            animation: feedbackPop 0.52s ease forwards; pointer-events: none; z-index: 1000;
+        }
+        @keyframes feedbackPop {
+            0%   { transform: translate(-50%,-50%) scale(0.1); opacity: 0; }
+            45%  { transform: translate(-50%,-50%) scale(1.2); opacity: 1; }
+            75%  { transform: translate(-50%,-50%) scale(1.0); opacity: 1; }
+            100% { transform: translate(-50%,-50%) scale(1.0); opacity: 0; }
+        }
+        .feedback.correct { color: var(--success); }
+        .feedback.wrong   { color: #6b0f0f; }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+        .particle { position: absolute; width: 7px; height: 7px; animation: particleFall 1s ease-out forwards; }
+        @keyframes particleFall {
+            0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(380px) rotate(540deg) scale(0); opacity: 0; }
+        }
+        .final-score-label {
+            font-family: 'Source Sans 3', sans-serif; font-size: 0.68em; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); text-align: center;
+            margin-top: 24px; margin-bottom: 4px;
+        }
+        .final-score {
+            font-family: 'EB Garamond', serif; font-size: 5.5em; font-weight: 700; color: var(--accent);
+            text-align: center; line-height: 1; margin-bottom: 16px;
+        }
+        .final-stats {
+            font-family: 'EB Garamond', serif; font-size: 1.1em; color: var(--ink-light);
+            text-align: center; line-height: 2; margin-bottom: 26px;
+        }
+        hr.divider { border: none; border-top: 1px solid var(--rule); margin: 20px 0; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="start-screen" id="startScreen">
+        <div class="modal">
+            <div class="modal-icon">🎯</div>
+            <h2>Congiuntivo Presente</h2>
+            <div class="modal-sub">1 Minuto Challenge</div>
+            <p>Leggi la frase. La forma in <strong>rosso</strong> è corretta?<br>
+               Rispondi <strong>Vero</strong> o <strong>Falso</strong> il più velocemente possibile!</p>
+            <div class="rules-box">
+                <h3>Regole Rapide — Solo Congiuntivo Presente</h3>
+                <ul>
+                    <li><strong>-are →</strong> desinenze in <em>-i</em>: <em>parli, parliamo, parliate, parlino</em></li>
+                    <li><strong>-ere →</strong> desinenze in <em>-a</em>: <em>scriva, scriviamo, scriviate, scrivano</em></li>
+                    <li><strong>-ire →</strong> desinenze in <em>-a</em>: <em>parta, partiamo, partiate, partano</em></li>
+                    <li><strong>-care / -gare:</strong> mantengono il suono duro: <em>cerchi, paghi</em></li>
+                    <li><strong>-ciare / -giare:</strong> perdono la <em>i</em>: <em>cominci, mangi</em></li>
+                    <li><strong>Irregolari:</strong> <em>sia, abbia, vada, faccia, dica, possa, debba, voglia, sappia, stia, dia, venga, beva, tenga, rimanga</em></li>
+                </ul>
+            </div>
+            <button class="start-btn" onclick="startGame()">Inizia il Gioco →</button>
+        </div>
+    </div>
+
+    <div class="end-screen hidden" id="endScreen">
+        <div class="modal">
+            <div class="modal-icon">⏰</div>
+            <h2>Tempo Scaduto</h2>
+            <div class="modal-sub">Risultato Finale</div>
+            <hr class="divider">
+            <div class="final-score-label">Risposte Corrette</div>
+            <div class="final-score" id="finalCorrect">0</div>
+            <div class="final-stats" id="finalStats"></div>
+            <button class="restart-btn" onclick="restartGame()">Gioca Ancora →</button>
+        </div>
+    </div>
+
+    <div class="game-container hidden" id="gameContainer">
+        <div class="game-header">
+            <div>
+                <div class="game-title">Congiuntivo Presente</div>
+                <div class="game-subtitle">La forma evidenziata è corretta? Vero o Falso?</div>
+            </div>
+            <div class="timer-block">
+                <div class="timer-label">Tempo</div>
+                <div class="timer-value" id="mainTimer">60</div>
+            </div>
+        </div>
+        <div class="stats-row">
+            <div class="stat-box"><span class="stat-label">Corrette</span><span class="stat-value" id="correctCount">0</span></div>
+            <div class="stat-box"><span class="stat-label">Sbagliate</span><span class="stat-value" id="wrongCount">0</span></div>
+            <div class="combo-box" id="comboDisplay"><span class="combo-label">Combo</span><span class="combo-value">×<span id="comboCount">1</span></span></div>
+            <div class="speed-tag" id="speedIndicator">— Normale</div>
+        </div>
+        <div class="streak-bar"><div class="streak-fill" id="streakFill"></div></div>
+        <div class="question-card" id="questionCard">
+            <div class="question-label">La forma evidenziata è corretta?</div>
+            <div class="question-text" id="questionText">Pronti…</div>
+        </div>
+        <div class="buttons-container">
+            <button class="btn btn-vero" id="btnVero" onclick="answer(true)">Vero<span class="btn-sub">Tasto V  oppure  ←</span></button>
+            <button class="btn btn-falso" id="btnFalso" onclick="answer(false)">Falso<span class="btn-sub">Tasto F  oppure  →</span></button>
+        </div>
+        <div class="keyboard-hint">
+            <div class="key-hint"><span class="key-badge">V</span> Vero</div>
+            <div class="key-hint"><span class="key-badge">F</span> Falso</div>
+        </div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+
+<script>
+
+const allQuestions = [
+    // ═══ CORRETTE — Congiuntivo Presente ═══════════════════════════════
+    { sentence: "Penso che lui {parli} troppo velocemente.", correct: true },
+    { sentence: "Credo che tu {parli} italiano molto bene.", correct: true },
+    { sentence: "È importante che lei {parli} con il direttore.", correct: true },
+    { sentence: "Spero che noi {parliamo} di questo domani.", correct: true },
+    { sentence: "Voglio che voi {parliate} più forte.", correct: true },
+    { sentence: "È possibile che loro {parlino} alla riunione.", correct: true },
+
+    { sentence: "Penso che io {lavori} troppo.", correct: true },
+    { sentence: "Credo che tu {lavori} con passione.", correct: true },
+    { sentence: "È bene che lei {lavori} in un team.", correct: true },
+    { sentence: "Spero che noi {lavoriamo} insieme.", correct: true },
+    { sentence: "Voglio che voi {lavoriate} sodo.", correct: true },
+    { sentence: "È probabile che loro {lavorino} fino a tardi.", correct: true },
+
+    { sentence: "Penso che io {studi} ogni giorno.", correct: true },
+    { sentence: "Credo che tu {studi} medicina.", correct: true },
+    { sentence: "È importante che lei {studi} di più.", correct: true },
+    { sentence: "Spero che noi {studiamo} insieme.", correct: true },
+    { sentence: "Voglio che voi {studiate} per l'esame.", correct: true },
+    { sentence: "È possibile che loro {studino} all'estero.", correct: true },
+
+    { sentence: "Credo che io {cerchi} un nuovo lavoro.", correct: true },
+    { sentence: "Penso che tu {cerchi} casa in centro.", correct: true },
+    { sentence: "È importante che lui {cerchi} di arrivare puntuale.", correct: true },
+    { sentence: "Spero che noi {cerchiamo} una soluzione.", correct: true },
+    { sentence: "Voglio che voi {cerchiate} il documento.", correct: true },
+    { sentence: "È probabile che loro {cerchino} aiuto.", correct: true },
+
+    { sentence: "Penso che io {pagi} il conto.", correct: true },
+    { sentence: "Credo che tu {pagi} con la carta.", correct: true },
+    { sentence: "È importante che lui {pagi} il biglietto.", correct: true },
+    { sentence: "Spero che noi {paghiamo} poco.", correct: true },
+    { sentence: "Voglio che voi {paghiate} subito.", correct: true },
+    { sentence: "È possibile che loro {paghino} online.", correct: true },
+
+    { sentence: "Credo che io {cominci} presto.", correct: true },
+    { sentence: "Penso che tu {cominci} a studiare.", correct: true },
+    { sentence: "È bene che lui {cominci} alle nove.", correct: true },
+    { sentence: "Spero che noi {cominciamo} in orario.", correct: true },
+    { sentence: "Voglio che voi {cominciate} subito.", correct: true },
+    { sentence: "È probabile che loro {comincino} domani.", correct: true },
+
+    { sentence: "Penso che io {mangi} al ristorante.", correct: true },
+    { sentence: "Credo che tu {mangi} con noi.", correct: true },
+    { sentence: "È importante che lui {mangi} la pizza.", correct: true },
+    { sentence: "Spero che noi {mangiamo} presto.", correct: true },
+    { sentence: "Voglio che voi {mangiate} le verdure.", correct: true },
+    { sentence: "È possibile che loro {mangino} fuori.", correct: true },
+
+    { sentence: "Credo che io {viaggi} spesso.", correct: true },
+    { sentence: "Penso che tu {viaggi} in Asia.", correct: true },
+    { sentence: "È bene che lei {viaggi} per lavoro.", correct: true },
+    { sentence: "Spero che noi {viaggiamo} insieme.", correct: true },
+    { sentence: "Voglio che voi {viaggiate} in treno.", correct: true },
+    { sentence: "È probabile che loro {viaggino} domani.", correct: true },
+
+    { sentence: "Penso che io {prenda} il treno.", correct: true },
+    { sentence: "Credo che tu {prenda} l'ombrello.", correct: true },
+    { sentence: "È importante che lui {prenda} una decisione.", correct: true },
+    { sentence: "Spero che noi {prendiamo} un caffè.", correct: true },
+    { sentence: "Voglio che voi {prendiate} il bus.", correct: true },
+    { sentence: "È possibile che loro {prendano} il volo.", correct: true },
+
+    { sentence: "Credo che io {scriva} una lettera.", correct: true },
+    { sentence: "Penso che tu {scriva} il tuo nome.", correct: true },
+    { sentence: "È bene che lei {scriva} il rapporto.", correct: true },
+    { sentence: "Spero che noi {scriviamo} un articolo.", correct: true },
+    { sentence: "Voglio che voi {scriviate} chiaramente.", correct: true },
+    { sentence: "È probabile che loro {scrivano} presto.", correct: true },
+
+    { sentence: "Penso che io {legga} quel libro.", correct: true },
+    { sentence: "Credo che tu {legga} le istruzioni.", correct: true },
+    { sentence: "È importante che lui {legga} la notizia.", correct: true },
+    { sentence: "Spero che noi {leggiamo} insieme.", correct: true },
+    { sentence: "Voglio che voi {leggiate} questo testo.", correct: true },
+    { sentence: "È possibile che loro {leggano} domani.", correct: true },
+
+    { sentence: "Credo che io {risponda} alla email.", correct: true },
+    { sentence: "Penso che tu {risponda} presto.", correct: true },
+    { sentence: "È bene che lui {risponda} entro domani.", correct: true },
+    { sentence: "Spero che noi {rispondiamo} tutti.", correct: true },
+    { sentence: "Voglio che voi {rispondiate} sinceramente.", correct: true },
+    { sentence: "È probabile che loro {rispondano} in serata.", correct: true },
+
+    { sentence: "Penso che io {parta} domani.", correct: true },
+    { sentence: "Credo che tu {parta} con noi.", correct: true },
+    { sentence: "È importante che lei {parta} alle sei.", correct: true },
+    { sentence: "Spero che noi {partiamo} presto.", correct: true },
+    { sentence: "Voglio che voi {partiate} in anticipo.", correct: true },
+    { sentence: "È possibile che loro {partano} la settimana prossima.", correct: true },
+
+    { sentence: "Credo che io {finisca} il lavoro.", correct: true },
+    { sentence: "Penso che tu {finisca} prima di me.", correct: true },
+    { sentence: "È bene che lui {finisca} il corso.", correct: true },
+    { sentence: "Spero che noi {finiamo} presto.", correct: true },
+    { sentence: "Voglio che voi {finiate} in tempo.", correct: true },
+    { sentence: "È probabile che loro {finiscano} domani.", correct: true },
+
+    { sentence: "Penso che io {capisca} tutto.", correct: true },
+    { sentence: "Credo che tu {capisca} la lezione.", correct: true },
+    { sentence: "È importante che lui {capisca} le istruzioni.", correct: true },
+    { sentence: "Spero che noi {capiamo} insieme.", correct: true },
+    { sentence: "Voglio che voi {capiate} il problema.", correct: true },
+    { sentence: "È possibile che loro {capiscano} alla fine.", correct: true },
+
+    // Irregolari
+    { sentence: "Credo che io {sia} pronto.", correct: true },
+    { sentence: "Penso che tu {sia} contento.", correct: true },
+    { sentence: "È importante che lui {sia} puntuale.", correct: true },
+    { sentence: "Spero che noi {siamo} in anticipo.", correct: true },
+    { sentence: "Voglio che voi {siate} stanchi dopo il viaggio.", correct: true },
+    { sentence: "È probabile che loro {siano} qui alle tre.", correct: true },
+
+    { sentence: "Penso che io {abbia} tempo.", correct: true },
+    { sentence: "Credo che tu {abbia} bisogno di aiuto.", correct: true },
+    { sentence: "È bene che lui {abbia} paura.", correct: true },
+    { sentence: "Spero che noi {abbiamo} una riunione.", correct: true },
+    { sentence: "Voglio che voi {abbiate} le risposte.", correct: true },
+    { sentence: "È possibile che loro {abbiano} molte domande.", correct: true },
+
+    { sentence: "Credo che io {vada} al mercato.", correct: true },
+    { sentence: "Penso che tu {vada} in vacanza.", correct: true },
+    { sentence: "È importante che lei {vada} dal medico.", correct: true },
+    { sentence: "Spero che noi {andiamo} al mare.", correct: true },
+    { sentence: "Voglio che voi {andiate} a piedi.", correct: true },
+    { sentence: "È probabile che loro {vadano} in Italia.", correct: true },
+
+    { sentence: "Penso che io {venga} alla festa.", correct: true },
+    { sentence: "Credo che tu {venga} con me.", correct: true },
+    { sentence: "È bene che lui {venga} tardi.", correct: true },
+    { sentence: "Spero che noi {veniamo} a trovarti.", correct: true },
+    { sentence: "Voglio che voi {veniate} anche voi.", correct: true },
+    { sentence: "È possibile che loro {vengano} in macchina.", correct: true },
+
+    { sentence: "Credo che io {faccia} i compiti.", correct: true },
+    { sentence: "Penso che tu {faccia} la spesa.", correct: true },
+    { sentence: "È importante che lui {faccia} del suo meglio.", correct: true },
+    { sentence: "Spero che noi {facciamo} una passeggiata.", correct: true },
+    { sentence: "Voglio che voi {facciate} tardi stasera.", correct: true },
+    { sentence: "È probabile che loro {facciano} una festa.", correct: true },
+
+    { sentence: "Penso che io {dica} la verità.", correct: true },
+    { sentence: "Credo che tu {dica} la tua opinione.", correct: true },
+    { sentence: "È bene che lei {dica} di no.", correct: true },
+    { sentence: "Spero che noi {diciamo} la stessa cosa.", correct: true },
+    { sentence: "Voglio che voi {diciate} chiaramente.", correct: true },
+    { sentence: "È possibile che loro {dicano} la verità.", correct: true },
+
+    { sentence: "Credo che io {possa} venire domani.", correct: true },
+    { sentence: "Penso che tu {possa} uscire dopo cena.", correct: true },
+    { sentence: "È importante che lui {possa} aiutarti.", correct: true },
+    { sentence: "Spero che noi {possiamo} partire presto.", correct: true },
+    { sentence: "Voglio che voi {possiate} finire in tempo.", correct: true },
+    { sentence: "È probabile che loro {possano} venire.", correct: true },
+
+    { sentence: "Penso che io {debba} lavorare sabato.", correct: true },
+    { sentence: "Credo che tu {debba} studiare di più.", correct: true },
+    { sentence: "È bene che lei {debba} aspettare.", correct: true },
+    { sentence: "Spero che noi {dobbiamo} decidere presto.", correct: true },
+    { sentence: "Voglio che voi {dobbiate} partire domani.", correct: true },
+    { sentence: "È possibile che loro {debbano} partire.", correct: true },
+
+    { sentence: "Credo che io {voglia} un caffè.", correct: true },
+    { sentence: "Penso che tu {voglia} venire con noi.", correct: true },
+    { sentence: "È importante che lui {voglia} sapere tutto.", correct: true },
+    { sentence: "Spero che noi {vogliamo} una spiegazione.", correct: true },
+    { sentence: "Voglio che voi {vogliate} partire presto.", correct: true },
+    { sentence: "È probabile che loro {vogliano} aiutare.", correct: true },
+
+    { sentence: "Penso che io {sappia} la risposta.", correct: true },
+    { sentence: "Credo che tu {sappia} come comportarti.", correct: true },
+    { sentence: "È bene che lei {sappia} cosa fare.", correct: true },
+    { sentence: "Spero che noi {sappiamo} tutto.", correct: true },
+    { sentence: "Voglio che voi {sappiate} la verità.", correct: true },
+    { sentence: "È possibile che loro {sappiano} già tutto.", correct: true },
+
+    { sentence: "Credo che io {stia} bene.", correct: true },
+    { sentence: "Penso che tu {stia} a casa oggi.", correct: true },
+    { sentence: "È importante che lui {stia} attento.", correct: true },
+    { sentence: "Spero che noi {stiamo} insieme.", correct: true },
+    { sentence: "Voglio che voi {stiate} zitti.", correct: true },
+    { sentence: "È probabile che loro {stiano} seduti.", correct: true },
+
+    { sentence: "Penso che io {dia} una risposta.", correct: true },
+    { sentence: "Credo che tu {dia} il libro a Marco.", correct: true },
+    { sentence: "È bene che lei {dia} un esame difficile.", correct: true },
+    { sentence: "Spero che noi {diamo} il meglio.", correct: true },
+    { sentence: "Voglio che voi {diate} tutto.", correct: true },
+    { sentence: "È possibile che loro {diano} una spiegazione.", correct: true },
+
+    { sentence: "Credo che io {beva} un succo.", correct: true },
+    { sentence: "Penso che tu {beva} qualcosa.", correct: true },
+    { sentence: "È importante che lui {beva} il caffè al bar.", correct: true },
+    { sentence: "Spero che noi {beviamo} un brindisi.", correct: true },
+    { sentence: "Voglio che voi {beviate} acqua.", correct: true },
+    { sentence: "È probabile che loro {bevano} vino.", correct: true },
+
+    { sentence: "Penso che io {tenga} il libro.", correct: true },
+    { sentence: "Credo che tu {tenga} il segreto.", correct: true },
+    { sentence: "È bene che lui {tenga} duro.", correct: true },
+    { sentence: "Spero che noi {teniamo} conto di tutto.", correct: true },
+    { sentence: "Voglio che voi {teniate} la calma.", correct: true },
+    { sentence: "È possibile che loro {tengano} un discorso.", correct: true },
+
+    { sentence: "Credo che io {rimanga} a casa.", correct: true },
+    { sentence: "Penso che tu {rimanga} con noi.", correct: true },
+    { sentence: "È importante che lui {rimanga} a dormire.", correct: true },
+    { sentence: "Spero che noi {rimaniamo} fino a domenica.", correct: true },
+    { sentence: "Voglio che voi {rimaniate} qui.", correct: true },
+    { sentence: "È probabile che loro {rimangano} fino a tardi.", correct: true },
+
+    // ═══ SBAGLIATE — Indicativo invece di congiuntivo presente ═════════
+    { sentence: "Penso che lui {parla} troppo velocemente.", correct: false },
+    { sentence: "Credo che lei {studia} medicina.", correct: false },
+    { sentence: "Spero che loro {finiscono} presto.", correct: false },
+    { sentence: "Penso che lui {prende} il treno.", correct: false },
+    { sentence: "Credo che tu {scrivi} una lettera.", correct: false },
+    { sentence: "È importante che lei {legge} il libro.", correct: false },
+    { sentence: "Voglio che voi {capite} tutto.", correct: false },
+    { sentence: "Penso che lui {va} al mercato.", correct: false },
+    { sentence: "Credo che tu {vieni} con me.", correct: false },
+    { sentence: "È importante che lei {fa} del suo meglio.", correct: false },
+    { sentence: "Voglio che voi {potete} finire.", correct: false },
+    { sentence: "Penso che io {devo} lavorare.", correct: false },
+    { sentence: "Credo che tu {vuoi} venire.", correct: false },
+    { sentence: "È bene che lui {sa} la risposta.", correct: false },
+    { sentence: "Voglio che voi {date} tutto.", correct: false },
+    { sentence: "Penso che io {bevo} un succo.", correct: false },
+    { sentence: "Credo che tu {tieni} il segreto.", correct: false },
+    { sentence: "È importante che lui {rimane} a casa.", correct: false },
+    { sentence: "Spero che loro {sono} contenti.", correct: false },
+    { sentence: "Penso che io {ho} tempo.", correct: false },
+    { sentence: "Credo che tu {hai} bisogno di aiuto.", correct: false },
+    { sentence: "È bene che lui {ha} paura.", correct: false },
+    { sentence: "Spero che loro {hanno} molte domande.", correct: false },
+    { sentence: "Penso che io {dico} la verità.", correct: false },
+    { sentence: "Credo che tu {dici} la tua opinione.", correct: false },
+    { sentence: "È bene che lei {dice} di no.", correct: false },
+    { sentence: "Voglio che voi {dite} chiaramente.", correct: false },
+    { sentence: "Penso che loro {dicono} la verità.", correct: false },
+    { sentence: "Credo che io {posso} venire.", correct: false },
+    { sentence: "Penso che tu {puoi} uscire.", correct: false },
+    { sentence: "È importante che lui {può} aiutarti.", correct: false },
+    { sentence: "Voglio che voi {potete} finire.", correct: false },
+    { sentence: "Penso che loro {possono} venire.", correct: false },
+    { sentence: "Credo che io {devo} lavorare.", correct: false },
+    { sentence: "Penso che tu {devi} studiare.", correct: false },
+    { sentence: "È bene che lei {deve} aspettare.", correct: false },
+    { sentence: "Voglio che voi {dovete} partire.", correct: false },
+    { sentence: "Penso che loro {devono} partire.", correct: false },
+    { sentence: "Credo che io {voglio} un caffè.", correct: false },
+    { sentence: "Penso che tu {vuoi} venire.", correct: false },
+    { sentence: "È importante che lui {vuole} sapere tutto.", correct: false },
+    { sentence: "Voglio che voi {volete} partire.", correct: false },
+    { sentence: "Penso che loro {vogliono} aiutare.", correct: false },
+    { sentence: "Credo che io {so} la risposta.", correct: false },
+    { sentence: "Penso che tu {sai} come comportarti.", correct: false },
+    { sentence: "È bene che lei {sa} cosa fare.", correct: false },
+    { sentence: "Voglio che voi {sapete} la verità.", correct: false },
+    { sentence: "Penso che loro {sanno} già tutto.", correct: false },
+    { sentence: "Credo che io {sto} bene.", correct: false },
+    { sentence: "Penso che tu {stai} a casa.", correct: false },
+    { sentence: "È importante che lui {sta} attento.", correct: false },
+    { sentence: "Voglio che voi {state} zitti.", correct: false },
+    { sentence: "Penso che loro {stanno} seduti.", correct: false },
+    { sentence: "Credo che io {do} una risposta.", correct: false },
+    { sentence: "Penso che tu {dai} il libro.", correct: false },
+    { sentence: "È bene che lei {dà} un esame.", correct: false },
+    { sentence: "Voglio che voi {date} tutto.", correct: false },
+    { sentence: "Penso che loro {danno} una spiegazione.", correct: false },
+    { sentence: "Credo che io {bevo} un succo.", correct: false },
+    { sentence: "Penso che tu {bevi} qualcosa.", correct: false },
+    { sentence: "È importante che lui {beve} il caffè.", correct: false },
+    { sentence: "Voglio che voi {bevete} acqua.", correct: false },
+    { sentence: "Penso che loro {bevono} vino.", correct: false },
+    { sentence: "Credo che io {tengo} il libro.", correct: false },
+    { sentence: "Penso che tu {tieni} il segreto.", correct: false },
+    { sentence: "È bene che lui {tiene} duro.", correct: false },
+    { sentence: "Voglio che voi {tenete} la calma.", correct: false },
+    { sentence: "Penso che loro {tengono} un discorso.", correct: false },
+    { sentence: "Credo che io {rimango} a casa.", correct: false },
+    { sentence: "Penso che tu {rimani} con noi.", correct: false },
+    { sentence: "È importante che lui {rimane} a dormire.", correct: false },
+    { sentence: "Voglio che voi {rimanete} qui.", correct: false },
+    { sentence: "Penso che loro {rimangono} fino a tardi.", correct: false },
+
+    // Errori di persona / numero nel congiuntivo
+    { sentence: "Penso che io {parla} troppo.", correct: false },
+    { sentence: "Credo che tu {parlo} italiano.", correct: false },
+    { sentence: "È importante che lei {parliamo} con il direttore.", correct: false },
+    { sentence: "Spero che noi {parli} di questo.", correct: false },
+    { sentence: "Voglio che voi {parlino} più forte.", correct: false },
+    { sentence: "Credo che tu {prendo} il treno.", correct: false },
+    { sentence: "È importante che lui {prendiamo} una decisione.", correct: false },
+    { sentence: "Spero che noi {prenda} un caffè.", correct: false },
+    { sentence: "Voglio che voi {prendano} il bus.", correct: false },
+    { sentence: "Penso che io {scrivo} una lettera.", correct: false },
+    { sentence: "È bene che lei {scriviamo} il rapporto.", correct: false },
+    { sentence: "Spero che noi {scriva} un articolo.", correct: false },
+    { sentence: "Voglio che voi {scrivano} chiaramente.", correct: false },
+    { sentence: "Penso che io {parto} domani.", correct: false },
+    { sentence: "È importante che lei {partiamo} alle sei.", correct: false },
+    { sentence: "Spero che noi {parta} presto.", correct: false },
+    { sentence: "Voglio che voi {partano} in anticipo.", correct: false },
+    { sentence: "Penso che io {finisco} il lavoro.", correct: false },
+    { sentence: "È bene che lui {finiamo} il corso.", correct: false },
+    { sentence: "Spero che noi {finisca} presto.", correct: false },
+    { sentence: "Voglio che voi {finiscano} in tempo.", correct: false },
+    { sentence: "Penso che io {capisco} tutto.", correct: false },
+    { sentence: "È importante che lui {capiamo} insieme.", correct: false },
+    { sentence: "Spero che noi {capisca} il problema.", correct: false },
+    { sentence: "Voglio che voi {capiscano} alla fine.", correct: false },
+    { sentence: "Credo che io {sono} pronto.", correct: false },
+    { sentence: "Penso che tu {sei} contento.", correct: false },
+    { sentence: "È importante che lui {è} puntuale.", correct: false },
+    { sentence: "Voglio che voi {siete} stanchi.", correct: false },
+    { sentence: "Penso che loro {sono} qui.", correct: false },
+    { sentence: "Credo che io {ho} tempo.", correct: false },
+    { sentence: "Penso che tu {hai} bisogno.", correct: false },
+    { sentence: "È bene che lui {ha} paura.", correct: false },
+    { sentence: "Voglio che voi {avete} le risposte.", correct: false },
+    { sentence: "Penso che loro {hanno} domande.", correct: false },
+    { sentence: "Credo che io {vado} al mercato.", correct: false },
+    { sentence: "Penso che tu {vai} in vacanza.", correct: false },
+    { sentence: "È importante che lei {va} dal medico.", correct: false },
+    { sentence: "Voglio che voi {andate} a piedi.", correct: false },
+    { sentence: "Penso che loro {vanno} in Italia.", correct: false },
+    { sentence: "Credo che io {vengo} alla festa.", correct: false },
+    { sentence: "Penso che tu {vieni} con me.", correct: false },
+    { sentence: "È bene che lui {viene} tardi.", correct: false },
+    { sentence: "Voglio che voi {venite} anche voi.", correct: false },
+    { sentence: "Penso che loro {vengono} in macchina.", correct: false },
+    { sentence: "Credo che io {faccio} i compiti.", correct: false },
+    { sentence: "Penso che tu {fai} la spesa.", correct: false },
+    { sentence: "È importante che lui {fa} del suo meglio.", correct: false },
+    { sentence: "Voglio che voi {fate} tardi stasera.", correct: false },
+    { sentence: "Penso che loro {fanno} una festa.", correct: false },
+];
+
+let questions = [];
+let currentQuestion = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let combo = 0;
+let maxCombo = 0;
+let gameTimer;
+let timeRemaining = 60;
+let audioContext;
+let musicInterval;
+let isMusicPlaying = false;
+let musicTempo = 1;
+
+function shuffle(array) {
+    const a = [...array];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+function initAudio() {
+    if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function playTone(freq, duration, type = 'sine', vol = 0.15) {
+    if (!audioContext) return;
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    osc.connect(gain); gain.connect(audioContext.destination);
+    osc.frequency.value = freq; osc.type = type;
+    gain.gain.setValueAtTime(vol, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+    osc.start(); osc.stop(audioContext.currentTime + duration);
+}
+
+function playDrum(time, intensity = 1) {
+    if (!audioContext) return;
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    osc.connect(gain); gain.connect(audioContext.destination);
+    osc.frequency.setValueAtTime(120, time);
+    osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.12);
+    gain.gain.setValueAtTime(0.25 * intensity, time);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.12);
+    osc.start(time); osc.stop(time + 0.12);
+}
+
+function playHiHat(time) {
+    if (!audioContext) return;
+    const bufferSize = audioContext.sampleRate * 0.05;
+    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+    const noise = audioContext.createBufferSource();
+    noise.buffer = buffer;
+    const filter = audioContext.createBiquadFilter();
+    filter.type = 'highpass'; filter.frequency.value = 6000;
+    const gain = audioContext.createGain();
+    gain.gain.setValueAtTime(0.08, time);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
+    noise.connect(filter); filter.connect(gain); gain.connect(audioContext.destination);
+    noise.start(time);
+}
+
+function playBackgroundMusic() {
+    if (!audioContext || isMusicPlaying) return;
+    isMusicPlaying = true;
+    const beatTime = 0.5 / musicTempo;
+    let noteIndex = 0;
+    const scales = {
+        normal: [261.63, 329.63, 392.00, 493.88],
+        fast:   [293.66, 369.99, 440.00, 523.25],
+        ultra:  [329.63, 415.30, 493.88, 587.33]
+    };
+    let scale = musicTempo > 1.8 ? scales.ultra : musicTempo > 1.3 ? scales.fast : scales.normal;
+    function beat() {
+        if (!isMusicPlaying) return;
+        const now = audioContext.currentTime;
+        playDrum(now, 1);
+        setTimeout(() => { if (isMusicPlaying) playHiHat(audioContext.currentTime); }, (beatTime * 500) / 2);
+        playTone(scale[noteIndex % 4], beatTime * 0.75, 'triangle', 0.10);
+        if (musicTempo > 1.2) playTone(scale[(noteIndex + 2) % 4], beatTime * 0.5, 'sine', 0.06);
+        noteIndex++;
+        musicInterval = setTimeout(beat, beatTime * 1000);
+    }
+    beat();
+}
+
+function stopMusic() {
+    isMusicPlaying = false;
+    if (musicInterval) clearTimeout(musicInterval);
+}
+
+function playCorrectSound() {
+    if (!audioContext) return;
+    playTone(523.25, 0.08, 'sine', 0.18);
+    setTimeout(() => playTone(659.25, 0.10, 'sine', 0.18), 90);
+    setTimeout(() => playTone(783.99, 0.25, 'sine', 0.18), 180);
+}
+
+function playWrongSound() {
+    if (!audioContext) return;
+    playTone(220, 0.25, 'sawtooth', 0.18);
+    setTimeout(() => playTone(165, 0.30, 'sawtooth', 0.18), 200);
+}
+
+function playComboSound() {
+    if (!audioContext) return;
+    [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+        setTimeout(() => playTone(f, 0.12, 'square', 0.12), i * 70);
+    });
+}
+
+function playTickSound() {
+    if (!audioContext) return;
+    playTone(880, 0.04, 'sine', 0.08);
+}
+
+function startGame() {
+    initAudio();
+    if (audioContext.state === 'suspended') audioContext.resume();
+    document.getElementById('startScreen').classList.add('hidden');
+    document.getElementById('gameContainer').classList.remove('hidden');
+    questions = shuffle(allQuestions).slice(0, 80);
+    currentQuestion = 0; correctCount = 0; wrongCount = 0;
+    combo = 0; maxCombo = 0; timeRemaining = 60; musicTempo = 1;
+    updateDisplay(); startTimer(); playBackgroundMusic(); showQuestion();
+}
+
+function startTimer() {
+    const timerEl = document.getElementById('mainTimer');
+    gameTimer = setInterval(() => {
+        timeRemaining--;
+        timerEl.textContent = timeRemaining;
+        if (timeRemaining <= 10) { timerEl.classList.add('warning'); playTickSound(); }
+        if (timeRemaining <= 0) endGame();
+    }, 1000);
+}
+
+function showQuestion() {
+    if (currentQuestion >= questions.length) {
+        questions = shuffle(allQuestions).slice(0, 80);
+        currentQuestion = 0;
+    }
+    const q = questions[currentQuestion];
+    document.getElementById('questionText').innerHTML =
+        q.sentence.replace(/\{([^}]+)\}/, '<span class="highlight">$1</span>');
+    const card = document.getElementById('questionCard');
+    card.style.animation = 'none';
+    setTimeout(() => { card.style.animation = 'cardSlideIn 0.32s ease'; }, 10);
+    document.getElementById('btnVero').disabled = false;
+    document.getElementById('btnFalso').disabled = false;
+}
+
+function answer(userSaysTrue) {
+    const q = questions[currentQuestion];
+    const isCorrect = userSaysTrue === q.correct;
+    document.getElementById('btnVero').disabled = true;
+    document.getElementById('btnFalso').disabled = true;
+
+    if (isCorrect) {
+        correctCount++; combo++;
+        if (combo > maxCombo) maxCombo = combo;
+        if (combo > 0 && combo % 3 === 0) {
+            musicTempo = Math.min(musicTempo + 0.25, 2.5);
+            stopMusic(); playBackgroundMusic();
+            playComboSound(); createParticles();
+        } else { playCorrectSound(); }
+        showFeedback(true);
+    } else {
+        wrongCount++; combo = 0; musicTempo = 1;
+        stopMusic(); playBackgroundMusic();
+        playWrongSound(); showFeedback(false);
+    }
+    updateDisplay(); updateComboDisplay();
+    setTimeout(() => { currentQuestion++; showQuestion(); }, 380);
+}
+
+function showFeedback(isCorrect) {
+    const fb = document.createElement('div');
+    fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+    fb.textContent = isCorrect ? '✓' : '✗';
+    document.body.appendChild(fb);
+    setTimeout(() => fb.remove(), 520);
+}
+
+function updateDisplay() {
+    document.getElementById('correctCount').textContent = correctCount;
+    document.getElementById('wrongCount').textContent = wrongCount;
+    document.getElementById('streakFill').style.width = Math.min((combo / 10) * 100, 100) + '%';
+    const speedEl = document.getElementById('speedIndicator');
+    if (musicTempo >= 2)        { speedEl.textContent = '🔥 Ultra Veloce'; speedEl.style.color = '#8b1a1a'; }
+    else if (musicTempo >= 1.5) { speedEl.textContent = '⚡ Molto Rapido'; speedEl.style.color = '#b8600c'; }
+    else if (musicTempo >= 1.25){ speedEl.textContent = '▲ Rapido';        speedEl.style.color = '#6b6b20'; }
+    else                        { speedEl.textContent = '— Normale';        speedEl.style.color = '#8a8aaa'; }
+}
+
+function updateComboDisplay() {
+    const box = document.getElementById('comboDisplay');
+    document.getElementById('comboCount').textContent = combo;
+    if (combo > 1) box.classList.add('active'); else box.classList.remove('active');
+}
+
+function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 24; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = '40%';
+        p.style.animationDelay = Math.random() * 0.3 + 's';
+        p.style.background = Math.random() > 0.5 ? '#b8960c' : '#8b1a1a';
+        p.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        container.appendChild(p);
+        setTimeout(() => p.remove(), 1100);
+    }
+}
+
+function endGame() {
+    clearInterval(gameTimer); stopMusic();
+    document.getElementById('gameContainer').classList.add('hidden');
+    document.getElementById('endScreen').classList.remove('hidden');
+    document.getElementById('finalCorrect').textContent = correctCount;
+    const total = correctCount + wrongCount;
+    const pct = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+    document.getElementById('finalStats').innerHTML =
+        `Risposte date: ${total}<br>Errate: ${wrongCount}<br>Percentuale: ${pct}%<br>Combo massima: ${maxCombo}`;
+    if (audioContext) {
+        [261.63, 329.63, 392.00, 523.25, 659.25, 783.99].forEach((f, i) => {
+            setTimeout(() => playTone(f, 0.5, 'sine', 0.15), i * 130);
+        });
+    }
+}
+
+function restartGame() {
+    document.getElementById('endScreen').classList.add('hidden');
+    document.getElementById('startScreen').classList.remove('hidden');
+    document.getElementById('mainTimer').classList.remove('warning');
+}
+
+document.addEventListener('keydown', (e) => {
+    if (document.getElementById('gameContainer').classList.contains('hidden')) return;
+    if (document.getElementById('btnVero').disabled) return;
+    const k = e.key.toLowerCase();
+    if (k === 'v' || k === '1' || k === 'arrowleft') { e.preventDefault(); answer(true); }
+    else if (k === 'f' || k === '2' || k === 'arrowright') { e.preventDefault(); answer(false); }
+});
+</script>
+</body>
+</html>

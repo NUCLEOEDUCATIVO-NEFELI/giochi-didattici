@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Periodo Ipotetico — Spiegazione Interattiva</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+        :root {
+            --ink: #1a1a2e;
+            --ink-light: #4a4a6a;
+            --ink-muted: #8a8aaa;
+            --parchment: #faf8f3;
+            --parchment-dark: #f0ece0;
+            --rule: #c8b89a;
+            --rule-light: #e0d8c8;
+            --accent: #8b1a1a;
+            --accent-dark: #6b0f0f;
+            --accent-light: #c45a5a;
+            --success: #1a4a1a;
+            --success-bg: #eaf4ea;
+            --blue: #1a3a6a;
+            --blue-bg: #e8f0f8;
+            --orange: #8a5a1a;
+            --orange-bg: #faf0e0;
+            --purple: #5a1a6a;
+            --purple-bg: #f0e8f8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background-color: #e8e4d8;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(139,26,26,0.06) 27px, rgba(139,26,26,0.06) 28px);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--parchment);
+            border: 1px solid var(--rule);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.12), 4px 4px 0 rgba(0,0,0,0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 5px;
+            background: var(--accent);
+        }
+
+        /* === SCHERMATA INIZIALE === */
+        .start-screen {
+            padding: 60px 56px;
+            text-align: center;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .start-screen h1 {
+            font-family: 'EB Garamond', serif;
+            font-size: 3.2em;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
+            line-height: 1.1;
+        }
+
+        .start-screen .subtitle {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.3em;
+            font-style: italic;
+            color: var(--ink-light);
+            margin-bottom: 40px;
+        }
+
+        .video-preview {
+            width: 100%;
+            max-width: 640px;
+            height: 360px;
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .video-preview:hover {
+            transform: scale(1.02);
+        }
+
+        .video-preview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.03) 10px,
+                rgba(255,255,255,0.03) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(139,26,26,0.4);
+        }
+
+        .play-button:hover {
+            background: var(--accent-dark);
+            transform: scale(1.1);
+        }
+
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 24px solid white;
+            border-top: 14px solid transparent;
+            border-bottom: 14px solid transparent;
+            margin-left: 6px;
+        }
+
+        .video-meta {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 32px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.85em;
+            color: var(--ink-muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .video-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chapters-preview {
+            width: 100%;
+            max-width: 640px;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .chapters-preview h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.70em;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 16px;
+        }
+
+        .chapter-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            border-left: 3px solid var(--rule);
+            margin-bottom: 8px;
+            background: var(--parchment-dark);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .chapter-item:hover {
+            border-left-color: var(--accent);
+            background: var(--rule-light);
+        }
+
+        .chapter-time {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.75em;
+            font-weight: 600;
+            color: var(--accent);
+            min-width: 50px;
+        }
+
+        .chapter-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.05em;
+            color: var(--ink);
+        }
+
+        .start-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--parchment);
+            border: none;
+            padding: 18px 48px;
+            font-size: 0.85em;
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .start-btn:hover { background: var(--accent-dark); }
+
+        /* === PLAYER VIDEO === */
+        .player-screen {
+            display: none;
+            flex-direction: column;
+            min-height: 600px;
+        }
+
+        .player-screen.active {
+            display: flex;
+        }
+
+        .slide-area {
+            flex: 1;
+            padding: 48px 56px;
+            position: relative;
+            min-height: 420px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-tag {
+            display: inline-block;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.65em;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            margin-bottom: 20px;
+            border-radius: 2px;
+        }
+
+        .slide-tag.type-1 { background: var(--success-bg); color: var(--success); }
+        .slide-tag.type-2 { background: var(--blue-bg); color: var(--blue); }
+        .slide-tag.type-3 { background: var(--orange-bg); color: var(--orange); }
+        .slide-tag.type-misto { background: var(--purple-bg); color: var(--purple); }
+        .slide-tag.intro { background: var(--parchment-dark); color: var(--ink-muted); border: 1px solid var(--rule); }
+
+        .slide h2 {
+            font-family: 'EB Garamond', serif;
+            font-size: 2.2em;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .slide h3 {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--ink);
+            margin: 28px 0 16px;
+        }
+
+        .slide p, .slide li {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.15em;
+            line-height: 1.7;
+            color: var(--ink-light);
+            margin-bottom: 14px;
+        }
+
+        .slide ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 16px 0;
+        }
+
+        .slide li {
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .slide li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .formula-box {
+            background: var(--parchment-dark);
+            border: 2px solid var(--rule);
+            border-left: 4px solid var(--accent);
+            padding: 24px 28px;
+            margin: 24px 0;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: var(--ink);
+        }
+
+        .formula-box .highlight {
+            background: rgba(139,26,26,0.1);
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .formula-box .highlight-blue {
+            background: rgba(26,58,106,0.1);
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 700;
+            color: var(--blue);
+        }
+
+        .formula-box .highlight-orange {
+            background: rgba(138,90,26,0.1);
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        .example-box {
+            background: white;
+            border: 1px solid var(--rule-light);
+            padding: 20px 24px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .example-box .example {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.15em;
+            color: var(--ink);
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .example-box .translation {
+            font-family: 'EB Garamond', serif;
+            font-size: 1em;
+            font-style: italic;
+            color: var(--ink-muted);
+        }
+
+        .verb-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.95em;
+        }
+
+        .verb-table th {
+            background: var(--ink);
+            color: var(--parchment);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.75em;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .verb-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--rule-light);
+            color: var(--ink);
+        }
+
+        .verb-table tr:nth-child(even) {
+            background: var(--parchment-dark);
+        }
+
+        .verb-table .form {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .tip-box {
+            background: var(--success-bg);
+            border-left: 4px solid var(--success);
+            padding: 16px 20px;
+            margin: 20px 0;
+            font-family: 'EB Garamond', serif;
+            font-size: 1.05em;
+            color: var(--success);
+            line-height: 1.6;
+        }
+
+        .tip-box::before {
+            content: '💡 ';
+            font-style: normal;
+        }
+
+        .warning-box {
+            background: var(--error-bg);
+            border-left: 4px solid var(--error);
+            padding: 16px 20px;
+            margin: 20px 0;
+            font-family: 'EB Garamond', serif;
+            font-size: 1.05em;
+            color: var(--error);
+            line-height: 1.6;
+        }
+
+        .warning-box::before {
+            content: '⚠️ ';
+            font-style: normal;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: var(--parchment-dark);
+            border: 1px solid var(--rule);
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .comparison-card h4 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.7em;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 12px;
+        }
+
+        .comparison-card p {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1em;
+            color: var(--ink);
+            margin: 0;
+        }
+
+        /* === CONTROLLI === */
+        .controls-bar {
+            background: var(--ink);
+            color: var(--parchment);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--parchment);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.1em;
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+        }
+
+        .control-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-fill-video {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-fill-video::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(139,26,26,0.5);
+        }
+
+        .time-display {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.8em;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .chapter-markers {
+            display: flex;
+            gap: 4px;
+            padding: 8px 24px 16px;
+            background: var(--ink);
+            overflow-x: auto;
+        }
+
+        .chapter-marker {
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.75em;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            border-radius: 2px;
+        }
+
+        .chapter-marker:hover, .chapter-marker.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .speed-control {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--parchment);
+            padding: 6px 12px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.8em;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="video-container">
+
+        <!-- SCHERMATA INIZIALE -->
+        <div id="startScreen" class="start-screen">
+            <h1>Il Periodo Ipotetico</h1>
+            <p class="subtitle">Spiegazione interattiva — Livello B1</p>
+
+            <div class="video-preview" onclick="startVideo()">
+                <div class="play-button"></div>
+            </div>
+
+            <div class="video-meta">
+                <span>⏱ 15 minuti</span>
+                <span>📋 12 capitoli</span>
+                <span>🎯 Livello B1</span>
+            </div>
+
+            <div class="chapters-preview">
+                <h3>Contenuti</h3>
+                <div class="chapter-item" onclick="jumpToChapter(0)">
+                    <span class="chapter-time">00:00</span>
+                    <span class="chapter-title">Introduzione: cos'è il periodo ipotetico?</span>
+                </div>
+                <div class="chapter-item" onclick="jumpToChapter(3)">
+                    <span class="chapter-time">02:30</span>
+                    <span class="chapter-title">Il 1° tipo: periodo ipotetico reale</span>
+                </div>
+                <div class="chapter-item" onclick="jumpToChapter(6)">
+                    <span class="chapter-time">06:00</span>
+                    <span class="chapter-title">Il 2° tipo: periodo ipotetico possibile</span>
+                </div>
+                <div class="chapter-item" onclick="jumpToChapter(9)">
+                    <span class="chapter-time">10:00</span>
+                    <span class="chapter-title">Il 3° tipo: periodo ipotetico irreale</span>
+                </div>
+                <div class="chapter-item" onclick="jumpToChapter(11)">
+                    <span class="chapter-time">13:00</span>
+                    <span class="chapter-title">Il periodo misto e il riepilogo</span>
+                </div>
+            </div>
+
+            <button class="start-btn" onclick="startVideo()">▶ Inizia la Spiegazione</button>
+        </div>
+
+        <!-- PLAYER VIDEO -->
+        <div id="playerScreen" class="player-screen">
+            <div class="slide-area" id="slideArea">
+                <!-- Le slide vengono generate via JS -->
+            </div>
+
+            <div class="chapter-markers" id="chapterMarkers"></div>
+
+            <div class="controls-bar">
+                <button class="control-btn" id="prevBtn" onclick="prevSlide()" title="Indietro">◀</button>
+                <button class="control-btn" id="playBtn" onclick="togglePlay()" title="Play/Pausa">▶</button>
+                <button class="control-btn" id="nextBtn" onclick="nextSlide()" title="Avanti">▶</button>
+
+                <div class="progress-container" id="progressContainer" onclick="seekTo(event)">
+                    <div class="progress-fill-video" id="progressFill" style="width: 0%"></div>
+                </div>
+
+                <span class="time-display" id="timeDisplay">00:00 / 15:00</span>
+
+                <select class="speed-control" id="speedControl" onchange="changeSpeed()">
+                    <option value="0.5">0.5x</option>
+                    <option value="0.75">0.75x</option>
+                    <option value="1" selected>1x</option>
+                    <option value="1.25">1.25x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2">2x</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const slides = [
+            // === INTRODUZIONE ===
+            {
+                tag: 'intro',
+                tagText: 'Introduzione',
+                title: 'Cos\'è il Periodo Ipotetico?',
+                content: `
+                    <p>Il <strong>periodo ipotetico</strong> è una struttura della frase italiana che esprime una <strong>condizione</strong> (ipotesi) e una <strong>conseguenza</strong>.</p>
+                    <p>È composto da due parti:</p>
+                    <ul>
+                        <li><strong>La protasi</strong> (la condizione): introdotta da <em>se</em></li>
+                        <li><strong>L'apodosi</strong> (la conseguenza): il risultato della condizione</li>
+                    </ul>
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>piove</em>, <strong>prendo</strong> l'ombrello."</p>
+                        <p class="translation">Protasi: "se piove" | Apodosi: "prendo l'ombrello"</p>
+                    </div>
+                    <p>In italiano esistono <strong>tre tipi</strong> di periodo ipotetico, più il <strong>periodo misto</strong>.</p>
+                `,
+                duration: 3000,
+                chapter: 0
+            },
+            {
+                tag: 'intro',
+                tagText: 'Introduzione',
+                title: 'I Tre Tipi: Una Panoramica',
+                content: `
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4 style="color: var(--success)">1° Tipo — Reale</h4>
+                            <p><strong>Se + presente</strong> → futuro/imperativo</p>
+                            <p style="margin-top:8px; font-size:0.9em; color: var(--ink-muted)">Condizione possibile e realizzabile</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: var(--blue)">2° Tipo — Possibile</h4>
+                            <p><strong>Se + congiuntivo imperfetto</strong> → condizionale presente</p>
+                            <p style="margin-top:8px; font-size:0.9em; color: var(--ink-muted)">Condizione improbabile o ipotetica</p>
+                        </div>
+                    </div>
+                    <div class="comparison-grid" style="margin-top:16px;">
+                        <div class="comparison-card">
+                            <h4 style="color: var(--orange)">3° Tipo — Irreale</h4>
+                            <p><strong>Se + congiuntivo trapassato</strong> → condizionale passato</p>
+                            <p style="margin-top:8px; font-size:0.9em; color: var(--ink-muted)">Condizione impossibile (passato)</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4 style="color: var(--purple)">Periodo Misto</h4>
+                            <p><strong>Se + trapassato</strong> → condizionale presente</p>
+                            <p style="margin-top:8px; font-size:0.9em; color: var(--ink-muted)">Passato irrealizzato, conseguenza presente</p>
+                        </div>
+                    </div>
+                `,
+                duration: 4000,
+                chapter: 0
+            },
+            {
+                tag: 'intro',
+                tagText: 'Introduzione',
+                title: 'La Chiave di Lettura',
+                content: `
+                    <p>Per riconoscere il tipo di periodo ipotetico, basta guardare:</p>
+                    <ol style="margin: 16px 0; padding-left: 24px; font-family: 'EB Garamond', serif; font-size: 1.15em; line-height: 1.8; color: var(--ink-light);">
+                        <li>Il <strong>tempo verbale</strong> dopo <em>se</em> (la protasi)</li>
+                        <li>Il <strong>tempo verbale</strong> nella conseguenza (l'apodosi)</li>
+                    </ol>
+                    <div class="tip-box">
+                        <strong>Ricorda:</strong> il congiuntivo si usa <em>solo</em> nel 2° e 3° tipo (e nel misto). Nel 1° tipo si usa l'indicativo!
+                    </div>
+                `,
+                duration: 3000,
+                chapter: 0
+            },
+
+            // === 1° TIPO ===
+            {
+                tag: 'type-1',
+                tagText: '1° Tipo — Reale',
+                title: 'Il Periodo Ipotetico del 1° Tipo',
+                content: `
+                    <p>Il <strong>1° tipo</strong> esprime una condizione <strong>reale e possibile</strong>: se si verifica la condizione, si verifica anche la conseguenza.</p>
+                    <div class="formula-box">
+                        <span class="highlight">Se</span> + <span class="highlight">presente indicativo</span> → <span class="highlight">futuro semplice / presente indicativo / imperativo</span>
+                    </div>
+                    <p>Si usa quando la condizione è <strong>realizzabile</strong> nel presente o nel futuro.</p>
+                `,
+                duration: 3000,
+                chapter: 1
+            },
+            {
+                tag: 'type-1',
+                tagText: '1° Tipo — Reale',
+                title: 'Esempi del 1° Tipo',
+                content: `
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>fa</em> bel tempo, <strong>andremo</strong> al mare."</p>
+                        <p class="translation">(Se + presente → futuro)</p>
+                    </div>
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>hai</em> fame, <strong>mangia</strong> qualcosa!"</p>
+                        <p class="translation">(Se + presente → imperativo)</p>
+                    </div>
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>studio</em> di più, <strong>imparo</strong> molto."</p>
+                        <p class="translation">(Se + presente → presente)</p>
+                    </div>
+                    <div class="tip-box">
+                        <strong>Attenzione:</strong> dopo "se" non si usa mai il futuro! Si dice "Se <em>fa</em> bel tempo" e NON "Se farà bel tempo".
+                    </div>
+                `,
+                duration: 4000,
+                chapter: 1
+            },
+            {
+                tag: 'type-1',
+                tagText: '1° Tipo — Reale',
+                title: 'Verbi Irregolari nel 1° Tipo',
+                content: `
+                    <p>Ecco le forme del presente indicativo dei verbi più comuni dopo <em>se</em>:</p>
+                    <table class="verb-table">
+                        <tr>
+                            <th>Infinito</th>
+                            <th>Io</th>
+                            <th>Tu</th>
+                            <th>Lui/Lei</th>
+                        </tr>
+                        <tr>
+                            <td>essere</td>
+                            <td class="form">sono</td>
+                            <td class="form">sei</td>
+                            <td class="form">è</td>
+                        </tr>
+                        <tr>
+                            <td>avere</td>
+                            <td class="form">ho</td>
+                            <td class="form">hai</td>
+                            <td class="form">ha</td>
+                        </tr>
+                        <tr>
+                            <td>andare</td>
+                            <td class="form">vado</td>
+                            <td class="form">vai</td>
+                            <td class="form">va</td>
+                        </tr>
+                        <tr>
+                            <td>fare</td>
+                            <td class="form">faccio</td>
+                            <td class="form">fai</td>
+                            <td class="form">fa</td>
+                        </tr>
+                        <tr>
+                            <td>venire</td>
+                            <td class="form">vengo</td>
+                            <td class="form">vieni</td>
+                            <td class="form">viene</td>
+                        </tr>
+                        <tr>
+                            <td>dire</td>
+                            <td class="form">dico</td>
+                            <td class="form">dici</td>
+                            <td class="form">dice</td>
+                        </tr>
+                    </table>
+                `,
+                duration: 4000,
+                chapter: 1
+            },
+
+            // === 2° TIPO ===
+            {
+                tag: 'type-2',
+                tagText: '2° Tipo — Possibile',
+                title: 'Il Periodo Ipotetico del 2° Tipo',
+                content: `
+                    <p>Il <strong>2° tipo</strong> esprime una condizione <strong>improbabile o ipotetica</strong>: immaginiamo una situazione contraria alla realtà attuale.</p>
+                    <div class="formula-box">
+                        <span class="highlight-blue">Se</span> + <span class="highlight-blue">congiuntivo imperfetto</span> → <span class="highlight-blue">condizionale presente</span>
+                    </div>
+                    <p>Si usa per sogni, desideri, ipotesi su situazioni presenti diverse dalla realtà.</p>
+                `,
+                duration: 3000,
+                chapter: 2
+            },
+            {
+                tag: 'type-2',
+                tagText: '2° Tipo — Possibile',
+                title: 'Esempi del 2° Tipo',
+                content: `
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>avessi</em> più soldi, <strong>comprerei</strong> una macchina."</p>
+                        <p class="translation">(Non ho molti soldi, ma immagino...)</p>
+                    </div>
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>fossi</em> in te, <strong>non lo farei</strong>."</p>
+                        <p class="translation">(Non sono te, ma se lo fossi...)</p>
+                    </div>
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>parlasse</em> italiano, <strong>otterrebbe</strong> il lavoro."</p>
+                        <p class="translation">(Non parla italiano, ma se parlasse...)</p>
+                    </div>
+                    <div class="tip-box">
+                        <strong>Confronto:</strong> "Se <em>ho</em> soldi, compro" (1° tipo — possibile) vs "Se <em>avessi</em> soldi, comprerei" (2° tipo — immaginario)
+                    </div>
+                `,
+                duration: 4000,
+                chapter: 2
+            },
+            {
+                tag: 'type-2',
+                tagText: '2° Tipo — Possibile',
+                title: 'Il Congiuntivo Imperfetto',
+                content: `
+                    <p>Il <strong>congiuntivo imperfetto</strong> si forma così:</p>
+                    <table class="verb-table">
+                        <tr>
+                            <th>Infinito</th>
+                            <th>Io</th>
+                            <th>Tu</th>
+                            <th>Lui/Lei</th>
+                            <th>Noi</th>
+                            <th>Voi</th>
+                            <th>Loro</th>
+                        </tr>
+                        <tr>
+                            <td>parl<strong>are</strong></td>
+                            <td class="form">parlassi</td>
+                            <td class="form">parlassi</td>
+                            <td class="form">parlasse</td>
+                            <td class="form">parlassimo</td>
+                            <td class="form">parlaste</td>
+                            <td class="form">parlassero</td>
+                        </tr>
+                        <tr>
+                            <td>vend<strong>ere</strong></td>
+                            <td class="form">vendessi</td>
+                            <td class="form">vendessi</td>
+                            <td class="form">vendesse</td>
+                            <td class="form">vendessimo</td>
+                            <td class="form">vendeste</td>
+                            <td class="form">vendessero</td>
+                        </tr>
+                        <tr>
+                            <td>dorm<strong>ire</strong></td>
+                            <td class="form">dormissi</td>
+                            <td class="form">dormissi</td>
+                            <td class="form">dormisse</td>
+                            <td class="form">dormissimo</td>
+                            <td class="form">dormiste</td>
+                            <td class="form">dormissero</td>
+                        </tr>
+                    </table>
+                    <div class="tip-box">
+                        <strong>Regola:</strong> togli la desinenza dell'infinito (-are, -ere, -ire) e aggiungi le desinenze del congiuntivo imperfetto: -ssi, -ssi, -sse, -ssimo, -ste, -ssero.
+                    </div>
+                `,
+                duration: 5000,
+                chapter: 2
+            },
+
+            // === 3° TIPO ===
+            {
+                tag: 'type-3',
+                tagText: '3° Tipo — Irreale',
+                title: 'Il Periodo Ipotetico del 3° Tipo',
+                content: `
+                    <p>Il <strong>3° tipo</strong> esprime una condizione <strong>irreale nel passato</strong>: immaginiamo qualcosa che <strong>non è successo</strong> e le conseguenze che ne sarebbero derivate.</p>
+                    <div class="formula-box">
+                        <span class="highlight-orange">Se</span> + <span class="highlight-orange">congiuntivo trapassato</span> → <span class="highlight-orange">condizionale passato</span>
+                    </div>
+                    <p>Si usa per i <strong>rimorsi</strong>, i <strong>ricordi</strong>, le <strong>situazioni passate alternative</strong>.</p>
+                `,
+                duration: 3000,
+                chapter: 3
+            },
+            {
+                tag: 'type-3',
+                tagText: '3° Tipo — Irreale',
+                title: 'Esempi del 3° Tipo',
+                content: `
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>avessi studiato</em> di più, <strong>avrei superato</strong> l'esame."</p>
+                        <p class="translation">(Non ho studiato abbastanza → non ho superato l'esame)</p>
+                    </div>
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>fossi partito</em> prima, <strong>sarei arrivato</strong> in orario."</p>
+                        <p class="translation">(Non sono partito prima → sono arrivato in ritardo)</p>
+                    </div>
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>lei mi avesse ascoltato</em>, <strong>non avrebbe commesso</strong> quell'errore."</p>
+                        <p class="translation">(Non mi ha ascoltato → ha commesso l'errore)</p>
+                    </div>
+                    <div class="warning-box">
+                        <strong>Attenzione ai verbi intransitivi!</strong> Con <em>essere</em> il participio passato cambia: <em>fossi partit<strong>o</strong></em> (io), <em>fossi partit<strong>a</strong></em> (io donna).
+                    </div>
+                `,
+                duration: 4000,
+                chapter: 3
+            },
+            {
+                tag: 'type-3',
+                tagText: '3° Tipo — Irreale',
+                title: 'Il Congiuntivo Trapassato',
+                content: `
+                    <p>Il <strong>congiuntivo trapassato</strong> si forma con:</p>
+                    <div class="formula-box" style="text-align: center; font-size: 1.3em;">
+                        <span class="highlight-orange">congiuntivo imperfetto di essere/avere</span> + <span class="highlight-orange">participio passato</span>
+                    </div>
+                    <table class="verb-table">
+                        <tr>
+                            <th></th>
+                            <th>essere</th>
+                            <th>avere</th>
+                        </tr>
+                        <tr>
+                            <td>Io</td>
+                            <td class="form">fossi stato/a</td>
+                            <td class="form">avessi avuto</td>
+                        </tr>
+                        <tr>
+                            <td>Tu</td>
+                            <td class="form">fossi stato/a</td>
+                            <td class="form">avessi avuto</td>
+                        </tr>
+                        <tr>
+                            <td>Lui/Lei</td>
+                            <td class="form">fosse stato/a</td>
+                            <td class="form">avesse avuto</td>
+                        </tr>
+                        <tr>
+                            <td>Noi</td>
+                            <td class="form">fossimo stati/e</td>
+                            <td class="form">avessimo avuto</td>
+                        </tr>
+                        <tr>
+                            <td>Voi</td>
+                            <td class="form">foste stati/e</td>
+                            <td class="form">aveste avuto</td>
+                        </tr>
+                        <tr>
+                            <td>Loro</td>
+                            <td class="form">fossero stati/e</td>
+                            <td class="form">avessero avuto</td>
+                        </tr>
+                    </table>
+                `,
+                duration: 5000,
+                chapter: 3
+            },
+
+            // === PERIODO MISTO ===
+            {
+                tag: 'type-misto',
+                tagText: 'Periodo Misto',
+                title: 'Il Periodo Ipotetico Misto',
+                content: `
+                    <p>Il <strong>periodo misto</strong> combina elementi del 2° e del 3° tipo:</p>
+                    <div class="formula-box">
+                        <span class="highlight">Se</span> + <span class="highlight">congiuntivo trapassato</span> → <span class="highlight">condizionale presente</span>
+                    </div>
+                    <p>Si usa quando la <strong>condizione è nel passato</strong> (non realizzata) ma la <strong>conseguenza è nel presente</strong>.</p>
+                `,
+                duration: 3000,
+                chapter: 4
+            },
+            {
+                tag: 'type-misto',
+                tagText: 'Periodo Misto',
+                title: 'Esempi del Periodo Misto',
+                content: `
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>avessi studiato</em> di più, <strong>ora sarei</strong> più preparato."</p>
+                        <p class="translation">(Non ho studiato nel passato → ora non sono preparato)</p>
+                    </div>
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>fossi partito</em> prima, <strong>adesso non sarei</strong> in ritardo."</p>
+                        <p class="translation">(Non sono partito prima → ora sono in ritardo)</p>
+                    </div>
+                    <div class="example-box">
+                        <p class="example">"<strong>Se</strong> <em>lei avesse accettato</em> quell'offerta, <strong>ora lavorerebbe</strong> in banca."</p>
+                        <p class="translation">(Non ha accettato nel passato → ora non lavora in banca)</p>
+                    </div>
+                    <div class="tip-box">
+                        <strong>Trucco:</strong> cerca parole come <em>ora</em>, <em>adesso</em>, <em>oggi</em> nella conseguenza: indicano un periodo misto!
+                    </div>
+                `,
+                duration: 4000,
+                chapter: 4
+            },
+
+            // === RIEPILOGO ===
+            {
+                tag: 'intro',
+                tagText: 'Riepilogo',
+                title: 'Tabella Riassuntiva',
+                content: `
+                    <table class="verb-table">
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Protasi (se...)</th>
+                            <th>Apodosi (conseguenza)</th>
+                            <th>Esempio</th>
+                        </tr>
+                        <tr style="background: var(--success-bg);">
+                            <td><strong style="color: var(--success)">1° Reale</strong></td>
+                            <td>presente indicativo</td>
+                            <td>futuro / presente / imperativo</td>
+                            <td><em>Se piove, resto a casa.</em></td>
+                        </tr>
+                        <tr style="background: var(--blue-bg);">
+                            <td><strong style="color: var(--blue)">2° Possibile</strong></td>
+                            <td>congiuntivo imperfetto</td>
+                            <td>condizionale presente</td>
+                            <td><em>Se avessi soldi, comprerei.</em></td>
+                        </tr>
+                        <tr style="background: var(--orange-bg);">
+                            <td><strong style="color: var(--orange)">3° Irreale</strong></td>
+                            <td>congiuntivo trapassato</td>
+                            <td>condizionale passato</td>
+                            <td><em>Se avessi studiato, avrei passato.</em></td>
+                        </tr>
+                        <tr style="background: var(--purple-bg);">
+                            <td><strong style="color: var(--purple)">Misto</strong></td>
+                            <td>congiuntivo trapassato</td>
+                            <td>condizionale presente</td>
+                            <td><em>Se avessi studiato, ora saprei.</em></td>
+                        </tr>
+                    </table>
+                `,
+                duration: 5000,
+                chapter: 5
+            },
+            {
+                tag: 'intro',
+                tagText: 'Riepilogo',
+                title: 'Errori Comuni da Evitare',
+                content: `
+                    <div class="warning-box">
+                        <strong>1. Mai il futuro dopo "se"!</strong><br>
+                        ❌ "Se <em>farà</em> bel tempo..." → ✅ "Se <em>fa</em> bel tempo..."
+                    </div>
+                    <div class="warning-box">
+                        <strong>2. Non confondere congiuntivo e condizionale!</strong><br>
+                        ❌ "Se <em>avrei</em> tempo..." → ✅ "Se <em>avessi</em> tempo..."
+                    </div>
+                    <div class="warning-box">
+                        <strong>3. Attenzione all'accordo con "essere"!</strong><br>
+                        ❌ "Se fossi partit<strong>o</strong>..." (per una donna) → ✅ "Se fossi partit<strong>a</strong>..."
+                    </div>
+                    <div class="tip-box">
+                        <strong>Consiglio:</strong> quando inizi una frase con "se", chiediti: è possibile? è immaginario? è nel passato? La risposta ti dirà quale tipo usare.
+                    </div>
+                `,
+                duration: 4000,
+                chapter: 5
+            }
+        ];
+
+        const chapters = [
+            { index: 0, title: 'Introduzione', time: '00:00' },
+            { index: 3, title: '1° Tipo — Reale', time: '02:30' },
+            { index: 6, title: '2° Tipo — Possibile', time: '06:00' },
+            { index: 9, title: '3° Tipo — Irreale', time: '10:00' },
+            { index: 11, title: 'Periodo Misto', time: '13:00' },
+            { index: 13, title: 'Riepilogo', time: '14:30' }
+        ];
+
+        let currentSlide = 0;
+        let isPlaying = false;
+        let playInterval = null;
+        let playbackSpeed = 1;
+
+        function init() {
+            renderSlides();
+            renderChapterMarkers();
+        }
+
+        function renderSlides() {
+            const container = document.getElementById('slideArea');
+            container.innerHTML = slides.map((slide, i) => `
+                <div class="slide ${i === 0 ? 'active' : ''}" data-index="${i}">
+                    <span class="slide-tag ${slide.tag}">${slide.tagText}</span>
+                    <h2>${slide.title}</h2>
+                    ${slide.content}
+                </div>
+            `).join('');
+        }
+
+        function renderChapterMarkers() {
+            const container = document.getElementById('chapterMarkers');
+            container.innerHTML = chapters.map((ch, i) => `
+                <button class="chapter-marker ${i === 0 ? 'active' : ''}" onclick="jumpToChapter(${i})" data-chapter="${i}">
+                    ${ch.title}
+                </button>
+            `).join('');
+        }
+
+        function startVideo() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('playerScreen').classList.add('active');
+            currentSlide = 0;
+            showSlide(0);
+            updateProgress();
+            updateTimeDisplay();
+        }
+
+        function showSlide(index) {
+            document.querySelectorAll('.slide').forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+            updateProgress();
+            updateTimeDisplay();
+            updateButtons();
+            updateChapterMarkers();
+        }
+
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function updateTimeDisplay() {
+            const currentTime = formatTime(getTimeForSlide(currentSlide));
+            const totalTime = '15:00';
+            document.getElementById('timeDisplay').textContent = `${currentTime} / ${totalTime}`;
+        }
+
+        function getTimeForSlide(index) {
+            let time = 0;
+            for (let i = 0; i < index; i++) {
+                time += slides[i].duration;
+            }
+            return Math.floor(time / 1000);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+            document.getElementById('playBtn').textContent = isPlaying ? '⏸' : '▶';
+        }
+
+        function updateChapterMarkers() {
+            const currentChapter = chapters.findIndex((ch, i) => {
+                const nextCh = chapters[i + 1];
+                return currentSlide >= ch.index && (!nextCh || currentSlide < nextCh.index);
+            });
+            document.querySelectorAll('.chapter-marker').forEach((m, i) => {
+                m.classList.toggle('active', i === currentChapter);
+            });
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                pause();
+            } else {
+                play();
+            }
+        }
+
+        function play() {
+            isPlaying = true;
+            updateButtons();
+            autoAdvance();
+        }
+
+        function pause() {
+            isPlaying = false;
+            updateButtons();
+            clearTimeout(playInterval);
+        }
+
+        function autoAdvance() {
+            if (!isPlaying || currentSlide >= slides.length - 1) {
+                pause();
+                return;
+            }
+            const duration = slides[currentSlide].duration / playbackSpeed;
+            playInterval = setTimeout(() => {
+                if (isPlaying) {
+                    nextSlide();
+                    autoAdvance();
+                }
+            }, duration);
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                showSlide(currentSlide + 1);
+                if (isPlaying) {
+                    clearTimeout(playInterval);
+                    autoAdvance();
+                }
+            } else {
+                pause();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+                if (isPlaying) {
+                    clearTimeout(playInterval);
+                    autoAdvance();
+                }
+            }
+        }
+
+        function jumpToChapter(chapterIndex) {
+            const ch = chapters[chapterIndex];
+            if (ch) {
+                showSlide(ch.index);
+                if (isPlaying) {
+                    clearTimeout(playInterval);
+                    autoAdvance();
+                }
+            }
+        }
+
+        function seekTo(event) {
+            const container = document.getElementById('progressContainer');
+            const rect = container.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const percentage = x / rect.width;
+            const targetSlide = Math.floor(percentage * slides.length);
+            showSlide(Math.min(targetSlide, slides.length - 1));
+        }
+
+        function changeSpeed() {
+            playbackSpeed = parseFloat(document.getElementById('speedControl').value);
+            if (isPlaying) {
+                clearTimeout(playInterval);
+                autoAdvance();
+            }
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('playerScreen').classList.contains('active')) {
+                if (e.key === ' ' || e.key === 'k') {
+                    e.preventDefault();
+                    togglePlay();
+                } else if (e.key === 'ArrowRight' || e.key === 'l') {
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft' || e.key === 'j') {
+                    prevSlide();
+                }
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html>
