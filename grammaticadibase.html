@@ -1283,3 +1283,12 @@
             document.getElementById('cognomeInput').value = '';
             document.getElementById('emailInput').value = '';
             document.getElementById('startBtn').disabled = true;
+            // Reset quiz state
+            currentQuestion = 0;
+            userAnswers = new Array(100).fill(null);
+            score = 0;
+            questions = [];
+        }
+    </script>
+</body>
+</html>
