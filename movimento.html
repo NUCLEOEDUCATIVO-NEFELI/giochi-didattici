@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verbi di movimento - Passato prossimo - 50 Domande</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans',sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.quiz-container{width:100%;max-width:900px;background:rgba(255,255,255,.98);border-radius:20px;padding:40px;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.header{text-align:center;margin-bottom:28px;padding-bottom:22px;border-bottom:3px solid #0f3460;position:relative}
+.header::after{content:'';position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);width:100px;height:3px;background:#e94560}
+.header h1{font-family:'Playfair Display',serif;font-size:2.45em;color:#1a1a2e;margin-bottom:8px;letter-spacing:1px}
+.header p{font-size:1.05em;color:#666;font-style:italic}
+.intros{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:25px 0}
+.intro{background:#f8f9fa;border:1px solid #e2e6ea;border-radius:12px;padding:14px;line-height:1.55;color:#343a40;font-size:.93em}
+.intro h3{color:#0f3460;font-size:1em;margin-bottom:7px}
+.rtl{direction:rtl;text-align:right;font-family:'Noto Sans Arabic',sans-serif}
+.bengali{font-family:'Noto Sans Bengali','Noto Sans',sans-serif}
+.start-screen{text-align:center;padding:10px}
+.start-screen h2,.results-container h2{font-family:'Playfair Display',serif;font-size:2em;color:#1a1a2e;margin-bottom:14px}
+.start-screen>p{font-size:1.05em;color:#555;line-height:1.7;margin-bottom:22px}
+.form-group{margin-bottom:16px;text-align:left;max-width:430px;margin-left:auto;margin-right:auto}
+.form-group label{display:block;font-weight:700;color:#1a1a2e;margin-bottom:7px}
+.form-group input{width:100%;padding:13px;font-size:1em;border:2px solid #dee2e6;border-radius:10px;font-family:'Noto Sans',sans-serif}
+.form-group input:focus{outline:none;border-color:#0f3460;box-shadow:0 0 0 3px rgba(15,52,96,.1)}
+#startBtn,.nav-btn,.btn-send{border:none;border-radius:10px;cursor:pointer;background:#0f3460;color:white;font-weight:700;transition:.3s}
+#startBtn{padding:15px 42px;font-size:1.1em;background:linear-gradient(135deg,#e94560,#c0392b);margin-top:12px}
+#startBtn:disabled{opacity:.45;cursor:not-allowed}
+.grading-scale{background:#f8f9fa;padding:18px;border-radius:12px;margin:18px auto;max-width:520px;text-align:left}
+.grading-scale h4{color:#1a1a2e;margin-bottom:10px}
+.grade-item{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #dee2e6}
+.grade-item:last-child{border-bottom:none}
+.progress-container{margin-bottom:25px}
+.progress-bar{width:100%;height:12px;background:#e8e8e8;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#e94560,#f39c12);border-radius:10px;transition:.4s}
+.question-counter{text-align:center;font-size:1.1em;color:#0f3460;margin-top:12px;font-weight:700}
+.question-card{background:linear-gradient(145deg,#f8f9fa 0%,#e9ecef 100%);padding:30px;border-radius:15px;text-align:left;margin-bottom:25px;border-left:6px solid #0f3460;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.question-label{font-size:.82em;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.question-text{font-family:'Playfair Display',serif;font-size:1.35em;color:#1a1a2e;line-height:1.55;margin-bottom:22px}
+.answers-container{display:grid;grid-template-columns:1fr;gap:10px}
+.answer-btn{padding:16px 20px;font-size:1.02em;font-family:'Noto Sans',sans-serif;font-weight:600;border:2px solid #dee2e6;border-radius:12px;cursor:pointer;background:white;color:#495057;text-align:left}
+.answer-btn:hover:not(:disabled){background:#f1f3f5;border-color:#0f3460;transform:translateX(6px)}
+.answer-btn:disabled{cursor:default}
+.answer-btn.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724!important}
+.answer-btn.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24!important}
+.feedback-message{padding:17px 20px;border-radius:12px;margin-top:20px;font-size:1em;line-height:1.55;font-weight:500;border-left:5px solid}
+.feedback-message.correct{background:#d4edda;color:#155724;border-left-color:#28a745}
+.feedback-message.wrong{background:#f8d7da;color:#721c24;border-left-color:#dc3545}
+.hidden{display:none!important}
+.navigation{display:flex;justify-content:space-between;gap:15px;margin-top:25px;padding-top:20px;border-top:2px solid #e9ecef}
+.nav-btn{padding:13px 25px;font-size:1em}
+.nav-btn:disabled{opacity:.4;cursor:not-allowed}
+.results-container{text-align:center;padding:10px}
+.student-name{font-size:1.35em;color:#0f3460;margin-bottom:18px;font-weight:700}
+.score-display{font-size:4.4em;font-family:'Playfair Display',serif;color:#0f3460;margin:15px 0;font-weight:700}
+.score-label{font-size:1.05em;color:#666;margin-bottom:25px;font-weight:600}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:25px 0}
+.result-box{background:#f8f9fa;padding:20px;border-radius:15px;border:2px solid #dee2e6}
+.result-box .number{font-family:'Playfair Display',serif;font-size:2.3em;display:block;font-weight:700;color:#0f3460}
+.result-box .label{font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:.8em;color:#666}
+.evaluation-box{padding:22px;border-radius:15px;margin:22px 0;background:#eb3349;color:white}
+.evaluation-box.sufficient{background:linear-gradient(135deg,#11998e,#38ef7d)}
+.evaluation-box h3{font-family:'Playfair Display',serif;font-size:1.4em}
+.evaluation-box .grade{font-size:2.2em;font-weight:700;margin:8px 0}
+.stats-detail{background:white;padding:18px;border-radius:12px;margin:18px 0;text-align:left;border:2px solid #e9ecef}
+.stat-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0}
+.email-section{background:#f8f9fa;padding:24px;border-radius:15px;margin-top:25px;border:2px solid #e9ecef}
+.results-text{width:100%;min-height:230px;padding:12px;font-family:monospace;font-size:.85em;border:2px solid #dee2e6;border-radius:10px;margin:15px 0;resize:vertical}
+.button-group{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-send{padding:13px 30px;background:linear-gradient(135deg,#667eea,#764ba2)}
+#restartBtn{padding:12px 25px;font-size:1em;border:2px solid #0f3460;border-radius:10px;cursor:pointer;background:white;color:#0f3460;font-weight:700}
+@media(max-width:768px){.quiz-container{padding:24px}.header h1{font-size:1.9em}.intros{grid-template-columns:1fr}.results-grid{grid-template-columns:1fr}.question-text{font-size:1.2em}}
+</style>
+<style>
+.choice-label{font-weight:800;margin:18px 0 8px;color:#17324d}
+.options-group{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.blank{display:inline-block;min-width:75px;border-bottom:3px solid #b21f35;margin:0 5px;text-align:center}
+.answer-btn.selected{outline:3px solid #b21f35}
+@media(max-width:700px){.options-group{grid-template-columns:1fr}}
+</style></head>
+<body>
+<div class="quiz-container">
+<div id="startScreen">
+<div class="header">
+<h1>VERBI DI MOVIMENTO</h1>
+<p>Passato prossimo · Preposizioni · Test di 50 domande</p>
+</div>
+<div class="start-screen">
+<h2>Introduzione multilingue</h2>
+<div class="intros">
+<div class="intro "><h3>Italiano</h3><p>Questo test verifica l’uso del passato prossimo con i principali verbi di movimento e con le preposizioni corrette: a, da, per, in, al, dal, dalla, dall’, ecc. Ogni domanda vale 2 punti. Il punteggio massimo è 100 punti. La sufficienza è 60 punti.</p></div><div class="intro "><h3>Bambara</h3><p>Nin ye Italiankan kalan denmisɛnɛw ka sɛbɛnni dɔ ye. A bɛ kɔrɔsi ka kɛlɛya kɛ passato prossimo la, ni ɲɔgɔn bɛɛ ye minnu bɛ taa, na, bɔ, segin. A bɛ kɔrɔsi fana ka prépositionw kɛ: a, da, per, in, al, dal, la. Kɛlɛya kelen bɛ nafa 2. Nafaw bɛ se ka taa 100 la. Sɔrɔ 60 ye sɛbɛnni dɔ ye.</p></div><div class="intro "><h3>Português</h3><p>Este teste verifica o uso do passato prossimo com os principais verbos de movimento e com as preposições corretas: a, da, per, in, al, dal, dalla, dall. Cada pergunta vale 2 pontos. A pontuação máxima é 100 pontos. A aprovação é obtida com 60 pontos.</p></div><div class="intro "><h3>Español</h3><p>Esta prueba comprueba el uso del passato prossimo con los principales verbos de movimiento y con las preposiciones correctas: a, da, per, in, al, dal, dalla, dall. Cada pregunta vale 2 puntos. La puntuación máxima es de 100 puntos. La nota mínima para aprobar es de 60 puntos.</p></div><div class="intro "><h3>English</h3><p>This test checks the use of the Italian passato prossimo with the main verbs of movement and the correct prepositions: a, da, per, in, al, dal, dalla, dall. Each question is worth 2 points. The maximum score is 100 points. The pass mark is 60 points.</p></div><div class="intro rtl"><h3>العربية</h3><p>يختبر هذا الاختبار استخدام زمن الماضي القريب الإيطالي (passato prossimo) مع أهم أفعال الحركة وحروف الجر الصحيحة: a، da، per، in، al، dal، dalla، dall. كل سؤال يساوي نقطتين. الدرجة القصوى هي 100 نقطة، ودرجة النجاح هي 60 نقطة.</p></div><div class="intro bengali"><h3>বাংলা</h3><p>এই পরীক্ষা ইতালীয় ভাষার passato prossimo-এর সঙ্গে চলাচলের প্রধান ক্রিয়া এবং সঠিক preposizioni বা অব্যয় পরীক্ষা করে: a, da, per, in, al, dal, dalla, dall। প্রতিটি প্রশ্নের মূল্য ২ পয়েন্ট। সর্বোচ্চ নম্বর ১০০ এবং পাস নম্বর ৬০।</p></div><div class="intro rtl"><h3>اردو</h3><p>یہ ٹیسٹ اطالوی زبان کے passato prossimo میں حرکت کے اہم افعال اور درست حروفِ جار کی جانچ کرتا ہے: a، da، per، in، al، dal، dalla، dall۔ ہر سوال 2 نمبروں کا ہے۔ زیادہ سے زیادہ اسکور 100 ہے اور کامیابی کے لیے 60 نمبر ضروری ہیں۔</p></div>
+</div>
+<p><strong>Obiettivo:</strong> scegliere la forma corretta del passato prossimo e la preposizione corretta con andare, venire, partire, arrivare, uscire e tornare.</p>
+<div class="grading-scale">
+<h4>📊 Sistema di valutazione</h4>
+<div class="grade-item"><span>50 risposte × 2 punti</span><strong>100 punti</strong></div>
+<div class="grade-item"><span>Sufficienza</span><strong>60 punti</strong></div>
+<div class="grade-item"><span>Risposte corrette necessarie</span><strong>30 su 50</strong></div>
+</div>
+<div class="form-group"><label for="nomeInput">Nome *</label><input id="nomeInput" placeholder="Es. Marco"></div>
+<div class="form-group"><label for="cognomeInput">Cognome *</label><input id="cognomeInput" placeholder="Es. Rossi"></div>
+<div class="form-group"><label for="emailInput">Email *</label><input type="email" id="emailInput" placeholder="Es. nome@email.it"></div>
+<button id="startBtn" disabled>Avvia Test</button>
+</div>
+</div>
+
+<div id="quizScreen" class="hidden">
+<div class="header"><h1>VERBI DI MOVIMENTO</h1><p>Passato prossimo · 50 domande · 2 punti per risposta</p></div>
+<div class="progress-container"><div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div><div class="question-counter">Domanda <span id="currentQ">1</span> di 50</div></div>
+<div class="question-card">
+<div class="question-label">Grammatica italiana · passato prossimo</div>
+<div id="questionText" class="question-text"></div>
+<div id="answersContainer" class="answers-container"></div>
+<div id="feedback" class="feedback-message hidden"></div>
+</div>
+<div class="navigation"><button id="prevBtn" class="nav-btn">← Precedente</button><button id="nextBtn" class="nav-btn" disabled>Successiva →</button></div>
+</div>
+
+<div id="resultsScreen" class="hidden">
+<div class="header"><h1>RISULTATI FINALI</h1><p>Test sui verbi di movimento</p></div>
+<div class="results-container">
+<div class="student-name" id="studentNameDisplay"></div>
+<h2>Punteggio ottenuto</h2>
+<div class="score-display" id="finalScore"></div>
+<div class="score-label">Punti ottenuti su 100 · 2 punti per ogni risposta corretta</div>
+<div id="evaluationBox" class="evaluation-box"><h3>Valutazione</h3><div class="grade" id="gradeDisplay"></div><div id="statusDisplay"></div></div>
+<div class="results-grid">
+<div class="result-box"><span class="number" id="correctCount"></span><span class="label">Corrette</span></div>
+<div class="result-box"><span class="number" id="wrongCount"></span><span class="label">Sbagliate</span></div>
+<div class="result-box"><span class="number" id="percentage"></span><span class="label">Percentuale</span></div>
+</div>
+<div class="stats-detail">
+<div class="stat-row"><span>Risposte corrette:</span><strong id="statCorrect"></strong></div>
+<div class="stat-row"><span>Risposte sbagliate:</span><strong id="statWrong"></strong></div>
+<div class="stat-row"><span>Punti:</span><strong id="statPoints"></strong></div>
+<div class="stat-row"><span>Percentuale:</span><strong id="statPercent"></strong></div>
+<div class="stat-row"><span>Esito:</span><strong id="statResult"></strong></div>
+</div>
+<div class="email-section">
+<h3>📋 Copia i risultati</h3>
+<textarea id="resultsText" class="results-text"></textarea>
+<div class="button-group"><button class="btn-send" id="copyBtn">Copia risultati</button><button id="restartBtn">Ricomincia test</button></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const originalQuestions = [{"q": "Ieri Marco ___ ___ Roma per lavoro.", "verbOptions": ["è andato", "ha andato", "è andata", "ha andata"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Andare vuole l'ausiliare essere: è andato. Preposizione: andare a Roma."}, {"q": "Maria ieri ___ ___ supermercato.", "verbOptions": ["è andata", "ha andato", "è andato", "ha andata"], "verbCorrect": 0, "prepOptions": ["al", "a", "da", "per"], "prepCorrect": 0, "expl": "Andare vuole essere: è andata. Preposizione: andare al supermercato."}, {"q": "Luca ___ ___ Milano alle otto.", "verbOptions": ["è partito", "ha partito", "è partita", "ha partita"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Partire vuole essere: è partito. Preposizione: partire da Milano."}, {"q": "Marco e Paolo ___ ___ Napoli lunedì scorso.", "verbOptions": ["sono partiti", "hanno partito", "sono partite", "hanno partiti"], "verbCorrect": 0, "prepOptions": ["per", "a", "da", "in"], "prepCorrect": 0, "expl": "Partire vuole essere: sono partiti. Preposizione: partire per Napoli."}, {"q": "I ragazzi ___ ___ casa alle sette.", "verbOptions": ["sono usciti", "hanno uscito", "sono uscita", "hanno usciti"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Uscire vuole essere: sono usciti. Preposizione: uscire da casa."}, {"q": "Anna ___ ___ scuola alle otto.", "verbOptions": ["è arrivata", "ha arrivato", "è arrivato", "ha arrivata"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Arrivare vuole essere: è arrivata. Preposizione: arrivare a scuola."}, {"q": "Marco ___ ___ Torino ieri sera.", "verbOptions": ["è venuto", "ha venuto", "è venuta", "ha venuti"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Venire vuole essere: è venuto. Preposizione: venire da Torino."}, {"q": "Giulia ___ ___ sua madre domenica.", "verbOptions": ["è andata", "ha andata", "è andato", "ha andato"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Andare da + persona: è andata da sua madre."}, {"q": "Ieri Marco e Paolo ___ ___ Venezia in treno.", "verbOptions": ["sono andati", "hanno andato", "sono andate", "hanno andati"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Andare vuole essere: sono andati. Preposizione: andare a Venezia."}, {"q": "Paolo ___ ___ Firenze da Roma.", "verbOptions": ["è venuto", "ha venuto", "è venuta", "ha venuti"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Venire a + destinazione: è venuto a Firenze. Da Roma indica la provenienza."}, {"q": "Sara ___ ___ Bologna per lavoro.", "verbOptions": ["è partita", "ha partito", "è partito", "ha partita"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Partire vuole essere: è partita. Preposizione: partire da Bologna."}, {"q": "Marco e Paolo ___ ___ casa dopo cena.", "verbOptions": ["sono tornati", "hanno tornato", "sono tornate", "hanno tornati"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Tornare vuole essere: sono tornati. Preposizione: tornare a casa."}, {"q": "Anna ___ ___ufficio alle sei.", "verbOptions": ["è uscita", "ha uscito", "è uscito", "ha uscita"], "verbCorrect": 0, "prepOptions": ["dall'", "a", "da", "per"], "prepCorrect": 0, "expl": "Uscire vuole essere: è uscita. Preposizione: uscire dall'ufficio."}, {"q": "Elena ___ ___ Italia nel 2024.", "verbOptions": ["è arrivata", "ha arrivato", "è arrivato", "ha arrivata"], "verbCorrect": 0, "prepOptions": ["in", "a", "da", "per"], "prepCorrect": 0, "expl": "Arrivare vuole essere: è arrivata. Preposizione: arrivare in Italia."}, {"q": "Loro ___ ___ casa molto tardi.", "verbOptions": ["sono arrivati", "hanno arrivato", "sono arrivate", "hanno arrivati"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Arrivare vuole essere: sono arrivati. Preposizione: arrivare a casa."}, {"q": "Luca ___ ___ scuola stamattina.", "verbOptions": ["è andato", "ha andato", "è andata", "ha andata"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Andare vuole essere: è andato. Preposizione: andare a scuola."}, {"q": "Marco e Paolo ___ ___ Parigi ieri.", "verbOptions": ["sono venuti", "hanno venuto", "sono venute", "hanno venuti"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Venire vuole essere: sono venuti. Preposizione: venire da Parigi."}, {"q": "Mio fratello ___ ___ Londra ieri.", "verbOptions": ["è partito", "ha partito", "è partita", "ha partiti"], "verbCorrect": 0, "prepOptions": ["per", "a", "da", "in"], "prepCorrect": 0, "expl": "Partire per + destinazione: è partito per Londra."}, {"q": "Marco e Paolo ___ ___ Kenya a gennaio.", "verbOptions": ["sono partiti", "hanno partito", "sono partite", "hanno partiti"], "verbCorrect": 0, "prepOptions": ["dal", "a", "da", "per"], "prepCorrect": 0, "expl": "Partire da + luogo di partenza: sono partiti dal Kenya."}, {"q": "I bambini ___ ___ parco ieri pomeriggio.", "verbOptions": ["sono andati", "hanno andato", "sono andate", "hanno andati"], "verbCorrect": 0, "prepOptions": ["al", "a", "da", "per"], "prepCorrect": 0, "expl": "Andare a + luogo: sono andati al parco."}, {"q": "Fatima ___ ___ Tunisia nel 2023.", "verbOptions": ["è venuta", "ha venuto", "è venuto", "ha venuta"], "verbCorrect": 0, "prepOptions": ["dalla", "a", "da", "per"], "prepCorrect": 0, "expl": "Venire da + provenienza: è venuta dalla Tunisia."}, {"q": "Karim ___ ___ Marocco per le vacanze.", "verbOptions": ["è andato", "ha andato", "è andata", "ha andata"], "verbCorrect": 0, "prepOptions": ["in", "a", "da", "per"], "prepCorrect": 0, "expl": "Andare in + paese: è andato in Marocco."}, {"q": "Marco e Paolo ___ ___ Napoli ieri mattina.", "verbOptions": ["sono venuti", "hanno venuto", "sono venute", "hanno venuti"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Venire a + destinazione: sono venuti a Napoli."}, {"q": "Anna ___ ___ Roma alle nove.", "verbOptions": ["è partita", "ha partito", "è partito", "ha partita"], "verbCorrect": 0, "prepOptions": ["per", "a", "da", "in"], "prepCorrect": 0, "expl": "Partire per + destinazione: è partita per Roma."}, {"q": "Luca ___ ___ stazione alle dieci.", "verbOptions": ["è partito", "ha partito", "è partita", "ha partita"], "verbCorrect": 0, "prepOptions": ["dalla", "a", "da", "per"], "prepCorrect": 0, "expl": "Partire da + punto di partenza: è partito dalla stazione."}, {"q": "Marta ___ ___ casa dopo il lavoro.", "verbOptions": ["è tornata", "ha tornato", "è tornato", "ha tornata"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Tornare a + destinazione: è tornata a casa."}, {"q": "I miei amici ___ ___ Berlino ieri.", "verbOptions": ["sono tornati", "hanno tornato", "sono tornate", "hanno tornati"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Tornare da + provenienza: sono tornati da Berlino."}, {"q": "Luca ___ ___ Milano nel 2022.", "verbOptions": ["è arrivato", "ha arrivato", "è arrivata", "ha arrivati"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Arrivare a + città: è arrivato a Milano."}, {"q": "Marco e Paolo ___ ___ Spagna la settimana scorsa.", "verbOptions": ["sono arrivati", "hanno arrivato", "sono arrivate", "hanno arrivati"], "verbCorrect": 0, "prepOptions": ["in", "a", "da", "per"], "prepCorrect": 0, "expl": "Arrivare in + paese: sono arrivati in Spagna."}, {"q": "Luca ___ ___ casa alle sette.", "verbOptions": ["è uscito", "ha uscito", "è uscita", "ha usciti"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Uscire da + luogo: è uscito da casa."}, {"q": "I bambini ___ ___ scuola alle quattro.", "verbOptions": ["sono usciti", "hanno uscito", "sono uscita", "hanno usciti"], "verbCorrect": 0, "prepOptions": ["dalla", "a", "da", "per"], "prepCorrect": 0, "expl": "Uscire da + luogo: sono usciti dalla scuola."}, {"q": "Lei ___ ___ lavoro in autobus.", "verbOptions": ["è andata", "ha andato", "è andato", "ha andata"], "verbCorrect": 0, "prepOptions": ["al", "a", "da", "per"], "prepCorrect": 0, "expl": "Andare a + luogo: è andata al lavoro."}, {"q": "Marco e Paolo ___ ___aeroporto alle sei.", "verbOptions": ["sono partiti", "hanno partito", "sono partite", "hanno partiti"], "verbCorrect": 0, "prepOptions": ["dall'", "a", "da", "per"], "prepCorrect": 0, "expl": "Partire da + luogo: sono partiti dall'aeroporto."}, {"q": "Mio padre ___ ___ Germania per lavoro.", "verbOptions": ["è partito", "ha partito", "è partita", "ha partiti"], "verbCorrect": 0, "prepOptions": ["per la", "a", "da", "per"], "prepCorrect": 0, "expl": "Partire per + destinazione: è partito per la Germania."}, {"q": "Ieri Marco ___ ___ sua sorella.", "verbOptions": ["è andato", "ha andato", "è andata", "ha andata"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Andare da + persona: è andato da sua sorella."}, {"q": "Sabato Luca e Paolo ___ ___ Marco per cena.", "verbOptions": ["sono andati", "hanno andato", "sono andate", "hanno andati"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Andare da + persona: sono andati da Marco."}, {"q": "Loro ___ ___ Roma da Parigi in aereo.", "verbOptions": ["sono venuti", "hanno venuto", "sono venute", "hanno venuti"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Venire a + destinazione: sono venuti a Roma. Da Parigi indica la provenienza."}, {"q": "Luca ___ ___ Roma ieri mattina.", "verbOptions": ["è arrivato", "ha arrivato", "è arrivata", "ha arrivati"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Arrivare vuole essere: è arrivato. Preposizione: arrivare a Roma."}, {"q": "Marco ___ ___ scuola alle quattro.", "verbOptions": ["è tornato", "ha tornato", "è tornata", "ha tornati"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Tornare vuole essere: è tornato. Preposizione: tornare da scuola."}, {"q": "Ieri Sara ___ ___ sua nonna.", "verbOptions": ["è andata", "ha andata", "è andato", "ha andato"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Andare da + persona: è andata da sua nonna."}, {"q": "Gli studenti ___ ___ biblioteca dopo la lezione.", "verbOptions": ["sono andati", "hanno andato", "sono andate", "hanno andati"], "verbCorrect": 0, "prepOptions": ["in", "a", "da", "per"], "prepCorrect": 0, "expl": "Andare in + luogo: sono andati in biblioteca."}, {"q": "Mia madre ___ ___ mercato questa mattina.", "verbOptions": ["è andata", "ha andato", "è andato", "ha andata"], "verbCorrect": 0, "prepOptions": ["al", "a", "da", "per"], "prepCorrect": 0, "expl": "Andare a + luogo: è andata al mercato."}, {"q": "Marco e Paolo ___ ___Italia per il Senegal.", "verbOptions": ["sono partiti", "hanno partito", "sono partite", "hanno partiti"], "verbCorrect": 0, "prepOptions": ["dall'", "a", "da", "per"], "prepCorrect": 0, "expl": "Partire da + origine e per + destinazione: sono partiti dall'Italia per il Senegal."}, {"q": "L'anno scorso loro ___ ___ Portogallo.", "verbOptions": ["sono andati", "hanno andato", "sono andate", "hanno andati"], "verbCorrect": 0, "prepOptions": ["in", "a", "da", "per"], "prepCorrect": 0, "expl": "Andare in + paese: sono andati in Portogallo."}, {"q": "Ieri Marco e Paolo ___ ___ Francia.", "verbOptions": ["sono venuti", "hanno venuto", "sono venute", "hanno venuti"], "verbCorrect": 0, "prepOptions": ["dalla", "a", "da", "per"], "prepCorrect": 0, "expl": "Venire da + provenienza: sono venuti dalla Francia."}, {"q": "Domenica Luca ___ ___ Venezia da Padova.", "verbOptions": ["è andato", "ha andato", "è andata", "ha andata"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Andare a + città: è andato a Venezia. Da Padova indica la provenienza."}, {"q": "Dopo il viaggio, Maria ___ ___ casa.", "verbOptions": ["è tornata", "ha tornato", "è tornato", "ha tornata"], "verbCorrect": 0, "prepOptions": ["a", "da", "per", "in"], "prepCorrect": 0, "expl": "Tornare a + destinazione: è tornata a casa."}, {"q": "Ieri mattina Marco ___ ___ medico.", "verbOptions": ["è andato", "ha andato", "è andata", "ha andata"], "verbCorrect": 0, "prepOptions": ["dal", "a", "da", "per"], "prepCorrect": 0, "expl": "Andare da + persona/professionista: è andato dal medico."}, {"q": "La famiglia ___ ___ mare sabato.", "verbOptions": ["è partita", "ha partito", "è partito", "ha partita"], "verbCorrect": 0, "prepOptions": ["per il", "a", "da", "per"], "prepCorrect": 0, "expl": "Partire per + destinazione: è partita per il mare."}, {"q": "Gli amici ___ ___ casa alle otto.", "verbOptions": ["sono partiti", "hanno partito", "sono partite", "hanno partiti"], "verbCorrect": 0, "prepOptions": ["da", "a", "per", "in"], "prepCorrect": 0, "expl": "Partire da + luogo: sono partiti da casa."}];
+let questions=[], currentQuestion=0, userAnswers=new Array(50).fill(null), studentName='',studentSurname='',studentEmail='';
+
+function shuffleOptions(qs){
+ return qs.map(q=>{
+   const vi=[0,1,2,3];
+   for(let i=vi.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[vi[i],vi[j]]=[vi[j],vi[i]];}
+   const pi=[0,1,2,3];
+   for(let i=pi.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pi[i],pi[j]]=[pi[j],pi[i]];}
+   return {
+     ...q,
+     verbOptions:vi.map(i=>q.verbOptions[i]),
+     verbCorrect:vi.indexOf(q.verbCorrect),
+     prepOptions:pi.map(i=>q.prepOptions[i]),
+     prepCorrect:pi.indexOf(q.prepCorrect)
+   };
+ });
+}
+function checkInputs(){
+ document.getElementById('startBtn').disabled=!(document.getElementById('nomeInput').value.trim()&&document.getElementById('cognomeInput').value.trim()&&document.getElementById('emailInput').value.trim());
+}
+['nomeInput','cognomeInput','emailInput'].forEach(id=>document.getElementById(id).addEventListener('input',checkInputs));
+document.getElementById('startBtn').addEventListener('click',()=>{
+ studentName=document.getElementById('nomeInput').value.trim();
+ studentSurname=document.getElementById('cognomeInput').value.trim();
+ studentEmail=document.getElementById('emailInput').value.trim();
+ questions=shuffleOptions(originalQuestions);
+ currentQuestion=0; userAnswers=new Array(50).fill(null);
+ document.getElementById('startScreen').classList.add('hidden');document.getElementById('quizScreen').classList.remove('hidden');showQuestion();
+});
+function showQuestion(){
+ const q=questions[currentQuestion];
+ document.getElementById('currentQ').textContent=currentQuestion+1;
+ document.getElementById('progressFill').style.width=((currentQuestion+1)/50*100)+'%';
+ document.getElementById('questionText').innerHTML=q.q.replace('___','<span class="blank">_____</span>').replace('___','<span class="blank">_____</span>');
+ const ac=document.getElementById('answersContainer');ac.innerHTML='';
+ const title1=document.createElement('div');title1.className='choice-label';title1.textContent='1. Scegli la forma verbale corretta';ac.appendChild(title1);
+ const verbBox=document.createElement('div');verbBox.className='options-group';verbBox.id='verbOptions';ac.appendChild(verbBox);
+ q.verbOptions.forEach((opt,i)=>{const b=document.createElement('button');b.className='answer-btn';b.textContent=opt;b.onclick=()=>selectPart('verb',i);verbBox.appendChild(b);});
+ const title2=document.createElement('div');title2.className='choice-label';title2.textContent='2. Scegli la preposizione corretta';ac.appendChild(title2);
+ const prepBox=document.createElement('div');prepBox.className='options-group';prepBox.id='prepOptions';ac.appendChild(prepBox);
+ q.prepOptions.forEach((opt,i)=>{const b=document.createElement('button');b.className='answer-btn';b.textContent=opt;b.onclick=()=>selectPart('prep',i);prepBox.appendChild(b);});
+ const ans=userAnswers[currentQuestion] || {verb:null,prep:null};
+ if(ans.verb!==null)markPart('verb',ans.verb); if(ans.prep!==null)markPart('prep',ans.prep);
+ const complete=ans.verb!==null && ans.prep!==null,fb=document.getElementById('feedback');
+ if(complete){const ok=ans.verb===q.verbCorrect && ans.prep===q.prepCorrect;markCorrectAnswers();fb.textContent=ok?'✓ Risposta completamente corretta!':'✗ Risposta non completamente corretta. '+q.expl;fb.className='feedback-message '+(ok?'correct':'wrong');}
+ else fb.className='feedback-message hidden';
+ document.getElementById('prevBtn').disabled=currentQuestion===0;
+ const nb=document.getElementById('nextBtn');nb.disabled=!complete;nb.textContent=currentQuestion===49?'Vedi Risultati →':'Successiva →';
+}
+function markPart(part,index){document.querySelectorAll('#'+part+'Options .answer-btn').forEach((b,i)=>b.classList.toggle('selected',i===index));}
+function markCorrectAnswers(){
+ const q=questions[currentQuestion],ans=userAnswers[currentQuestion];
+ document.querySelectorAll('#verbOptions .answer-btn').forEach((b,i)=>{b.disabled=true;if(i===q.verbCorrect)b.classList.add('correct');else if(i===ans.verb)b.classList.add('wrong');});
+ document.querySelectorAll('#prepOptions .answer-btn').forEach((b,i)=>{b.disabled=true;if(i===q.prepCorrect)b.classList.add('correct');else if(i===ans.prep)b.classList.add('wrong');});
+}
+function selectPart(part,index){
+ const q=questions[currentQuestion];
+ if(!userAnswers[currentQuestion] || typeof userAnswers[currentQuestion] !== 'object')userAnswers[currentQuestion]={verb:null,prep:null};
+ userAnswers[currentQuestion][part]=index;markPart(part,index);
+ const ans=userAnswers[currentQuestion],complete=ans.verb!==null && ans.prep!==null,fb=document.getElementById('feedback');
+ if(complete){markCorrectAnswers();const ok=ans.verb===q.verbCorrect && ans.prep===q.prepCorrect;fb.textContent=ok?'✓ Risposta completamente corretta!':'✗ Risposta non completamente corretta. '+q.expl;fb.className='feedback-message '+(ok?'correct':'wrong');document.getElementById('nextBtn').disabled=false;}
+ else {fb.textContent='Ora scegli anche la preposizione.';fb.className='feedback-message';document.getElementById('nextBtn').disabled=true;}
+}
+document.getElementById('nextBtn').addEventListener('click',()=>{if(currentQuestion===49)showResults();else{currentQuestion++;showQuestion();}});
+document.getElementById('prevBtn').addEventListener('click',()=>{if(currentQuestion>0){currentQuestion--;showQuestion();}});
+function showResults(){
+ document.getElementById('quizScreen').classList.add('hidden');document.getElementById('resultsScreen').classList.remove('hidden');
+ let correct=0;for(let i=0;i<50;i++){const a=userAnswers[i]||{};if(a.verb===questions[i].verbCorrect && a.prep===questions[i].prepCorrect)correct++;}
+ const wrong=50-correct,points=correct*2,pct=points;
+ document.getElementById('studentNameDisplay').textContent=studentName+' '+studentSurname;document.getElementById('finalScore').textContent=points+'/100';
+ document.getElementById('correctCount').textContent=correct;document.getElementById('wrongCount').textContent=wrong;document.getElementById('percentage').textContent=pct+'%';
+ document.getElementById('statCorrect').textContent=correct+'/50';document.getElementById('statWrong').textContent=wrong+'/50';document.getElementById('statPoints').textContent=points+'/100';document.getElementById('statPercent').textContent=pct+'%';
+ const sufficient=points>=60;document.getElementById('gradeDisplay').textContent=sufficient?'SUFFICIENTE':'INSUFFICIENTE';document.getElementById('statusDisplay').textContent=sufficient?'Hai raggiunto almeno 60 punti.':'Servono almeno 60 punti per superare il test.';document.getElementById('evaluationBox').className='evaluation-box'+(sufficient?' sufficient':'');
+ document.getElementById('resultsText').value=generateResults(correct,wrong,points,pct,sufficient);
+}
+function generateResults(correct,wrong,points,pct,sufficient){
+ let t='RISULTATI TEST - VERBI DI MOVIMENTO / PASSATO PROSSIMO\n';
+ t+='Candidato: '+studentName+' '+studentSurname+'\nEmail: '+studentEmail+'\nData: '+new Date().toLocaleDateString('it-IT')+'\n\n';
+ t+='Corrette: '+correct+'/50\nSbagliate: '+wrong+'/50\nPunti: '+points+'/100\nPercentuale: '+pct+'%\nEsito: '+(sufficient?'SUFFICIENTE':'INSUFFICIENTE')+'\n\n';
+ for(let i=0;i<50;i++){
+   const q=questions[i],a=userAnswers[i]||{verb:null,prep:null};
+   const ok=a.verb===q.verbCorrect && a.prep===q.prepCorrect;
+   t+='Domanda '+(i+1)+': '+(ok?'CORRETTA':'ERRATA')+'\n';
+   t+='Verbo scelto: '+(a.verb!==null?q.verbOptions[a.verb]:'non selezionato')+'\n';
+   t+='Preposizione scelta: '+(a.prep!==null?q.prepOptions[a.prep]:'non selezionata')+'\n';
+   t+='Spiegazione: '+q.expl+'\n\n';
+ }
+ return t;
+}
+document.getElementById('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(document.getElementById('resultsText').value);alert('Risultati copiati negli appunti.');}catch(e){alert('Copia non disponibile: seleziona e copia il testo manualmente.');}});
+document.getElementById('restartBtn').addEventListener('click',()=>location.reload());
+</script>
+</body>
+</html>
